@@ -11,6 +11,7 @@ import {DashboardComponent} from '../components/dashboard.component';
 import {ImagesComponent} from '../components/images.component';
 import {SpritesComponent} from '../components/sprites.component';
 import {AnimatedSpritesComponent} from '../components/animated-sprites.component';
+import {MarkersComponent} from '../components/markers.component';
 
 @NgModule({
     imports: [
@@ -24,6 +25,7 @@ import {AnimatedSpritesComponent} from '../components/animated-sprites.component
         ImagesComponent,
         SpritesComponent,
         AnimatedSpritesComponent,
+        MarkersComponent,
     ],
     providers: [
         ImageService,
