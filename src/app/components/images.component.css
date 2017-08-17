@@ -7,6 +7,10 @@
     display: inline-block;
 }
 
+.image-container:hover {
+    background-color: #ade4ff;
+}
+
 img {
     width: 100%;
     height: 100%;
