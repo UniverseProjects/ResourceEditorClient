@@ -15,7 +15,9 @@ export class ImagesComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.imageService.getImages().then(images => this.images = images);
+        this.imageService.getImages().then(images => {
+            this.images = images;
+        });
     }
 
     onSelect(image: Image): void {
