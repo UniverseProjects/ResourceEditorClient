@@ -2,8 +2,7 @@ import {Component} from '@angular/core';
 
 @Component({
     selector: 'dashboard-comp',
-    templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.css'],
+    template: `<h2>Dashboard</h2>`,
 })
 export class DashboardComponent {
 
