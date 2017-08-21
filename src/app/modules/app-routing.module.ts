@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
-import {DashboardComponent} from '../components/dashboard.component';
+import {ExplorerComponent} from '../components/explorer.component';
 import {ImagesComponent} from '../components/images.component';
 
 const routes: Routes = [
-    {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
-    {path: 'dashboard', component: DashboardComponent},
+    {path: '', redirectTo: '/explorer', pathMatch: 'full'},
+    {path: 'explorer', component: ExplorerComponent},
     {path: 'images', component: ImagesComponent},
 ];
 

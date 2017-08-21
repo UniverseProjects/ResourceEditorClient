@@ -9,7 +9,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {ImageService} from '../services/image.service';
 
 import {AppComponent} from '../components/app.component';
-import {DashboardComponent} from '../components/dashboard.component';
+import {ExplorerComponent} from '../components/explorer.component';
 import {ImagesComponent} from '../components/images.component';
 
 
@@ -23,7 +23,7 @@ import {ImagesComponent} from '../components/images.component';
     ],
     declarations: [
         AppComponent,
-        DashboardComponent,
+        ExplorerComponent,
         ImagesComponent,
     ],
     providers: [
