@@ -3,7 +3,7 @@ import {ImageService} from '../services/image.service';
 import {Image} from '../data/image';
 
 @Component({
-    selector: 'images',
+    selector: 'app-images',
     templateUrl: './images.component.html',
     styleUrls: ['./images.component.css'],
 })
