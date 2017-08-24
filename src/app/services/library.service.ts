@@ -17,27 +17,28 @@ const HEADERS = new Headers({
 @Injectable()
 export class LibraryService {
 
-    constructor(private http: Http) { }
+  constructor(private http: Http) {
+  }
 
-    private static handleError(error: any): Promise<any> {
-        console.error('An error occurred', error); // for demo purposes only
-        return Promise.reject(error.message || error);
-    }
+  private static handleError(error: any): Promise<any> {
+    console.error('An error occurred', error); // for demo purposes only
+    return Promise.reject(error.message || error);
+  }
 
-    getImages(directory: string): Promise<Image[]> {
-        console.log('Retrieving images for directory: ' + directory);
-        const url = LIBRARY_URL + 'images/' + directory;
+  getImages(directory: string): Promise<Image[]> {
+    console.log('Retrieving images for directory: ' + directory);
+    const url = LIBRARY_URL + 'images/' + directory;
 
-        return this.http.get(url, {headers: HEADERS})
-            .toPromise()
-            .then(response => {
-                const images: Image[] = [];
-                response.json().values.forEach((element: any) => {
-                    const imageUrl = element.gcsUrl;
-                    images.push(new Image(imageUrl));
-                });
-                return images;
-            })
-            .catch(LibraryService.handleError);
-    }
+    return this.http.get(url, {headers: HEADERS})
+      .toPromise()
+      .then(response => {
+        const images: Image[] = [];
+        response.json().values.forEach((element: any) => {
+          const imageUrl = element.gcsUrl;
+          images.push(new Image(imageUrl));
+        });
+        return images;
+      })
+      .catch(LibraryService.handleError);
+  }
 }
