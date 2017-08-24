@@ -15,7 +15,7 @@ export class ImagesComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.libraryService.getImages().then(images => {
+        this.libraryService.getImages('images').then(images => {
             this.images = images;
         });
     }
