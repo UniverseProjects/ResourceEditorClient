@@ -20,7 +20,7 @@ const SOME_IMAGES: Image[] = [
 ];
 
 @Injectable()
-export class ImageService {
+export class LibraryService {
 
     private headers = new Headers({
         // 'Content-Type': 'application/json',
@@ -40,9 +40,9 @@ export class ImageService {
         return this.http.get(this.imagesUrl, {headers: this.headers})
             .toPromise()
             .then(response => {
-                let images: Image[] = [];
+                const images: Image[] = [];
                 response.json().values.forEach((element: any) => {
-                    let url = element.gcsUrl.replace('up-resource-library/images/', 'up-resource-library/import/webapp/images/');
+                    const url = element.gcsUrl.replace('up-resource-library/images/', 'up-resource-library/import/webapp/images/');
                     images.push(new Image(url));
                 });
                 return images;

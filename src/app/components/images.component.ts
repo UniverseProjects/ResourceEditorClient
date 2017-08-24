@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ImageService} from '../services/image.service';
+import {LibraryService} from '../services/library.service';
 import {Image} from '../data/image';
 
 @Component({
@@ -11,11 +11,11 @@ export class ImagesComponent implements OnInit {
     images: Image[] = [];
 
     constructor(
-        private imageService: ImageService
+        private libraryService: LibraryService
     ) {}
 
     ngOnInit(): void {
-        this.imageService.getImages().then(images => {
+        this.libraryService.getImages().then(images => {
             this.images = images;
         });
     }

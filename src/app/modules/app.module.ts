@@ -6,7 +6,7 @@ import {TreeModule} from 'angular-tree-component';
 
 import {AppRoutingModule} from './app-routing.module';
 
-import {ImageService} from '../services/image.service';
+import {LibraryService} from '../services/library.service';
 
 import {AppComponent} from '../components/app.component';
 import {ExplorerComponent} from '../components/explorer.component';
@@ -27,7 +27,7 @@ import {ImagesComponent} from '../components/images.component';
         ImagesComponent,
     ],
     providers: [
-        ImageService,
+        LibraryService,
     ],
     bootstrap: [
         AppComponent,
