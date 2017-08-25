@@ -1,17 +1,16 @@
-
 import {Injectable} from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import {Headers, Http} from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
 import {Image} from '../data/image';
+import {Directory} from '../data/directory';
 
 const API_URL = 'https://www.universeprojects.com/api/v1/';
 const LIBRARY_URL = API_URL + 'library/5764201201008640/';
 
 const HEADERS = new Headers({
   // 'Content-Type': 'application/json',
-  // 'Access-Control-Allow-Origin': 'http://localhost:3000',
 });
 
 @Injectable()
@@ -25,9 +24,35 @@ export class LibraryService {
     return Promise.reject(error.message || error);
   }
 
+  /** recursive helper method */
+  private buildDirectoryTree(json: any): Directory {
+    const dir = new Directory();
+    dir.name = json.name;
+    dir.path = json.path;
+
+    if (json.children) {
+      json.children.forEach((child: any) => {
+        dir.children.push(this.buildDirectoryTree(child));
+      });
+    }
+    return dir;
+  }
+
+  getDirectoryTree(): Promise<Directory> {
+    const url = LIBRARY_URL + 'tree/';
+    console.log('Retrieving directory tree, URL: ' + url);
+
+    return this.http.get(url, {headers: HEADERS})
+      .toPromise()
+      .then(response => {
+        return this.buildDirectoryTree(response.json());
+      })
+      .catch(LibraryService.handleError);
+  }
+
   getImages(directory: string): Promise<Image[]> {
-    console.log('Retrieving images for directory: ' + directory);
     const url = LIBRARY_URL + 'images/' + directory;
+    console.log('Retrieving images for directory: ' + directory + ', URL: ' + url);
 
     return this.http.get(url, {headers: HEADERS})
       .toPromise()

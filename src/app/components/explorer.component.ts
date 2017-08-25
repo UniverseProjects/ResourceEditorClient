@@ -1,5 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ITreeState, TreeComponent, TreeModel, TreeNode} from 'angular-tree-component';
+import {Directory} from '../data/directory';
+import {LibraryService} from '../services/library.service';
 
 @Component({
   selector: 'app-explorer',
@@ -15,37 +17,22 @@ export class ExplorerComponent implements OnInit {
 
   lastFocusedNodeId: any;
 
-  nodes = [
-    {
-      id: '1', name: 'GUI',
-      children: [
-        {id: '1.1', name: 'blue'},
-        {id: '1.2', name: 'im'},
-        {id: '1.3', name: 'selector'},
-      ]
-    },
-    {
-      id: '2', name: 'effects',
-      children: [
-        {id: '2.1', name: 'wormhole'},
-      ]
-    },
-    {id: '3', name: 'asteroids'},
-    {id: '4', name: 'bases'},
-    {id: '5', name: 'drones'},
-    {id: '6', name: 'explosion'},
-    {id: '7', name: 'icons'},
-    {id: '8', name: 'invention'},
-    {id: '9', name: 'main-toolbar'},
-    {id: '10', name: 'map-indicators'},
-    {id: '11', name: 'missiles'},
-    {id: '12', name: 'ships'},
-    {id: '13', name: 'turrets'},
-    {id: '15', name: 'wrecks'},
-  ];
+  treeNodes = [];
+
+  constructor (private libraryService: LibraryService) {}
 
   ngOnInit(): void {
     this.treeModel = this.treeComponent.treeModel;
+
+    this.libraryService.getDirectoryTree().then(root => {
+      this.treeNodes.length = 0; // empty the array
+
+      // do not display the root - make its children the root level
+      root.children.forEach((child: Directory) => {
+        this.treeNodes.push(child.toTreeNode());
+      });
+      this.treeModel.update();
+    });
   }
 
   // noinspection JSUnusedLocalSymbols
