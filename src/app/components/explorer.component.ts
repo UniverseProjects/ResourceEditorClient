@@ -39,16 +39,12 @@ export class ExplorerComponent implements OnInit {
   onFocus($event): void {
     // console.log($event);
     const focusedNode: TreeNode = this.treeModel.getFocusedNode();
-    if (!focusedNode) {
-      return;
-    }
-
     const id = focusedNode.id;
     if (this.lastFocusedNodeId === id) {
       return; // at the time of this writing, the 'focus' event fires twice... ignore
     }
     this.lastFocusedNodeId = id;
-    console.log('Focused node: ' + id + ', name: ' + focusedNode.displayField);
+    console.log('Focused node: ' + id);
   }
 
 }
