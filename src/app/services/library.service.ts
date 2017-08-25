@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Headers, Http} from '@angular/http';
 
+import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/toPromise';
 
 import {Image} from '../data/image';
@@ -15,6 +16,10 @@ const HEADERS = new Headers({
 
 @Injectable()
 export class LibraryService {
+
+  private directoryChangedSource = new Subject<string>();
+
+  directoryChanged$ = this.directoryChangedSource.asObservable();
 
   constructor(private http: Http) {
   }
@@ -38,6 +43,10 @@ export class LibraryService {
     return dir;
   }
 
+  changeDirectory(directory: string) {
+    this.directoryChangedSource.next(directory);
+  }
+
   getDirectoryTree(): Promise<Directory> {
     const url = LIBRARY_URL + 'tree/';
     console.log('Retrieving directory tree, URL: ' + url);
@@ -51,6 +60,9 @@ export class LibraryService {
   }
 
   getImages(directory: string): Promise<Image[]> {
+    if (directory.startsWith('/')) {
+      directory = directory.slice(1, directory.length);
+    }
     const url = LIBRARY_URL + 'images/' + directory;
     console.log('Retrieving images for directory: ' + directory + ', URL: ' + url);
 

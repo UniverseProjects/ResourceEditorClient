@@ -45,6 +45,8 @@ export class ExplorerComponent implements OnInit {
     }
     this.lastFocusedNodeId = id;
     console.log('Focused node: ' + id);
+
+    this.libraryService.changeDirectory(id); // the ID of the node is the directory path
   }
 
 }

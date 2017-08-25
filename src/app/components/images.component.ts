@@ -1,30 +1,36 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
+import {Subscription} from 'rxjs/Subscription';
+
 import {LibraryService} from '../services/library.service';
 import {Image} from '../data/image';
 
 @Component({
-    selector: 'app-images',
-    templateUrl: './images.component.html',
-    styleUrls: ['./images.component.css'],
+  selector: 'app-images',
+  templateUrl: './images.component.html',
+  styleUrls: ['./images.component.css'],
 })
-export class ImagesComponent implements OnInit {
-    images: Image[] = [];
+export class ImagesComponent implements OnDestroy {
+  images: Image[] = [];
+  onDirectoryChanged: Subscription;
 
-    constructor(
-        private libraryService: LibraryService
-    ) {}
-
-    ngOnInit(): void {
-        this.libraryService.getImages('images').then(images => {
-            this.images = images;
+  constructor(private libraryService: LibraryService) {
+    this.onDirectoryChanged = libraryService.directoryChanged$.subscribe(directory => {
+      if (directory) {
+        this.libraryService.getImages(directory).then(images => {
+          this.images = images;
         });
-    }
+      } else {
+        this.images.length = 0;
+      }
+    });
+  }
 
-    onSelect(image: Image): void {
-        console.log('Attempting to select image: ' + image.url);
-    }
+  ngOnDestroy(): void {
+    // prevent memory leak when component destroyed
+    this.onDirectoryChanged.unsubscribe();
+  }
 
-    delete(image: Image): void {
-        console.log('Attempting to delete image: ' + image.url);
-    }
+  onSelect(image: Image): void {
+    console.log('Attempting to select image: ' + image.url);
+  }
 }
