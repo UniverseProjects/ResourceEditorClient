@@ -4,8 +4,8 @@ import {Headers, Http} from '@angular/http';
 import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/toPromise';
 
-import {Image} from '../data/image';
-import {Directory} from '../data/directory';
+import {Image} from '../models/image';
+import {Directory} from '../models/directory';
 
 const API_URL = 'https://www.universeprojects.com/api/v1/';
 const LIBRARY_URL = API_URL + 'library/5764201201008640/';

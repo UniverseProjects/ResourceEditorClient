@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ITreeState, TreeComponent, TreeModel, TreeNode} from 'angular-tree-component';
-import {Directory} from '../data/directory';
+import {Directory} from '../models/directory';
 import {LibraryService} from '../services/library.service';
 
 @Component({

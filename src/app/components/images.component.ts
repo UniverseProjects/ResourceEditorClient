@@ -2,7 +2,7 @@ import {Component, OnDestroy} from '@angular/core';
 import {Subscription} from 'rxjs/Subscription';
 
 import {LibraryService} from '../services/library.service';
-import {Image} from '../data/image';
+import {Image} from '../models/image';
 
 @Component({
   selector: 'app-images',
