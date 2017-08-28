@@ -14,9 +14,7 @@ export class ExplorerComponent implements OnInit {
 
   state: ITreeState;
   treeModel: TreeModel;
-
   lastFocusedNodeId: any;
-
   treeNodes = [];
 
   constructor (private libraryService: LibraryService) {}
