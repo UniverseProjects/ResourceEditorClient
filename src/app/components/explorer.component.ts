@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {ITreeState, TreeComponent, TreeModel, TreeNode} from 'angular-tree-component';
 import {Directory} from '../models/directory';
 import {LibraryService} from '../services/library.service';
+import {AlertService} from '../services/alert.service';
 
 @Component({
   selector: 'app-explorer',
@@ -17,20 +18,25 @@ export class ExplorerComponent implements OnInit {
   lastFocusedNodeId: any;
   treeNodes = [];
 
-  constructor (private libraryService: LibraryService) {}
+  constructor(
+    private libraryService: LibraryService,
+    private alertService: AlertService,
+  ) {}
 
   ngOnInit(): void {
     this.treeModel = this.treeComponent.treeModel;
 
-    this.libraryService.getDirectoryTree().then(root => {
-      this.treeNodes.length = 0; // empty the array
+    this.libraryService.getDirectoryTree().then(rootDirectory => {
+        this.treeNodes.length = 0; // empty the array
 
-      // do not display the root - make its children the root level
-      root.children.forEach((child: Directory) => {
-        this.treeNodes.push(child.toTreeNode());
+        // do not display the root - make its children the root level
+        rootDirectory.children.forEach((child: Directory) => {
+          this.treeNodes.push(child.toTreeNode());
+        });
+        this.treeModel.update();
+      }, (rejectReason) => {
+        this.alertService.error('Failed to load directories (' + rejectReason + ')');
       });
-      this.treeModel.update();
-    });
   }
 
   // noinspection JSUnusedLocalSymbols
