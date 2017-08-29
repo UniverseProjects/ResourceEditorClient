@@ -49,7 +49,7 @@ export class LibraryService {
 
   getDirectoryTree(): Promise<Directory> {
     const url = LIBRARY_URL + 'tree/';
-    console.log('Retrieving directory tree, URL: ' + url);
+    console.log('Retrieving directory tree, API: ' + url);
 
     return this.http.get(url, {headers: HEADERS})
       .toPromise()
@@ -64,7 +64,7 @@ export class LibraryService {
       directory = directory.slice(1, directory.length);
     }
     const url = LIBRARY_URL + 'images/' + directory;
-    console.log('Retrieving images for directory: ' + directory + ', URL: ' + url);
+    console.log('Retrieving images for directory: ' + directory + ', API: ' + url);
 
     return this.http.get(url, {headers: HEADERS})
       .toPromise()

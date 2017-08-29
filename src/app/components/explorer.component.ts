@@ -3,6 +3,7 @@ import {ITreeState, TreeComponent, TreeModel, TreeNode} from 'angular-tree-compo
 import {Directory} from '../models/directory';
 import {LibraryService} from '../services/library.service';
 import {AlertService} from '../services/alert.service';
+import {LoaderService} from '../services/loader.service';
 
 @Component({
   selector: 'app-explorer',
@@ -21,22 +22,31 @@ export class ExplorerComponent implements OnInit {
   constructor(
     private libraryService: LibraryService,
     private alertService: AlertService,
+    private loaderService: LoaderService,
   ) {}
 
   ngOnInit(): void {
     this.treeModel = this.treeComponent.treeModel;
 
-    this.libraryService.getDirectoryTree().then(rootDirectory => {
-        this.treeNodes.length = 0; // empty the array
+    this.loadDirectoryTree();
+  }
 
-        // do not display the root - make its children the root level
-        rootDirectory.children.forEach((child: Directory) => {
-          this.treeNodes.push(child.toTreeNode());
-        });
-        this.treeModel.update();
-      }, (rejectReason) => {
-        this.alertService.error('Failed to load directories (' + rejectReason + ')');
+  private loadDirectoryTree(): void {
+    const OPNAME = 'Loading directories';
+
+    this.loaderService.startOperation(OPNAME);
+    this.libraryService.getDirectoryTree().then(rootDirectory => {
+      this.treeNodes.length = 0; // empty the array
+      // do not display the root - make its children the root level
+      rootDirectory.children.forEach((child: Directory) => {
+        this.treeNodes.push(child.toTreeNode());
       });
+      this.treeModel.update();
+      this.loaderService.stopOperation(OPNAME);
+    }, (rejectReason) => {
+      this.alertService.error('Failed to load directories (' + rejectReason + ')');
+      this.loaderService.stopOperation(OPNAME);
+    });
   }
 
   // noinspection JSUnusedLocalSymbols
