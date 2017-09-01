@@ -9,10 +9,6 @@ import {Directory} from '../models/directory';
 
 const API_URL = 'https://www.universeprojects.com/api/v1/';
 
-const HEADERS = new Headers({
-  // 'Content-Type': 'application/json',
-});
-
 @Injectable()
 export class LibraryService {
 
@@ -56,7 +52,7 @@ export class LibraryService {
     const url = this.getLibraryBaseUrl() + 'tree/';
     console.log('Retrieving directory tree, API: ' + url);
 
-    return this.http.get(url, {headers: HEADERS})
+    return this.http.get(url, {headers: new Headers()})
       .toPromise()
       .then(response => {
         return this.buildDirectoryTree(response.json());
@@ -71,7 +67,7 @@ export class LibraryService {
     const url = this.getLibraryBaseUrl() + 'images/' + directory;
     console.log('Retrieving images for directory: ' + directory + ', API: ' + url);
 
-    return this.http.get(url, {headers: HEADERS})
+    return this.http.get(url, {headers: new Headers()})
       .toPromise()
       .then(response => {
         const images: Image[] = [];
