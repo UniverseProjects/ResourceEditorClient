@@ -8,7 +8,6 @@ import {Image} from '../models/image';
 import {Directory} from '../models/directory';
 
 const API_URL = 'https://www.universeprojects.com/api/v1/';
-const LIBRARY_URL = API_URL + 'library/5764201201008640/';
 
 const HEADERS = new Headers({
   // 'Content-Type': 'application/json',
@@ -21,12 +20,18 @@ export class LibraryService {
 
   directoryChanged$ = this.directoryChangedSource.asObservable();
 
+  private selectedLibraryId = '5764201201008640'; // <-- TODO: make this selectable by the user
+
   constructor(private http: Http) {
   }
 
   private static handleError(error: any): Promise<any> {
     console.error('An error occurred', error);
     return Promise.reject(error.message);
+  }
+
+  private getLibraryBaseUrl(): string {
+    return API_URL + 'library/' + this.selectedLibraryId + '/';
   }
 
   /** recursive helper method */
@@ -48,7 +53,7 @@ export class LibraryService {
   }
 
   getDirectoryTree(): Promise<Directory> {
-    const url = LIBRARY_URL + 'tree/';
+    const url = this.getLibraryBaseUrl() + 'tree/';
     console.log('Retrieving directory tree, API: ' + url);
 
     return this.http.get(url, {headers: HEADERS})
@@ -63,7 +68,7 @@ export class LibraryService {
     if (directory.startsWith('/')) {
       directory = directory.slice(1, directory.length);
     }
-    const url = LIBRARY_URL + 'images/' + directory;
+    const url = this.getLibraryBaseUrl() + 'images/' + directory;
     console.log('Retrieving images for directory: ' + directory + ', API: ' + url);
 
     return this.http.get(url, {headers: HEADERS})
