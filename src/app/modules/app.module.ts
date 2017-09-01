@@ -17,7 +17,7 @@ import {ExplorerComponent} from '../components/explorer.component';
 import {ImagesComponent} from '../components/images.component';
 import {AlertComponent} from '../components/alert.component';
 import {LoaderComponent} from '../components/loader.component';
-
+import {DirectoryTreeComponent} from '../components/directory.tree.component';
 
 
 @NgModule({
@@ -33,6 +33,7 @@ import {LoaderComponent} from '../components/loader.component';
     declarations: [
         AppComponent,
         ExplorerComponent,
+        DirectoryTreeComponent,
         ImagesComponent,
         AlertComponent,
         LoaderComponent,
