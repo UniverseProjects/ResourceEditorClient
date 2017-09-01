@@ -10,13 +10,13 @@ import {AppRoutingModule} from './app-routing.module';
 
 import {LibraryService} from '../services/library.service';
 import {AlertService} from '../services/alert.service';
+import {LoaderService} from '../services/loader.service';
 
 import {AppComponent} from '../components/app.component';
 import {ExplorerComponent} from '../components/explorer.component';
 import {ImagesComponent} from '../components/images.component';
 import {AlertComponent} from '../components/alert.component';
 import {LoaderComponent} from '../components/loader.component';
-import {LoaderService} from '../services/loader.service';
 
 
 
