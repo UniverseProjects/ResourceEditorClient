@@ -7,11 +7,14 @@ import {LoaderService} from '../services/loader.service';
 
 @Component({
   selector: 'app-images',
-  templateUrl: './images.component.html',
-  styleUrls: ['./images.component.css'],
+  template: `
+    <app-thumbnails [imageUrls]="imageUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+  `,
+  styles: [``],
 })
 export class ImagesComponent {
   images: Image[] = [];
+  imageUrls: string[] = [];
 
   constructor(
     private libraryService: LibraryService,
@@ -24,6 +27,7 @@ export class ImagesComponent {
   private loadImages(directory: string): void {
     if (!directory) {
       this.images.length = 0;
+      this.imageUrls.length = 0;
       return;
     }
 
@@ -31,17 +35,16 @@ export class ImagesComponent {
     this.loaderService.startOperation(OPNAME);
     this.libraryService.getImages(directory).then(images => {
       this.images = images;
+      this.imageUrls = images.map(image => image.url);
+
       this.loaderService.stopOperation(OPNAME);
     }, (rejectReason) => {
       this.alertService.error('Failed to load images (' + rejectReason + ')');
       this.loaderService.stopOperation(OPNAME);
     });
-
-
-
   }
 
-  onSelect(image: Image): void {
-    console.log('Attempting to select image: ' + image.url);
+  onThumbnailSelected(selectedIndex: number): void {
+    console.log('Selected image index: ' + selectedIndex);
   }
 }

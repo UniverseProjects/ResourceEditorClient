@@ -18,6 +18,7 @@ import {ImagesComponent} from '../components/images.component';
 import {AlertComponent} from '../components/alert.component';
 import {LoaderComponent} from '../components/loader.component';
 import {DirectoryTreeComponent} from '../components/directory.tree.component';
+import {ThumbnailsComponent} from '../components/thumbnails.component';
 
 
 @NgModule({
@@ -32,11 +33,12 @@ import {DirectoryTreeComponent} from '../components/directory.tree.component';
     ],
     declarations: [
         AppComponent,
-        ExplorerComponent,
         DirectoryTreeComponent,
-        ImagesComponent,
+        ThumbnailsComponent,
         AlertComponent,
         LoaderComponent,
+        ImagesComponent,
+        ExplorerComponent,
     ],
     providers: [
         LibraryService,
