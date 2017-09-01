@@ -1,5 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
+import {Component} from '@angular/core';
 
 import {LibraryService} from '../services/library.service';
 import {Image} from '../models/image';
