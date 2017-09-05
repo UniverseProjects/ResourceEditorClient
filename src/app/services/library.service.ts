@@ -1,27 +1,33 @@
 import {Injectable} from '@angular/core';
 import {Headers, Http} from '@angular/http';
 
+import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/toPromise';
 
-import {Image} from '../data/image';
-import {Directory} from '../data/directory';
+import {Image} from '../models/image';
+import {Directory} from '../models/directory';
 
 const API_URL = 'https://www.universeprojects.com/api/v1/';
-const LIBRARY_URL = API_URL + 'library/5764201201008640/';
-
-const HEADERS = new Headers({
-  // 'Content-Type': 'application/json',
-});
 
 @Injectable()
 export class LibraryService {
+
+  private directoryChangedSource = new Subject<string>();
+
+  directoryChanged$ = this.directoryChangedSource.asObservable();
+
+  private selectedLibraryId = '5764201201008640'; // <-- TODO: make this selectable by the user
 
   constructor(private http: Http) {
   }
 
   private static handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
+    console.error('An error occurred', error);
+    return Promise.reject(error.message);
+  }
+
+  private getLibraryBaseUrl(): string {
+    return API_URL + 'library/' + this.selectedLibraryId + '/';
   }
 
   /** recursive helper method */
@@ -38,11 +44,15 @@ export class LibraryService {
     return dir;
   }
 
-  getDirectoryTree(): Promise<Directory> {
-    const url = LIBRARY_URL + 'tree/';
-    console.log('Retrieving directory tree, URL: ' + url);
+  changeDirectory(directory: string) {
+    this.directoryChangedSource.next(directory);
+  }
 
-    return this.http.get(url, {headers: HEADERS})
+  getDirectoryTree(): Promise<Directory> {
+    const url = this.getLibraryBaseUrl() + 'tree/';
+    console.log('Retrieving directory tree, API: ' + url);
+
+    return this.http.get(url, {headers: new Headers()})
       .toPromise()
       .then(response => {
         return this.buildDirectoryTree(response.json());
@@ -51,10 +61,13 @@ export class LibraryService {
   }
 
   getImages(directory: string): Promise<Image[]> {
-    const url = LIBRARY_URL + 'images/' + directory;
-    console.log('Retrieving images for directory: ' + directory + ', URL: ' + url);
+    if (directory.startsWith('/')) {
+      directory = directory.slice(1, directory.length);
+    }
+    const url = this.getLibraryBaseUrl() + 'images/' + directory;
+    console.log('Retrieving images for directory: ' + directory + ', API: ' + url);
 
-    return this.http.get(url, {headers: HEADERS})
+    return this.http.get(url, {headers: new Headers()})
       .toPromise()
       .then(response => {
         const images: Image[] = [];
