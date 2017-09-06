@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ITreeState, TreeComponent, TreeModel, TreeNode} from 'angular-tree-component';
-import {Directory} from '../models/directory';
 import {LibraryService} from '../services/library.service';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
+import {ExplorerService} from '../services/explorer.service';
 
 @Component({
   selector: 'app-directory-tree',
@@ -34,6 +34,7 @@ export class DirectoryTreeComponent implements OnInit {
 
   constructor(
     private libraryService: LibraryService,
+    private explorerService: ExplorerService,
     private alertService: AlertService,
     private loaderService: LoaderService,
   ) {}
@@ -53,6 +54,8 @@ export class DirectoryTreeComponent implements OnInit {
       this.treeNodes.push(rootDirectory.toTreeNode());
       this.treeModel.update();
       this.loaderService.stopOperation(OPNAME);
+
+      this.explorerService.changeDirectory(rootDirectory.path);
     }, (rejectReason) => {
       this.alertService.error('Failed to load directories (' + rejectReason + ')');
       this.loaderService.stopOperation(OPNAME);
@@ -69,7 +72,7 @@ export class DirectoryTreeComponent implements OnInit {
     }
     this.lastFocusedNodePath = path;
 
-    this.libraryService.changeDirectory(id); // the ID of the node is the directory path
+    this.explorerService.changeDirectory(path);
   }
 
 }

@@ -19,6 +19,7 @@ import {AlertComponent} from '../components/alert.component';
 import {LoaderComponent} from '../components/loader.component';
 import {DirectoryTreeComponent} from '../components/directory.tree.component';
 import {ThumbnailsComponent} from '../components/thumbnails.component';
+import {ExplorerService} from '../services/explorer.service';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import {ThumbnailsComponent} from '../components/thumbnails.component';
         LibraryService,
         AlertService,
         LoaderService,
+        ExplorerService,
     ],
     bootstrap: [
         AppComponent,

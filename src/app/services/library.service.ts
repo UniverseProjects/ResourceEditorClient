@@ -1,33 +1,39 @@
 import {Injectable} from '@angular/core';
 import {Headers, Http} from '@angular/http';
-
-import {Subject} from 'rxjs/Subject';
 import 'rxjs/add/operator/toPromise';
 
 import {Image} from '../models/image';
 import {Directory} from '../models/directory';
+import {Sprite} from '../models/sprite';
+import {ExplorerService} from './explorer.service';
 
 const API_URL = 'https://www.universeprojects.com/api/v1/';
 
 @Injectable()
 export class LibraryService {
 
-  private directoryChangedSource = new Subject<string>();
-
-  directoryChanged$ = this.directoryChangedSource.asObservable();
-
-  private selectedLibraryId = '5764201201008640'; // <-- TODO: make this selectable by the user
-
-  constructor(private http: Http) {
-  }
+  constructor(
+    private http: Http,
+    private explorerService: ExplorerService,
+  ) { }
 
   private static handleError(error: any): Promise<any> {
     console.error('An error occurred', error);
     return Promise.reject(error.message);
   }
 
+  static checkDirectoryInput(directory: string): string {
+    if (!directory) {
+      throw new Error('Directory must have a value (received: ' + directory + ')');
+    }
+    if (directory.startsWith('/')) {
+      directory = directory.slice(1, directory.length);
+    }
+    return directory;
+  }
+
   private getLibraryBaseUrl(): string {
-    return API_URL + 'library/' + this.selectedLibraryId + '/';
+    return API_URL + 'library/' + this.explorerService.geSelectedLibraryId() + '/';
   }
 
   /** recursive helper method */
@@ -44,39 +50,55 @@ export class LibraryService {
     return dir;
   }
 
-  changeDirectory(directory: string) {
-    this.directoryChangedSource.next(directory);
-  }
-
   getDirectoryTree(): Promise<Directory> {
-    const url = this.getLibraryBaseUrl() + 'tree/';
-    console.log('Retrieving directory tree, API: ' + url);
+    const apiUrl = this.getLibraryBaseUrl() + 'tree/';
+    console.log('Retrieving directory tree, API URL: ' + apiUrl);
 
-    return this.http.get(url, {headers: new Headers()})
+    return this.http.get(apiUrl, {headers: new Headers()})
       .toPromise()
       .then(response => {
-        return this.buildDirectoryTree(response.json());
+        const rootDirectory = this.buildDirectoryTree(response.json());
+        rootDirectory.name = 'root';
+        rootDirectory.path = '/';
+        return rootDirectory;
       })
       .catch(LibraryService.handleError);
   }
 
   getImages(directory: string): Promise<Image[]> {
-    if (directory.startsWith('/')) {
-      directory = directory.slice(1, directory.length);
-    }
-    const url = this.getLibraryBaseUrl() + 'images/' + directory;
-    console.log('Retrieving images for directory: ' + directory + ', API: ' + url);
+    directory = LibraryService.checkDirectoryInput(directory);
+    const apiUrl = this.getLibraryBaseUrl() + 'images/' + directory;
+    console.log('Retrieving images in directory: ' + directory + ', API URL: ' + apiUrl);
 
-    return this.http.get(url, {headers: new Headers()})
+    return this.http.get(apiUrl, {headers: new Headers()})
       .toPromise()
       .then(response => {
         const images: Image[] = [];
         response.json().values.forEach((element: any) => {
-          const imageUrl = element.gcsUrl;
-          images.push(new Image(imageUrl));
+          const gcsUrl = element.gcsUrl;
+          images.push(new Image(gcsUrl));
         });
         return images;
       })
       .catch(LibraryService.handleError);
   }
+
+  getSprites(directory: string): Promise<Sprite[]> {
+    directory = LibraryService.checkDirectoryInput(directory);
+    const apiUrl = this.getLibraryBaseUrl() + 'spriteTypes/' + directory;
+    console.log('Retrieving sprites in directory: ' + directory + ', API URL: ' + apiUrl);
+
+    return this.http.get(apiUrl, {headers: new Headers()})
+      .toPromise()
+      .then(response => {
+        const sprite: Sprite[] = [];
+        response.json().values.forEach((element: any) => {
+          const gcsUrl = element.image.gcsUrl;
+          sprite.push(new Sprite(gcsUrl));
+        });
+        return sprite;
+      })
+      .catch(LibraryService.handleError);
+  }
+
 }

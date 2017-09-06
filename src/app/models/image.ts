@@ -1,6 +1,7 @@
 export class Image {
-    url: string;
-    constructor(url: string) {
-        this.url = url;
-    }
+  gcsUrl: string;
+
+  constructor(gcsUrl: string) {
+    this.gcsUrl = gcsUrl;
+  }
 }
