@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {TreeModule} from 'angular-tree-component';
-import {AlertModule} from 'ngx-bootstrap';
+import {AlertModule, ButtonsModule} from 'ngx-bootstrap';
 import {LoadingModule} from 'ngx-loading';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -19,6 +19,7 @@ import {AlertComponent} from '../components/alert.component';
 import {LoaderComponent} from '../components/loader.component';
 import {DirectoryTreeComponent} from '../components/directory.tree.component';
 import {ThumbnailsComponent} from '../components/thumbnails.component';
+import {SpritesComponent} from '../components/sprites.component';
 import {ExplorerService} from '../services/explorer.service';
 
 
@@ -30,6 +31,7 @@ import {ExplorerService} from '../services/explorer.service';
         AppRoutingModule,
         TreeModule,
         AlertModule.forRoot(),
+        ButtonsModule.forRoot(),
         LoadingModule,
     ],
     declarations: [
@@ -39,6 +41,7 @@ import {ExplorerService} from '../services/explorer.service';
         AlertComponent,
         LoaderComponent,
         ImagesComponent,
+        SpritesComponent,
         ExplorerComponent,
     ],
     providers: [
