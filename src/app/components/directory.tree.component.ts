@@ -7,19 +7,21 @@ import {LoaderService} from '../services/loader.service';
 
 @Component({
   selector: 'app-directory-tree',
+  styles: [`
+    .tree-container {
+      background-color: #DDDDDD;
+      width: 225px;
+      min-height: 500px;
+      max-height: 750px;
+      padding: 2px 0 2px 10px;
+      display: inline-block;
+      vertical-align: top;
+    }
+  `],
   template: `
     <div class="tree-container">
       <tree-root #tree [(state)]="state" [nodes]="treeNodes" (focus)="onFocus($event)"></tree-root>
     </div>`,
-  styles: [`
-  .tree-container {
-    background-color: #DDDDDD;
-    width: 225px;
-    height: 500px;
-    padding: 2px 0 2px 10px;
-    display: inline-block;
-    vertical-align: top;
-  }`],
 })
 export class DirectoryTreeComponent implements OnInit {
 
