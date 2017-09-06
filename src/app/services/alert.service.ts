@@ -1,13 +1,14 @@
-import {Injectable} from '@angular/core';
-import {Router, NavigationStart} from '@angular/router';
+import {Injectable, OnInit} from '@angular/core';
+import {NavigationStart, Router} from '@angular/router';
 import {Subject} from 'rxjs/Subject';
 
 import {Alert, AlertType} from '../models/alert';
-import {Observable} from 'rxjs/Observable';
 
 @Injectable()
-export class AlertService {
-  private subject = new Subject<Alert>();
+export class AlertService implements OnInit {
+  private alert_ = new Subject<Alert>();
+  alert$ = this.alert_.asObservable();
+
   private keepAfterRouteChange = false;
 
   constructor(private router: Router) {
@@ -28,10 +29,6 @@ export class AlertService {
     });
   }
 
-  getAlert(): Observable<any> {
-    return this.subject.asObservable();
-  }
-
   success(message: string, keepAfterRouteChange = false) {
     this.alert(AlertType.Success, message, keepAfterRouteChange);
   }
@@ -50,11 +47,11 @@ export class AlertService {
 
   alert(type: AlertType, message: string, keepAfterRouteChange = false) {
     this.keepAfterRouteChange = keepAfterRouteChange;
-    this.subject.next(<Alert>{type: type, message: message});
+    this.alert_.next(<Alert>{type: type, message: message});
   }
 
   clear() {
     // clear alerts
-    this.subject.next();
+    this.alert_.next();
   }
 }
