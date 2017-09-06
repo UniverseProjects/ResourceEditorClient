@@ -21,6 +21,7 @@ import {DirectoryTreeComponent} from '../components/directory.tree.component';
 import {ThumbnailsComponent} from '../components/thumbnails.component';
 import {SpritesComponent} from '../components/sprites.component';
 import {ExplorerService} from '../services/explorer.service';
+import {AnimatedSpritesComponent} from '../components/animated.sprites.component';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import {ExplorerService} from '../services/explorer.service';
         LoaderComponent,
         ImagesComponent,
         SpritesComponent,
+        AnimatedSpritesComponent,
         ExplorerComponent,
     ],
     providers: [

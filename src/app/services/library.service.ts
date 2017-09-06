@@ -6,6 +6,7 @@ import {Image} from '../models/image';
 import {Directory} from '../models/directory';
 import {Sprite} from '../models/sprite';
 import {ExplorerService} from './explorer.service';
+import {AnimatedSprite} from '../models/animated.sprite';
 
 const API_URL = 'https://www.universeprojects.com/api/v1/';
 
@@ -97,6 +98,24 @@ export class LibraryService {
           sprites.push(new Sprite(gcsUrl));
         });
         return sprites;
+      })
+      .catch(LibraryService.handleError);
+  }
+
+  getAnimatedSprites(directory: string): Promise<AnimatedSprite[]> {
+    directory = LibraryService.checkDirectoryInput(directory);
+    const apiUrl = this.getLibraryBaseUrl() + 'animatedSpriteTypes/' + directory;
+    console.log('Retrieving animated sprites in directory: ' + directory + ', API URL: ' + apiUrl);
+
+    return this.http.get(apiUrl, {headers: new Headers()})
+      .toPromise()
+      .then(response => {
+        const animatedSprites: AnimatedSprite[] = [];
+        response.json().values.forEach((element: any) => {
+          const gcsUrl = element.frames[0].spriteType.image.gcsUrl;
+          animatedSprites.push(new AnimatedSprite(gcsUrl));
+        });
+        return animatedSprites;
       })
       .catch(LibraryService.handleError);
   }

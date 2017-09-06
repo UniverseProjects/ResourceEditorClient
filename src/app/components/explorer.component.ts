@@ -15,11 +15,6 @@ import {ExplorerService} from '../services/explorer.service';
     }
     .items-container {
     }
-    .error-message {
-      color: red;
-      font-weight: bold;
-      font-size: 24px;
-    }
   `],
   template: `
     <app-directory-tree></app-directory-tree>
@@ -37,7 +32,7 @@ import {ExplorerService} from '../services/explorer.service';
           <app-sprites></app-sprites>
         </div>
         <div class="items-container">
-          <span class="error-message" *ngIf="contentType === 'Animated Sprites'">Animated sprites not implemented yet :(</span>
+          <app-animated-sprites></app-animated-sprites>
         </div>
       </div>
     </div>
