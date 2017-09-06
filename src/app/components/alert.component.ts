@@ -6,8 +6,26 @@ import {AlertService} from '../services/alert.service';
 @Component({
   // moduleId: module.id,
   selector: 'app-alert',
-  templateUrl: 'alert.component.html',
-  styleUrls: ['alert.component.css'],
+  styles: [`
+    .alerts-container {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 5;
+      width: 300px;
+      margin: 10px;
+    }
+  `],
+  template: `
+    <div class="alerts-container">
+      <div *ngFor="let alert of alerts" class="alert {{cssClass(alert)}} alert-dismissable">
+        {{alert.message}}
+        <button type="button" class="close" (click)="removeAlert(alert)">
+          <span>&times;</span>
+        </button>
+      </div>
+    </div>
+  `,
 })
 export class AlertComponent implements OnInit {
   alerts: Alert[] = [];
