@@ -91,12 +91,12 @@ export class LibraryService {
     return this.http.get(apiUrl, {headers: new Headers()})
       .toPromise()
       .then(response => {
-        const sprite: Sprite[] = [];
+        const sprites: Sprite[] = [];
         response.json().values.forEach((element: any) => {
           const gcsUrl = element.image.gcsUrl;
-          sprite.push(new Sprite(gcsUrl));
+          sprites.push(new Sprite(gcsUrl));
         });
-        return sprite;
+        return sprites;
       })
       .catch(LibraryService.handleError);
   }
