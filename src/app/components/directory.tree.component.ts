@@ -50,10 +50,7 @@ export class DirectoryTreeComponent implements OnInit {
     this.loaderService.startOperation(OPNAME);
     this.libraryService.getDirectoryTree().then(rootDirectory => {
       this.treeNodes.length = 0; // empty the array
-      // do not display the root - make its children the root level
-      rootDirectory.children.forEach((child: Directory) => {
-        this.treeNodes.push(child.toTreeNode());
-      });
+      this.treeNodes.push(rootDirectory.toTreeNode());
       this.treeModel.update();
       this.loaderService.stopOperation(OPNAME);
     }, (rejectReason) => {
