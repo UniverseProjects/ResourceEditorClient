@@ -29,7 +29,7 @@ export class DirectoryTreeComponent implements OnInit {
 
   state: ITreeState;
   treeModel: TreeModel;
-  lastFocusedNodeId: any;
+  lastFocusedNodePath: any;
   treeNodes = [];
 
   constructor(
@@ -66,12 +66,11 @@ export class DirectoryTreeComponent implements OnInit {
   onFocus($event): void {
     // console.log($event);
     const focusedNode: TreeNode = this.treeModel.getFocusedNode();
-    const id = focusedNode.id;
-    if (this.lastFocusedNodeId === id) {
+    const path = focusedNode.id; // <-- the node id stores the directory path in this implementation
+    if (this.lastFocusedNodePath === path) {
       return; // at the time of this writing, the 'focus' event fires twice... ignore
     }
-    this.lastFocusedNodeId = id;
-    console.log('Focused node: ' + id);
+    this.lastFocusedNodePath = path;
 
     this.libraryService.changeDirectory(id); // the ID of the node is the directory path
   }
