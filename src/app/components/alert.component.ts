@@ -30,8 +30,9 @@ import {AlertService} from '../services/alert.service';
 export class AlertComponent implements OnInit {
   alerts: Alert[] = [];
 
-  constructor(private alertService: AlertService) {
-  }
+  constructor(
+    private alertService: AlertService
+  ) { }
 
   ngOnInit() {
     this.alertService.getAlert().subscribe((alert: Alert) => {
