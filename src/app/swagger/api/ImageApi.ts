@@ -45,10 +45,10 @@ export class ImageApi {
      * 
      * @summary Delete image for path
      * @param libraryId ID of the library
-     * @param path Image path to delete
+     * @param treePath Image path to delete
      */
-    public deleteImage(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<{}> {
-        return this.deleteImageWithHttpInfo(libraryId, path, extraHttpRequestParams)
+    public deleteImage(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<{}> {
+        return this.deleteImageWithHttpInfo(libraryId, treePath, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -62,13 +62,13 @@ export class ImageApi {
      * 
      * @summary Find image with filter
      * @param libraryId ID of the library
-     * @param path directory-path
+     * @param treePath directory-path
      * @param tag 
      * @param limit limit amount of entities returned
      * @param cursor cursor to fetch a batch (for paging)
      */
-    public findImage(libraryId: number, path: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2001> {
-        return this.findImageWithHttpInfo(libraryId, path, tag, limit, cursor, extraHttpRequestParams)
+    public findImage(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2001> {
+        return this.findImageWithHttpInfo(libraryId, treePath, tag, limit, cursor, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -82,10 +82,10 @@ export class ImageApi {
      * 
      * @summary Generates an upload-URL for the path
      * @param libraryId ID of the library
-     * @param path directory path to upload to
+     * @param treePath directory path to upload to
      */
-    public generateImageUpload(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2002> {
-        return this.generateImageUploadWithHttpInfo(libraryId, path, extraHttpRequestParams)
+    public generateImageUpload(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2002> {
+        return this.generateImageUploadWithHttpInfo(libraryId, treePath, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -99,10 +99,10 @@ export class ImageApi {
      * 
      * @summary Load image for path
      * @param libraryId ID of the library
-     * @param path Image path to load
+     * @param treePath Image path to load
      */
-    public loadImage(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<models.Image> {
-        return this.loadImageWithHttpInfo(libraryId, path, extraHttpRequestParams)
+    public loadImage(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<models.Image> {
+        return this.loadImageWithHttpInfo(libraryId, treePath, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -116,11 +116,11 @@ export class ImageApi {
      * 
      * @summary Update image for path
      * @param libraryId ID of the library
-     * @param path Image path to update
+     * @param treePath Image path to update
      * @param body 
      */
-    public updateImage(libraryId: number, path: string, body: models.Image, extraHttpRequestParams?: any): Observable<models.Image> {
-        return this.updateImageWithHttpInfo(libraryId, path, body, extraHttpRequestParams)
+    public updateImage(libraryId: number, treePath: string, body: models.Image, extraHttpRequestParams?: any): Observable<models.Image> {
+        return this.updateImageWithHttpInfo(libraryId, treePath, body, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -135,12 +135,12 @@ export class ImageApi {
      * Delete image for path
      * 
      * @param libraryId ID of the library
-     * @param path Image path to delete
+     * @param treePath Image path to delete
      */
-    public deleteImageWithHttpInfo(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/image/${path}'
+    public deleteImageWithHttpInfo(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/image/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -148,9 +148,9 @@ export class ImageApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling deleteImage.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling deleteImage.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling deleteImage.');
         }
         // to determine the Content-Type header
         let consumes: string[] = [
@@ -179,15 +179,15 @@ export class ImageApi {
      * Find image with filter
      * 
      * @param libraryId ID of the library
-     * @param path directory-path
+     * @param treePath directory-path
      * @param tag 
      * @param limit limit amount of entities returned
      * @param cursor cursor to fetch a batch (for paging)
      */
-    public findImageWithHttpInfo(libraryId: number, path: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/images/${path}'
+    public findImageWithHttpInfo(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/images/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -195,9 +195,9 @@ export class ImageApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling findImage.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling findImage.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling findImage.');
         }
         if (tag) {
             tag.forEach((element) => {
@@ -240,12 +240,12 @@ export class ImageApi {
      * Generates an upload-URL for the path
      * 
      * @param libraryId ID of the library
-     * @param path directory path to upload to
+     * @param treePath directory path to upload to
      */
-    public generateImageUploadWithHttpInfo(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/generateImageUpload/${path}'
+    public generateImageUploadWithHttpInfo(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/generateImageUpload/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -253,9 +253,9 @@ export class ImageApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling generateImageUpload.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling generateImageUpload.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling generateImageUpload.');
         }
         // to determine the Content-Type header
         let consumes: string[] = [
@@ -284,12 +284,12 @@ export class ImageApi {
      * Load image for path
      * 
      * @param libraryId ID of the library
-     * @param path Image path to load
+     * @param treePath Image path to load
      */
-    public loadImageWithHttpInfo(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/image/${path}'
+    public loadImageWithHttpInfo(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/image/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -297,9 +297,9 @@ export class ImageApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling loadImage.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling loadImage.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling loadImage.');
         }
         // to determine the Content-Type header
         let consumes: string[] = [
@@ -328,13 +328,13 @@ export class ImageApi {
      * Update image for path
      * 
      * @param libraryId ID of the library
-     * @param path Image path to update
+     * @param treePath Image path to update
      * @param body 
      */
-    public updateImageWithHttpInfo(libraryId: number, path: string, body: models.Image, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/image/${path}'
+    public updateImageWithHttpInfo(libraryId: number, treePath: string, body: models.Image, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/image/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -342,9 +342,9 @@ export class ImageApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling updateImage.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling updateImage.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling updateImage.');
         }
         // verify required parameter 'body' is not null or undefined
         if (body === null || body === undefined) {

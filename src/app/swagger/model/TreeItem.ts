@@ -15,7 +15,7 @@ import * as models from './models';
 export interface TreeItem {
     name?: string;
 
-    path?: string;
+    treePath?: string;
 
     parent?: string;
 

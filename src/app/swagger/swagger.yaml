@@ -1,0 +1,1134 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: UPResourceEditor
+  contact:
+    email: ostangenberg@universeprojects.com
+host: www.universeprojects.com
+basePath: /api/v1
+tags:
+  - name: resourceLibrary
+  - name: image
+  - name: audioFile
+  - name: spriteType
+  - name: animatedSpriteType
+  - name: tree
+schemes:
+  - https
+  - http
+paths:
+  /library:
+    get:
+      tags:
+        - resourceLibrary
+      summary: Lists resource-libraries
+      operationId: listResourceLibraries
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ResourceLibrary'
+    post:
+      tags:
+        - resourceLibrary
+      summary: Creates a new resource-library
+      operationId: createResourceLibrary
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ResourceLibrary'
+  '/library/{libraryId}':
+    delete:
+      tags:
+        - resourceLibrary
+      summary: Deletes the library
+      operationId: deleteResourceLibrary
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              success:
+                type: string
+        '404':
+          description: Library not found
+  '/library/{libraryId}/tree':
+    get:
+      tags:
+        - tree
+      summary: Shows the directory-tree
+      operationId: getTree
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/ResourceLibraryWithChildren'
+        '404':
+          description: Library not found
+  '/library/{libraryId}/directory/{treePath}':
+    delete:
+      tags:
+        - tree
+      summary: Delete Directory for path
+      operationId: deleteDirectory
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Directory path to delete
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: Directory not found for path
+    post:
+      tags:
+        - tree
+      summary: Create Directory for path
+      operationId: createDirectory
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Path to create the spriteType at
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Directory'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Directory'
+        '404':
+          description: Directory not found for path
+  '/library/{libraryId}/importFromGcsH5l':
+    post:
+      tags:
+        - resourceLibrary
+      summary: >-
+        Imports resources from an H5L file on GCS. Uses the path as tags for the
+        images/audio
+      operationId: importLibraryFromGcsH5l
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: query
+          description: Path to H5l
+          type: string
+          required: true
+        - name: excludeTag
+          in: query
+          type: array
+          collectionFormat: multi
+          items:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: string
+        '404':
+          description: Library not found
+  '/library/{libraryId}/exportH5l':
+    get:
+      tags:
+        - resourceLibrary
+      summary: Exports an h5l-version of the resource-library
+      operationId: exportH5l
+      produces:
+        - text/plain
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: tag
+          in: query
+          type: array
+          collectionFormat: multi
+          items:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: string
+        '404':
+          description: Library not found
+  '/library/{libraryId}/images/{treePath}':
+    get:
+      tags:
+        - image
+      summary: Find image with filter
+      operationId: findImage
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          description: directory-path
+          required: true
+          type: string
+        - name: tag
+          in: query
+          type: array
+          collectionFormat: multi
+          items:
+            type: string
+        - name: limit
+          in: query
+          description: limit amount of entities returned
+          type: integer
+          format: int32
+          default: '50'
+        - name: cursor
+          in: query
+          description: cursor to fetch a batch (for paging)
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              count:
+                type: integer
+                format: int64
+              cursor:
+                type: string
+              values:
+                type: array
+                items:
+                  $ref: '#/definitions/Image'
+        '400':
+          description: Invalid filters supplied
+        '404':
+          description: Library not found
+  '/library/{libraryId}/image/{treePath}':
+    get:
+      tags:
+        - image
+      summary: Load image for path
+      operationId: loadImage
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Image path to load
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Image'
+        '404':
+          description: Image not found for path
+    put:
+      tags:
+        - image
+      summary: Update image for path
+      operationId: updateImage
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Image path to update
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/Image'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Image'
+        '404':
+          description: Image not found for path
+    delete:
+      tags:
+        - image
+      summary: Delete image for path
+      operationId: deleteImage
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Image path to delete
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: Image not found for path
+  '/library/{libraryId}/generateImageUpload/{treePath}':
+    get:
+      tags:
+        - image
+      summary: Generates an upload-URL for the path
+      operationId: generateImageUpload
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: directory path to upload to
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+  '/library/{libraryId}/audioFiles/{treePath}':
+    get:
+      tags:
+        - audioFile
+      summary: Find audio files with filter
+      operationId: findAudioFiles
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          description: Directory-path
+          required: true
+          type: string
+        - name: tag
+          in: query
+          type: array
+          collectionFormat: multi
+          items:
+            type: string
+        - name: limit
+          in: query
+          description: limit amount of entities returned
+          type: integer
+          format: int32
+          default: '50'
+        - name: cursor
+          in: query
+          description: cursor to fetch a batch (for paging)
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              count:
+                type: integer
+                format: int64
+              cursor:
+                type: string
+              values:
+                type: array
+                items:
+                  $ref: '#/definitions/AudioFile'
+        '400':
+          description: Invalid filters supplied
+        '404':
+          description: Library not found
+  '/library/{libraryId}/audioFile/{treePath}':
+    get:
+      tags:
+        - audioFile
+      summary: Load audio file for path
+      operationId: loadAudioFile
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Path to load
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AudioFile'
+        '404':
+          description: Audio file not found for path
+    put:
+      tags:
+        - audioFile
+      summary: Update audio-file for path
+      operationId: updateAudioFile
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Path to update
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AudioFile'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AudioFile'
+        '404':
+          description: Audio file not found for path
+    delete:
+      tags:
+        - audioFile
+      summary: Delete audio file for path
+      operationId: deleteAudioFile
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Path to delete
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: Audio file not found for path
+  '/library/{libraryId}/generateAudioFileUpload/{treePath}':
+    get:
+      tags:
+        - audioFile
+      summary: Generates an upload-URL for the path
+      operationId: generateAudioFileUpload
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: directory path to upload to
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+  '/library/{libraryId}/spriteTypes/{treePath}':
+    get:
+      tags:
+        - spriteType
+      summary: Find spriteType with filter
+      operationId: findSpriteType
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          description: directory-path
+          required: true
+          type: string
+        - name: tag
+          in: query
+          type: array
+          collectionFormat: multi
+          items:
+            type: string
+        - name: limit
+          in: query
+          description: limit amount of entities returned
+          type: integer
+          format: int32
+          default: '50'
+        - name: cursor
+          in: query
+          description: cursor to fetch a batch (for paging)
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              count:
+                type: integer
+                format: int64
+              cursor:
+                type: string
+              values:
+                type: array
+                items:
+                  $ref: '#/definitions/SpriteType'
+        '400':
+          description: Invalid filters supplied
+        '404':
+          description: Library not found
+  '/library/{libraryId}/spriteType/{treePath}':
+    get:
+      tags:
+        - spriteType
+      summary: Load SpriteType for path
+      operationId: loadSpriteType
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Path to load
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/SpriteType'
+        '404':
+          description: SpriteType not found for path
+    put:
+      tags:
+        - spriteType
+      summary: Update SpriteType for path. Currently only uses the tags
+      operationId: updateSpriteType
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Path to update
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SpriteType'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/SpriteType'
+        '404':
+          description: SpriteType not found for path
+    post:
+      tags:
+        - spriteType
+      summary: Create SpriteType for path
+      operationId: createSpriteType
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Path to create the spriteType at
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/SpriteType'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/SpriteType'
+        '404':
+          description: SpriteType not found for path
+    delete:
+      tags:
+        - spriteType
+      summary: Delete SpriteType for id
+      operationId: deleteSpriteType
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Image path to load
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: SpriteType not found for path
+  '/library/{libraryId}/copySpriteType':
+    post:
+      tags:
+        - spriteType
+      summary: Copies a sprite-type to a new path/directory
+      operationId: copySpriteType
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: query
+          description: Path to H5l
+          type: string
+          required: true
+        - name: from
+          in: query
+          type: string
+        - name: to
+          in: query
+          type: string
+          description: >-
+            This will be interpreted as a new file-name or a directory if ít
+            ends in a /
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: string
+        '404':
+          description: Library not found
+  '/library/{libraryId}/animatedSpriteTypes/{treePath}':
+    get:
+      tags:
+        - animatedSpriteType
+      summary: Find animatedSpriteTypes with filter
+      operationId: findAnimatedSpriteType
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          description: directory-path
+          required: true
+          type: string
+        - name: tag
+          in: query
+          type: array
+          collectionFormat: multi
+          items:
+            type: string
+        - name: limit
+          in: query
+          description: limit amount of entities returned
+          type: integer
+          format: int32
+          default: '50'
+        - name: cursor
+          in: query
+          description: cursor to fetch a batch (for paging)
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              count:
+                type: integer
+                format: int64
+              cursor:
+                type: string
+              values:
+                type: array
+                items:
+                  $ref: '#/definitions/AnimatedSpriteType'
+        '400':
+          description: Invalid filters supplied
+        '404':
+          description: Library not found
+  '/library/{libraryId}/animatedSpriteType/{treePath}':
+    get:
+      tags:
+        - animatedSpriteType
+      summary: Load AnimatedSpriteType for path
+      operationId: loadAnimatedSpriteType
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Path to load
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AnimatedSpriteType'
+        '404':
+          description: AnimatedSpriteType not found for path
+    put:
+      tags:
+        - animatedSpriteType
+      summary: Update AnimatedSpriteType for path
+      operationId: updateAnimatedSpriteType
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Path to update
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AnimatedSpriteType'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AnimatedSpriteType'
+        '404':
+          description: AnimatedSpriteType not found for path
+    post:
+      tags:
+        - animatedSpriteType
+      summary: Create AnimatedSpriteType for path
+      operationId: createAnimatedSpriteType
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Path to create the AnimatedSpriteType at
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/AnimatedSpriteType'
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AnimatedSpriteType'
+        '404':
+          description: AnimatedSpriteType not found for path
+    delete:
+      tags:
+        - animatedSpriteType
+      summary: Delete AnimatedSpriteType for path
+      operationId: deleteAnimatedSpriteType
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Path to delete
+          type: string
+      responses:
+        '200':
+          description: successful operation
+        '404':
+          description: AnimatedSpriteType not found for path
+  '/library/{libraryId}/copyAnimatedSpriteType':
+    post:
+      tags:
+        - spriteType
+      summary: Copies an animated sprite-type to a new path/directory
+      operationId: copyAnimatedSpriteType
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: query
+          description: Path to H5l
+          type: string
+          required: true
+        - name: from
+          in: query
+          type: string
+        - name: to
+          in: query
+          type: string
+          description: >-
+            This will be interpreted as a new file-name or a directory if ít
+            ends in a /
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: string
+        '404':
+          description: Library not found
+definitions:
+  SpriteType:
+    allOf:
+      - $ref: '#/definitions/TreeEntity'
+      - type: object
+        properties:
+          name:
+            type: string
+          imagePath:
+            type: string
+          image:
+            $ref: '#/definitions/Image'
+          areaX:
+            type: number
+            format: int32
+          areaY:
+            type: number
+            format: int32
+          areaWidth:
+            type: number
+            format: int32
+          areaHeight:
+            type: number
+            format: int32
+          markers:
+            type: array
+            items:
+              $ref: '#/definitions/SpriteTypeMarker'
+  SpriteTypeMarkerCircle:
+    allOf:
+      - $ref: '#/definitions/SpriteTypeMarker'
+      - type: object
+        properties:
+          radius:
+            type: number
+            format: int32
+  SpriteTypeMarkerVector:
+    allOf:
+      - $ref: '#/definitions/SpriteTypeMarker'
+      - type: object
+        properties:
+          deltaX:
+            type: number
+            format: int32
+          deltaY:
+            type: number
+            format: int32
+  SpriteTypeMarkerRectangle:
+    allOf:
+      - $ref: '#/definitions/SpriteTypeMarker'
+      - type: object
+        properties:
+          width:
+            type: number
+            format: int32
+          height:
+            type: number
+            format: int32
+          rotation:
+            type: number
+            format: int32
+  SpriteTypeMarker:
+    type: object
+    discriminator: markerClass
+    properties:
+      markerClass:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      tags:
+        type: array
+        items:
+          type: string
+      x:
+        type: integer
+        format: int32
+      'y':
+        type: integer
+        format: int32
+    required:
+      - markerClass
+  AnimatedSpriteType:
+    allOf:
+      - $ref: '#/definitions/TreeEntity'
+      - type: object
+        properties:
+          name:
+            type: string
+          frames:
+            type: array
+            items:
+              $ref: '#/definitions/AnimatedSpriteTypeFrame'
+  AnimatedSpriteTypeFrame:
+    type: object
+    properties:
+      spriteTypePath:
+        type: string
+      spriteType:
+        $ref: '#/definitions/SpriteType'
+      name:
+        type: string
+      duration:
+        type: integer
+        format: int32
+      adjustX:
+        type: integer
+        format: int32
+      adjustY:
+        type: integer
+        format: int32
+      adjustScale:
+        type: number
+        format: double
+  Directory:
+    allOf:
+      - $ref: '#/definitions/TreeItem'
+      - type: object
+        properties:
+          children:
+            type: array
+            items:
+              $ref: '#/definitions/Directory'
+  ResourceLibraryWithChildren:
+    allOf:
+      - $ref: '#/definitions/ResourceLibrary'
+      - type: object
+        properties:
+          children:
+            type: array
+            items:
+              $ref: '#/definitions/Directory'
+  ResourceLibrary:
+    type: object
+    properties:
+      name:
+        type: string
+      id:
+        type: integer
+        format: int64
+      lastUpdate:
+        type: string
+        format: date-time
+      creationDate:
+        type: string
+        format: date-time
+  AudioFile:
+    allOf:
+      - $ref: '#/definitions/GCSItem'
+  Image:
+    allOf:
+      - $ref: '#/definitions/GCSItem'
+      - type: object
+        properties:
+          imageUrl:
+            type: string
+            format: url
+  GCSItem:
+    allOf:
+      - $ref: '#/definitions/TreeEntity'
+      - type: object
+        properties:
+          blobKey:
+            type: string
+          gcsPath:
+            type: string
+          gcsUrl:
+            type: string
+            format: url
+  TreeEntity:
+    allOf:
+      - $ref: '#/definitions/TreeItem'
+      - type: object
+        properties:
+          tags:
+            type: array
+            items:
+              type: string
+  TreeItem:
+    type: object
+    properties:
+      name:
+        type: string
+      treePath:
+        type: string
+      parent:
+        type: string

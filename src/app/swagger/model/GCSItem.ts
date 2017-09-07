@@ -15,7 +15,7 @@ import * as models from './models';
 export interface GCSItem {
     name?: string;
 
-    path?: string;
+    treePath?: string;
 
     parent?: string;
 

@@ -15,7 +15,7 @@ import * as models from './models';
 export interface SpriteType {
     name?: string;
 
-    path?: string;
+    treePath?: string;
 
     parent?: string;
 

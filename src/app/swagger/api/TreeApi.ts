@@ -45,11 +45,11 @@ export class TreeApi {
      * 
      * @summary Create Directory for path
      * @param libraryId ID of the library
-     * @param path Path to create the spriteType at
+     * @param treePath Path to create the spriteType at
      * @param body 
      */
-    public createDirectory(libraryId: number, path: string, body: models.Directory, extraHttpRequestParams?: any): Observable<models.Directory> {
-        return this.createDirectoryWithHttpInfo(libraryId, path, body, extraHttpRequestParams)
+    public createDirectory(libraryId: number, treePath: string, body: models.Directory, extraHttpRequestParams?: any): Observable<models.Directory> {
+        return this.createDirectoryWithHttpInfo(libraryId, treePath, body, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -63,10 +63,10 @@ export class TreeApi {
      * 
      * @summary Delete Directory for path
      * @param libraryId ID of the library
-     * @param path Directory path to delete
+     * @param treePath Directory path to delete
      */
-    public deleteDirectory(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<{}> {
-        return this.deleteDirectoryWithHttpInfo(libraryId, path, extraHttpRequestParams)
+    public deleteDirectory(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<{}> {
+        return this.deleteDirectoryWithHttpInfo(libraryId, treePath, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -97,13 +97,13 @@ export class TreeApi {
      * Create Directory for path
      * 
      * @param libraryId ID of the library
-     * @param path Path to create the spriteType at
+     * @param treePath Path to create the spriteType at
      * @param body 
      */
-    public createDirectoryWithHttpInfo(libraryId: number, path: string, body: models.Directory, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/directory/${path}'
+    public createDirectoryWithHttpInfo(libraryId: number, treePath: string, body: models.Directory, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/directory/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -111,9 +111,9 @@ export class TreeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling createDirectory.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling createDirectory.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling createDirectory.');
         }
         // verify required parameter 'body' is not null or undefined
         if (body === null || body === undefined) {
@@ -149,12 +149,12 @@ export class TreeApi {
      * Delete Directory for path
      * 
      * @param libraryId ID of the library
-     * @param path Directory path to delete
+     * @param treePath Directory path to delete
      */
-    public deleteDirectoryWithHttpInfo(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/directory/${path}'
+    public deleteDirectoryWithHttpInfo(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/directory/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -162,9 +162,9 @@ export class TreeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling deleteDirectory.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling deleteDirectory.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling deleteDirectory.');
         }
         // to determine the Content-Type header
         let consumes: string[] = [

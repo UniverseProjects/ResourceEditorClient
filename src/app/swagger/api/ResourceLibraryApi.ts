@@ -93,11 +93,11 @@ export class ResourceLibraryApi {
      * 
      * @summary Imports resources from an H5L file on GCS. Uses the path as tags for the images/audio
      * @param libraryId ID of the library
-     * @param path Path to H5l
+     * @param treePath Path to H5l
      * @param excludeTag 
      */
-    public importLibraryFromGcsH5l(libraryId: number, path: string, excludeTag?: Array<string>, extraHttpRequestParams?: any): Observable<string> {
-        return this.importLibraryFromGcsH5lWithHttpInfo(libraryId, path, excludeTag, extraHttpRequestParams)
+    public importLibraryFromGcsH5l(libraryId: number, treePath: string, excludeTag?: Array<string>, extraHttpRequestParams?: any): Observable<string> {
+        return this.importLibraryFromGcsH5lWithHttpInfo(libraryId, treePath, excludeTag, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -241,10 +241,10 @@ export class ResourceLibraryApi {
      * Imports resources from an H5L file on GCS. Uses the path as tags for the images/audio
      * 
      * @param libraryId ID of the library
-     * @param path Path to H5l
+     * @param treePath Path to H5l
      * @param excludeTag 
      */
-    public importLibraryFromGcsH5lWithHttpInfo(libraryId: number, path: string, excludeTag?: Array<string>, extraHttpRequestParams?: any): Observable<Response> {
+    public importLibraryFromGcsH5lWithHttpInfo(libraryId: number, treePath: string, excludeTag?: Array<string>, extraHttpRequestParams?: any): Observable<Response> {
         const path = this.basePath + '/library/${libraryId}/importFromGcsH5l'
                     .replace('${' + 'libraryId' + '}', String(libraryId));
 
@@ -254,12 +254,12 @@ export class ResourceLibraryApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling importLibraryFromGcsH5l.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling importLibraryFromGcsH5l.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling importLibraryFromGcsH5l.');
         }
-        if (path !== undefined) {
-            queryParameters.set('path', <any>path);
+        if (treePath !== undefined) {
+            queryParameters.set('treePath', <any>treePath);
         }
 
         if (excludeTag) {

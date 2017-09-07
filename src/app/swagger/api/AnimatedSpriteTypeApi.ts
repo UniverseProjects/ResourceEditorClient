@@ -45,11 +45,11 @@ export class AnimatedSpriteTypeApi {
      * 
      * @summary Create AnimatedSpriteType for path
      * @param libraryId ID of the library
-     * @param path Path to create the AnimatedSpriteType at
+     * @param treePath Path to create the AnimatedSpriteType at
      * @param body 
      */
-    public createAnimatedSpriteType(libraryId: number, path: string, body: models.AnimatedSpriteType, extraHttpRequestParams?: any): Observable<models.AnimatedSpriteType> {
-        return this.createAnimatedSpriteTypeWithHttpInfo(libraryId, path, body, extraHttpRequestParams)
+    public createAnimatedSpriteType(libraryId: number, treePath: string, body: models.AnimatedSpriteType, extraHttpRequestParams?: any): Observable<models.AnimatedSpriteType> {
+        return this.createAnimatedSpriteTypeWithHttpInfo(libraryId, treePath, body, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -63,10 +63,10 @@ export class AnimatedSpriteTypeApi {
      * 
      * @summary Delete AnimatedSpriteType for path
      * @param libraryId ID of the library
-     * @param path Path to delete
+     * @param treePath Path to delete
      */
-    public deleteAnimatedSpriteType(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<{}> {
-        return this.deleteAnimatedSpriteTypeWithHttpInfo(libraryId, path, extraHttpRequestParams)
+    public deleteAnimatedSpriteType(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<{}> {
+        return this.deleteAnimatedSpriteTypeWithHttpInfo(libraryId, treePath, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -80,13 +80,13 @@ export class AnimatedSpriteTypeApi {
      * 
      * @summary Find animatedSpriteTypes with filter
      * @param libraryId ID of the library
-     * @param path directory-path
+     * @param treePath directory-path
      * @param tag 
      * @param limit limit amount of entities returned
      * @param cursor cursor to fetch a batch (for paging)
      */
-    public findAnimatedSpriteType(libraryId: number, path: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2005> {
-        return this.findAnimatedSpriteTypeWithHttpInfo(libraryId, path, tag, limit, cursor, extraHttpRequestParams)
+    public findAnimatedSpriteType(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2005> {
+        return this.findAnimatedSpriteTypeWithHttpInfo(libraryId, treePath, tag, limit, cursor, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -100,10 +100,10 @@ export class AnimatedSpriteTypeApi {
      * 
      * @summary Load AnimatedSpriteType for path
      * @param libraryId ID of the library
-     * @param path Path to load
+     * @param treePath Path to load
      */
-    public loadAnimatedSpriteType(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<models.AnimatedSpriteType> {
-        return this.loadAnimatedSpriteTypeWithHttpInfo(libraryId, path, extraHttpRequestParams)
+    public loadAnimatedSpriteType(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<models.AnimatedSpriteType> {
+        return this.loadAnimatedSpriteTypeWithHttpInfo(libraryId, treePath, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -117,11 +117,11 @@ export class AnimatedSpriteTypeApi {
      * 
      * @summary Update AnimatedSpriteType for path
      * @param libraryId ID of the library
-     * @param path Path to update
+     * @param treePath Path to update
      * @param body 
      */
-    public updateAnimatedSpriteType(libraryId: number, path: string, body: models.AnimatedSpriteType, extraHttpRequestParams?: any): Observable<models.AnimatedSpriteType> {
-        return this.updateAnimatedSpriteTypeWithHttpInfo(libraryId, path, body, extraHttpRequestParams)
+    public updateAnimatedSpriteType(libraryId: number, treePath: string, body: models.AnimatedSpriteType, extraHttpRequestParams?: any): Observable<models.AnimatedSpriteType> {
+        return this.updateAnimatedSpriteTypeWithHttpInfo(libraryId, treePath, body, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -136,13 +136,13 @@ export class AnimatedSpriteTypeApi {
      * Create AnimatedSpriteType for path
      * 
      * @param libraryId ID of the library
-     * @param path Path to create the AnimatedSpriteType at
+     * @param treePath Path to create the AnimatedSpriteType at
      * @param body 
      */
-    public createAnimatedSpriteTypeWithHttpInfo(libraryId: number, path: string, body: models.AnimatedSpriteType, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/animatedSpriteType/${path}'
+    public createAnimatedSpriteTypeWithHttpInfo(libraryId: number, treePath: string, body: models.AnimatedSpriteType, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/animatedSpriteType/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -150,9 +150,9 @@ export class AnimatedSpriteTypeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling createAnimatedSpriteType.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling createAnimatedSpriteType.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling createAnimatedSpriteType.');
         }
         // verify required parameter 'body' is not null or undefined
         if (body === null || body === undefined) {
@@ -188,12 +188,12 @@ export class AnimatedSpriteTypeApi {
      * Delete AnimatedSpriteType for path
      * 
      * @param libraryId ID of the library
-     * @param path Path to delete
+     * @param treePath Path to delete
      */
-    public deleteAnimatedSpriteTypeWithHttpInfo(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/animatedSpriteType/${path}'
+    public deleteAnimatedSpriteTypeWithHttpInfo(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/animatedSpriteType/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -201,9 +201,9 @@ export class AnimatedSpriteTypeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling deleteAnimatedSpriteType.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling deleteAnimatedSpriteType.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling deleteAnimatedSpriteType.');
         }
         // to determine the Content-Type header
         let consumes: string[] = [
@@ -232,15 +232,15 @@ export class AnimatedSpriteTypeApi {
      * Find animatedSpriteTypes with filter
      * 
      * @param libraryId ID of the library
-     * @param path directory-path
+     * @param treePath directory-path
      * @param tag 
      * @param limit limit amount of entities returned
      * @param cursor cursor to fetch a batch (for paging)
      */
-    public findAnimatedSpriteTypeWithHttpInfo(libraryId: number, path: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/animatedSpriteTypes/${path}'
+    public findAnimatedSpriteTypeWithHttpInfo(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/animatedSpriteTypes/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -248,9 +248,9 @@ export class AnimatedSpriteTypeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling findAnimatedSpriteType.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling findAnimatedSpriteType.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling findAnimatedSpriteType.');
         }
         if (tag) {
             tag.forEach((element) => {
@@ -293,12 +293,12 @@ export class AnimatedSpriteTypeApi {
      * Load AnimatedSpriteType for path
      * 
      * @param libraryId ID of the library
-     * @param path Path to load
+     * @param treePath Path to load
      */
-    public loadAnimatedSpriteTypeWithHttpInfo(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/animatedSpriteType/${path}'
+    public loadAnimatedSpriteTypeWithHttpInfo(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/animatedSpriteType/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -306,9 +306,9 @@ export class AnimatedSpriteTypeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling loadAnimatedSpriteType.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling loadAnimatedSpriteType.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling loadAnimatedSpriteType.');
         }
         // to determine the Content-Type header
         let consumes: string[] = [
@@ -337,13 +337,13 @@ export class AnimatedSpriteTypeApi {
      * Update AnimatedSpriteType for path
      * 
      * @param libraryId ID of the library
-     * @param path Path to update
+     * @param treePath Path to update
      * @param body 
      */
-    public updateAnimatedSpriteTypeWithHttpInfo(libraryId: number, path: string, body: models.AnimatedSpriteType, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/animatedSpriteType/${path}'
+    public updateAnimatedSpriteTypeWithHttpInfo(libraryId: number, treePath: string, body: models.AnimatedSpriteType, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/animatedSpriteType/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -351,9 +351,9 @@ export class AnimatedSpriteTypeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling updateAnimatedSpriteType.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling updateAnimatedSpriteType.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling updateAnimatedSpriteType.');
         }
         // verify required parameter 'body' is not null or undefined
         if (body === null || body === undefined) {

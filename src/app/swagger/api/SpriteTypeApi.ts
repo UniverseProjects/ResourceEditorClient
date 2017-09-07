@@ -45,12 +45,12 @@ export class SpriteTypeApi {
      * 
      * @summary Copies an animated sprite-type to a new path/directory
      * @param libraryId ID of the library
-     * @param path Path to H5l
+     * @param treePath Path to H5l
      * @param from 
      * @param to This will be interpreted as a new file-name or a directory if ít ends in a /
      */
-    public copyAnimatedSpriteType(libraryId: number, path: string, from?: string, to?: string, extraHttpRequestParams?: any): Observable<string> {
-        return this.copyAnimatedSpriteTypeWithHttpInfo(libraryId, path, from, to, extraHttpRequestParams)
+    public copyAnimatedSpriteType(libraryId: number, treePath: string, from?: string, to?: string, extraHttpRequestParams?: any): Observable<string> {
+        return this.copyAnimatedSpriteTypeWithHttpInfo(libraryId, treePath, from, to, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -64,12 +64,12 @@ export class SpriteTypeApi {
      * 
      * @summary Copies a sprite-type to a new path/directory
      * @param libraryId ID of the library
-     * @param path Path to H5l
+     * @param treePath Path to H5l
      * @param from 
      * @param to This will be interpreted as a new file-name or a directory if ít ends in a /
      */
-    public copySpriteType(libraryId: number, path: string, from?: string, to?: string, extraHttpRequestParams?: any): Observable<string> {
-        return this.copySpriteTypeWithHttpInfo(libraryId, path, from, to, extraHttpRequestParams)
+    public copySpriteType(libraryId: number, treePath: string, from?: string, to?: string, extraHttpRequestParams?: any): Observable<string> {
+        return this.copySpriteTypeWithHttpInfo(libraryId, treePath, from, to, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -83,11 +83,11 @@ export class SpriteTypeApi {
      * 
      * @summary Create SpriteType for path
      * @param libraryId ID of the library
-     * @param path Path to create the spriteType at
+     * @param treePath Path to create the spriteType at
      * @param body 
      */
-    public createSpriteType(libraryId: number, path: string, body: models.SpriteType, extraHttpRequestParams?: any): Observable<models.SpriteType> {
-        return this.createSpriteTypeWithHttpInfo(libraryId, path, body, extraHttpRequestParams)
+    public createSpriteType(libraryId: number, treePath: string, body: models.SpriteType, extraHttpRequestParams?: any): Observable<models.SpriteType> {
+        return this.createSpriteTypeWithHttpInfo(libraryId, treePath, body, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -101,10 +101,10 @@ export class SpriteTypeApi {
      * 
      * @summary Delete SpriteType for id
      * @param libraryId ID of the library
-     * @param path Image path to load
+     * @param treePath Image path to load
      */
-    public deleteSpriteType(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<{}> {
-        return this.deleteSpriteTypeWithHttpInfo(libraryId, path, extraHttpRequestParams)
+    public deleteSpriteType(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<{}> {
+        return this.deleteSpriteTypeWithHttpInfo(libraryId, treePath, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -118,13 +118,13 @@ export class SpriteTypeApi {
      * 
      * @summary Find spriteType with filter
      * @param libraryId ID of the library
-     * @param path directory-path
+     * @param treePath directory-path
      * @param tag 
      * @param limit limit amount of entities returned
      * @param cursor cursor to fetch a batch (for paging)
      */
-    public findSpriteType(libraryId: number, path: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2004> {
-        return this.findSpriteTypeWithHttpInfo(libraryId, path, tag, limit, cursor, extraHttpRequestParams)
+    public findSpriteType(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2004> {
+        return this.findSpriteTypeWithHttpInfo(libraryId, treePath, tag, limit, cursor, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -138,10 +138,10 @@ export class SpriteTypeApi {
      * 
      * @summary Load SpriteType for path
      * @param libraryId ID of the library
-     * @param path Path to load
+     * @param treePath Path to load
      */
-    public loadSpriteType(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<models.SpriteType> {
-        return this.loadSpriteTypeWithHttpInfo(libraryId, path, extraHttpRequestParams)
+    public loadSpriteType(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<models.SpriteType> {
+        return this.loadSpriteTypeWithHttpInfo(libraryId, treePath, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -155,11 +155,11 @@ export class SpriteTypeApi {
      * 
      * @summary Update SpriteType for path. Currently only uses the tags
      * @param libraryId ID of the library
-     * @param path Path to update
+     * @param treePath Path to update
      * @param body 
      */
-    public updateSpriteType(libraryId: number, path: string, body: models.SpriteType, extraHttpRequestParams?: any): Observable<models.SpriteType> {
-        return this.updateSpriteTypeWithHttpInfo(libraryId, path, body, extraHttpRequestParams)
+    public updateSpriteType(libraryId: number, treePath: string, body: models.SpriteType, extraHttpRequestParams?: any): Observable<models.SpriteType> {
+        return this.updateSpriteTypeWithHttpInfo(libraryId, treePath, body, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -174,11 +174,11 @@ export class SpriteTypeApi {
      * Copies an animated sprite-type to a new path/directory
      * 
      * @param libraryId ID of the library
-     * @param path Path to H5l
+     * @param treePath Path to H5l
      * @param from 
      * @param to This will be interpreted as a new file-name or a directory if ít ends in a /
      */
-    public copyAnimatedSpriteTypeWithHttpInfo(libraryId: number, path: string, from?: string, to?: string, extraHttpRequestParams?: any): Observable<Response> {
+    public copyAnimatedSpriteTypeWithHttpInfo(libraryId: number, treePath: string, from?: string, to?: string, extraHttpRequestParams?: any): Observable<Response> {
         const path = this.basePath + '/library/${libraryId}/copyAnimatedSpriteType'
                     .replace('${' + 'libraryId' + '}', String(libraryId));
 
@@ -188,12 +188,12 @@ export class SpriteTypeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling copyAnimatedSpriteType.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling copyAnimatedSpriteType.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling copyAnimatedSpriteType.');
         }
-        if (path !== undefined) {
-            queryParameters.set('path', <any>path);
+        if (treePath !== undefined) {
+            queryParameters.set('treePath', <any>treePath);
         }
 
         if (from !== undefined) {
@@ -231,11 +231,11 @@ export class SpriteTypeApi {
      * Copies a sprite-type to a new path/directory
      * 
      * @param libraryId ID of the library
-     * @param path Path to H5l
+     * @param treePath Path to H5l
      * @param from 
      * @param to This will be interpreted as a new file-name or a directory if ít ends in a /
      */
-    public copySpriteTypeWithHttpInfo(libraryId: number, path: string, from?: string, to?: string, extraHttpRequestParams?: any): Observable<Response> {
+    public copySpriteTypeWithHttpInfo(libraryId: number, treePath: string, from?: string, to?: string, extraHttpRequestParams?: any): Observable<Response> {
         const path = this.basePath + '/library/${libraryId}/copySpriteType'
                     .replace('${' + 'libraryId' + '}', String(libraryId));
 
@@ -245,12 +245,12 @@ export class SpriteTypeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling copySpriteType.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling copySpriteType.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling copySpriteType.');
         }
-        if (path !== undefined) {
-            queryParameters.set('path', <any>path);
+        if (treePath !== undefined) {
+            queryParameters.set('treePath', <any>treePath);
         }
 
         if (from !== undefined) {
@@ -288,13 +288,13 @@ export class SpriteTypeApi {
      * Create SpriteType for path
      * 
      * @param libraryId ID of the library
-     * @param path Path to create the spriteType at
+     * @param treePath Path to create the spriteType at
      * @param body 
      */
-    public createSpriteTypeWithHttpInfo(libraryId: number, path: string, body: models.SpriteType, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/spriteType/${path}'
+    public createSpriteTypeWithHttpInfo(libraryId: number, treePath: string, body: models.SpriteType, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/spriteType/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -302,9 +302,9 @@ export class SpriteTypeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling createSpriteType.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling createSpriteType.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling createSpriteType.');
         }
         // verify required parameter 'body' is not null or undefined
         if (body === null || body === undefined) {
@@ -340,12 +340,12 @@ export class SpriteTypeApi {
      * Delete SpriteType for id
      * 
      * @param libraryId ID of the library
-     * @param path Image path to load
+     * @param treePath Image path to load
      */
-    public deleteSpriteTypeWithHttpInfo(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/spriteType/${path}'
+    public deleteSpriteTypeWithHttpInfo(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/spriteType/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -353,9 +353,9 @@ export class SpriteTypeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling deleteSpriteType.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling deleteSpriteType.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling deleteSpriteType.');
         }
         // to determine the Content-Type header
         let consumes: string[] = [
@@ -384,15 +384,15 @@ export class SpriteTypeApi {
      * Find spriteType with filter
      * 
      * @param libraryId ID of the library
-     * @param path directory-path
+     * @param treePath directory-path
      * @param tag 
      * @param limit limit amount of entities returned
      * @param cursor cursor to fetch a batch (for paging)
      */
-    public findSpriteTypeWithHttpInfo(libraryId: number, path: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/spriteTypes/${path}'
+    public findSpriteTypeWithHttpInfo(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/spriteTypes/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -400,9 +400,9 @@ export class SpriteTypeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling findSpriteType.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling findSpriteType.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling findSpriteType.');
         }
         if (tag) {
             tag.forEach((element) => {
@@ -445,12 +445,12 @@ export class SpriteTypeApi {
      * Load SpriteType for path
      * 
      * @param libraryId ID of the library
-     * @param path Path to load
+     * @param treePath Path to load
      */
-    public loadSpriteTypeWithHttpInfo(libraryId: number, path: string, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/spriteType/${path}'
+    public loadSpriteTypeWithHttpInfo(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/spriteType/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -458,9 +458,9 @@ export class SpriteTypeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling loadSpriteType.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling loadSpriteType.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling loadSpriteType.');
         }
         // to determine the Content-Type header
         let consumes: string[] = [
@@ -489,13 +489,13 @@ export class SpriteTypeApi {
      * Update SpriteType for path. Currently only uses the tags
      * 
      * @param libraryId ID of the library
-     * @param path Path to update
+     * @param treePath Path to update
      * @param body 
      */
-    public updateSpriteTypeWithHttpInfo(libraryId: number, path: string, body: models.SpriteType, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/spriteType/${path}'
+    public updateSpriteTypeWithHttpInfo(libraryId: number, treePath: string, body: models.SpriteType, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/spriteType/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'path' + '}', String(path));
+                    .replace('${' + 'treePath' + '}', String(treePath));
 
         let queryParameters = new URLSearchParams();
         let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
@@ -503,9 +503,9 @@ export class SpriteTypeApi {
         if (libraryId === null || libraryId === undefined) {
             throw new Error('Required parameter libraryId was null or undefined when calling updateSpriteType.');
         }
-        // verify required parameter 'path' is not null or undefined
-        if (path === null || path === undefined) {
-            throw new Error('Required parameter path was null or undefined when calling updateSpriteType.');
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling updateSpriteType.');
         }
         // verify required parameter 'body' is not null or undefined
         if (body === null || body === undefined) {
