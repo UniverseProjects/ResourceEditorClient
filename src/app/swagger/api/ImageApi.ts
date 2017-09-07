@@ -42,7 +42,7 @@ export class ImageApi {
     }
 
     /**
-     *
+     * 
      * @summary Delete image for path
      * @param libraryId ID of the library
      * @param path Image path to delete
@@ -59,11 +59,11 @@ export class ImageApi {
     }
 
     /**
-     *
+     * 
      * @summary Find image with filter
      * @param libraryId ID of the library
      * @param path directory-path
-     * @param tag
+     * @param tag 
      * @param limit limit amount of entities returned
      * @param cursor cursor to fetch a batch (for paging)
      */
@@ -79,7 +79,7 @@ export class ImageApi {
     }
 
     /**
-     *
+     * 
      * @summary Generates an upload-URL for the path
      * @param libraryId ID of the library
      * @param path directory path to upload to
@@ -96,7 +96,7 @@ export class ImageApi {
     }
 
     /**
-     *
+     * 
      * @summary Load image for path
      * @param libraryId ID of the library
      * @param path Image path to load
@@ -113,11 +113,11 @@ export class ImageApi {
     }
 
     /**
-     *
+     * 
      * @summary Update image for path
      * @param libraryId ID of the library
      * @param path Image path to update
-     * @param body
+     * @param body 
      */
     public updateImage(libraryId: number, path: string, body: models.Image, extraHttpRequestParams?: any): Observable<models.Image> {
         return this.updateImageWithHttpInfo(libraryId, path, body, extraHttpRequestParams)
@@ -133,7 +133,7 @@ export class ImageApi {
 
     /**
      * Delete image for path
-     *
+     * 
      * @param libraryId ID of the library
      * @param path Image path to delete
      */
@@ -177,10 +177,10 @@ export class ImageApi {
 
     /**
      * Find image with filter
-     *
+     * 
      * @param libraryId ID of the library
      * @param path directory-path
-     * @param tag
+     * @param tag 
      * @param limit limit amount of entities returned
      * @param cursor cursor to fetch a batch (for paging)
      */
@@ -238,7 +238,7 @@ export class ImageApi {
 
     /**
      * Generates an upload-URL for the path
-     *
+     * 
      * @param libraryId ID of the library
      * @param path directory path to upload to
      */
@@ -282,7 +282,7 @@ export class ImageApi {
 
     /**
      * Load image for path
-     *
+     * 
      * @param libraryId ID of the library
      * @param path Image path to load
      */
@@ -326,10 +326,10 @@ export class ImageApi {
 
     /**
      * Update image for path
-     *
+     * 
      * @param libraryId ID of the library
      * @param path Image path to update
-     * @param body
+     * @param body 
      */
     public updateImageWithHttpInfo(libraryId: number, path: string, body: models.Image, extraHttpRequestParams?: any): Observable<Response> {
         const path = this.basePath + '/library/${libraryId}/image/${path}'

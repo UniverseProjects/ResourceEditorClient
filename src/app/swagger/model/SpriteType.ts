@@ -23,6 +23,8 @@ export interface SpriteType {
 
     imagePath?: string;
 
+    image?: models.Image;
+
     areaX?: number;
 
     areaY?: number;

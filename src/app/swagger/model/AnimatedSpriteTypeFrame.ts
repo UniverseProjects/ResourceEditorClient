@@ -15,6 +15,8 @@ import * as models from './models';
 export interface AnimatedSpriteTypeFrame {
     spriteTypePath?: string;
 
+    spriteType?: models.SpriteType;
+
     name?: string;
 
     duration?: number;
