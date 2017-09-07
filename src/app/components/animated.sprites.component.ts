@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {LibraryService} from '../services/library.service';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
 import {ContentType, ExplorerService} from '../services/explorer.service';
-import {AnimatedSprite} from '../models/animated.sprite';
+import {AnimatedSpriteTypeApi} from '../swagger/api/AnimatedSpriteTypeApi';
+import {AnimatedSpriteType} from '../swagger/model/AnimatedSpriteType';
+import {ApiHelper} from '../common/api.helper';
 
 @Component({
   selector: 'app-animated-sprites',
@@ -14,17 +15,20 @@ import {AnimatedSprite} from '../models/animated.sprite';
       <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
     </div>
   `,
+  providers: [
+    AnimatedSpriteTypeApi,
+  ],
 })
 export class AnimatedSpritesComponent implements OnInit {
   active = false;
-  animatedSprites: AnimatedSprite[] = [];
+  animatedSprites: AnimatedSpriteType[] = [];
   thumbnailUrls: string[] = [];
 
   constructor(
-    private libraryService: LibraryService,
     private alertService: AlertService,
     private loaderService: LoaderService,
     private explorerService: ExplorerService,
+    private animatedSpriteTypeApi: AnimatedSpriteTypeApi,
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +43,10 @@ export class AnimatedSpritesComponent implements OnInit {
     });
   }
 
+  onThumbnailSelected(selectedIndex: number): void {
+    console.log('Selected thumbnail index: ' + selectedIndex);
+  }
+
   private loadAnimatedSprites(directory: string): void {
     if (!directory) {
       this.animatedSprites.length = 0;
@@ -46,20 +54,22 @@ export class AnimatedSpritesComponent implements OnInit {
       return;
     }
 
-    const OPNAME = 'Loading animated sprites in directory ' + directory;
+    console.log('Loading animated sprites in directory: ' + directory);
+    directory = ApiHelper.checkDirectory(directory);
+
+    const OPNAME = 'Loading animated sprites';
     this.loaderService.startOperation(OPNAME);
-    this.libraryService.getAnimatedSprites(directory).then(animatedSprites => {
-      this.animatedSprites = animatedSprites;
-      this.thumbnailUrls = animatedSprites.map(sprite => sprite.gcsUrl);
-
-      this.loaderService.stopOperation(OPNAME);
-    }, (rejectReason) => {
-      this.alertService.error('Failed to load animated sprites (' + rejectReason + ')');
-      this.loaderService.stopOperation(OPNAME);
-    });
+    this.animatedSpriteTypeApi.findAnimatedSpriteType(this.explorerService.getSelectedLibraryId(), directory)
+      .toPromise()
+      .then(response => {
+        this.animatedSprites = response.values;
+        this.thumbnailUrls = this.animatedSprites.map(sprite => sprite.frames[0].spriteType.image.gcsUrl);
+        this.loaderService.stopOperation(OPNAME);
+      }, (rejectReason) => {
+        this.alertService.error('Failed to load animated sprites (' + rejectReason + ')');
+        this.loaderService.stopOperation(OPNAME);
+      })
+      .catch(ApiHelper.handleError);
   }
 
-  onThumbnailSelected(selectedIndex: number): void {
-    console.log('Selected thumbnail index: ' + selectedIndex);
-  }
 }

@@ -6,7 +6,7 @@ export enum ContentType { IMAGES, SPRITES, ANIMATED_SPRITES }
 @Injectable()
 export class ExplorerService {
 
-  private selectedLibraryId = '5764201201008640';
+  private selectedLibraryId = 5764201201008640;
 
   private currentDirectory = '/';
   private changeDirectory_ = new Subject<string>();
@@ -15,7 +15,7 @@ export class ExplorerService {
   private reloadContent_ = new Subject<ContentType>();
   readonly reloadContent$ = this.reloadContent_.asObservable();
 
-  geSelectedLibraryId(): string {
+  getSelectedLibraryId(): number {
     return this.selectedLibraryId;
   }
 

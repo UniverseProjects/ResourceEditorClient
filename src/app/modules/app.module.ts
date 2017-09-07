@@ -1,3 +1,5 @@
+import 'rxjs/add/operator/toPromise';
+
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
@@ -8,9 +10,9 @@ import {LoadingModule} from 'ngx-loading';
 
 import {AppRoutingModule} from './app-routing.module';
 
-import {LibraryService} from '../services/library.service';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
+import {ExplorerService} from '../services/explorer.service';
 
 import {AppComponent} from '../components/app.component';
 import {ExplorerComponent} from '../components/explorer.component';
@@ -20,9 +22,7 @@ import {LoaderComponent} from '../components/loader.component';
 import {DirectoryTreeComponent} from '../components/directory.tree.component';
 import {ThumbnailsComponent} from '../components/thumbnails.component';
 import {SpritesComponent} from '../components/sprites.component';
-import {ExplorerService} from '../services/explorer.service';
 import {AnimatedSpritesComponent} from '../components/animated.sprites.component';
-
 
 @NgModule({
     imports: [
@@ -47,7 +47,6 @@ import {AnimatedSpritesComponent} from '../components/animated.sprites.component
         ExplorerComponent,
     ],
     providers: [
-        LibraryService,
         AlertService,
         LoaderService,
         ExplorerService,

@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-
-import {LibraryService} from '../services/library.service';
-import {Image} from '../models/image';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
-import {ExplorerService, ContentType} from '../services/explorer.service';
+import {ContentType, ExplorerService} from '../services/explorer.service';
+import {ImageApi} from '../swagger/api/ImageApi';
+import {Image} from '../swagger/model/Image';
+import {ApiHelper} from '../common/api.helper';
 
 @Component({
   selector: 'app-images',
@@ -15,6 +15,9 @@ import {ExplorerService, ContentType} from '../services/explorer.service';
       <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
     </div>
   `,
+  providers: [
+    ImageApi,
+  ],
 })
 export class ImagesComponent implements OnInit {
   active = false;
@@ -22,10 +25,10 @@ export class ImagesComponent implements OnInit {
   thumbnailUrls: string[] = [];
 
   constructor(
-    private libraryService: LibraryService,
     private alertService: AlertService,
     private loaderService: LoaderService,
     private explorerService: ExplorerService,
+    private imageApi: ImageApi,
   ) { }
 
   ngOnInit(): void {
@@ -40,6 +43,10 @@ export class ImagesComponent implements OnInit {
     });
   }
 
+  onThumbnailSelected(selectedIndex: number): void {
+    console.log('Selected thumbnail index: ' + selectedIndex);
+  }
+
   private loadImages(directory: string): void {
     if (!directory) {
       this.images.length = 0;
@@ -47,20 +54,25 @@ export class ImagesComponent implements OnInit {
       return;
     }
 
-    const OPNAME = 'Loading images in directory ' + directory;
+    console.log('Loading images in directory: ' + directory);
+    directory = ApiHelper.checkDirectory(directory);
+
+    const OPNAME = 'Loading images';
     this.loaderService.startOperation(OPNAME);
-    this.libraryService.getImages(directory).then(images => {
-      this.images = images;
-      this.thumbnailUrls = images.map(image => image.gcsUrl);
 
-      this.loaderService.stopOperation(OPNAME);
-    }, (rejectReason) => {
-      this.alertService.error('Failed to load images (' + rejectReason + ')');
-      this.loaderService.stopOperation(OPNAME);
-    });
+    this.imageApi.findImage(this.explorerService.getSelectedLibraryId(), directory)
+      .toPromise()
+      .then(response => {
+        this.images = response.values;
+        this.thumbnailUrls = this.images.map(image => image.gcsUrl);
+
+        this.loaderService.stopOperation(OPNAME);
+      },rejectReason => {
+        this.alertService.error('Failed to load images (' + rejectReason + ')');
+
+        this.loaderService.stopOperation(OPNAME);
+      })
+      .catch(ApiHelper.handleError);
   }
 
-  onThumbnailSelected(selectedIndex: number): void {
-    console.log('Selected thumbnail index: ' + selectedIndex);
-  }
 }

@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Sprite} from '../models/sprite';
-import {LibraryService} from '../services/library.service';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
 import {ContentType, ExplorerService} from '../services/explorer.service';
+import {SpriteTypeApi} from '../swagger/api/SpriteTypeApi';
+import {SpriteType} from '../swagger/model/SpriteType';
+import {ApiHelper} from '../common/api.helper';
 
 @Component({
   selector: 'app-sprites',
@@ -14,17 +15,20 @@ import {ContentType, ExplorerService} from '../services/explorer.service';
       <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
     </div>
   `,
+  providers: [
+    SpriteTypeApi,
+  ],
 })
 export class SpritesComponent implements OnInit {
   active = false;
-  sprites: Sprite[] = [];
+  sprites: SpriteType[] = [];
   thumbnailUrls: string[] = [];
 
   constructor(
-    private libraryService: LibraryService,
     private alertService: AlertService,
     private loaderService: LoaderService,
     private explorerService: ExplorerService,
+    private spriteTypeApi: SpriteTypeApi,
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +43,10 @@ export class SpritesComponent implements OnInit {
     });
   }
 
+  onThumbnailSelected(selectedIndex: number): void {
+    console.log('Selected thumbnail index: ' + selectedIndex);
+  }
+
   private loadSprites(directory: string): void {
     if (!directory) {
       this.sprites.length = 0;
@@ -46,20 +54,23 @@ export class SpritesComponent implements OnInit {
       return;
     }
 
-    const OPNAME = 'Loading sprites in directory ' + directory;
+    console.log('Loading sprites in directory: ' + directory);
+    directory = ApiHelper.checkDirectory(directory);
+
+    const OPNAME = 'Loading sprites';
     this.loaderService.startOperation(OPNAME);
-    this.libraryService.getSprites(directory).then(sprites => {
-      this.sprites = sprites;
-      this.thumbnailUrls = sprites.map(sprite => sprite.gcsUrl);
 
-      this.loaderService.stopOperation(OPNAME);
-    }, (rejectReason) => {
-      this.alertService.error('Failed to load sprites (' + rejectReason + ')');
-      this.loaderService.stopOperation(OPNAME);
-    });
+    this.spriteTypeApi.findSpriteType(this.explorerService.getSelectedLibraryId(), directory)
+      .toPromise()
+      .then(response => {
+        this.sprites = response.values;
+        this.thumbnailUrls = this.sprites.map(sprite => sprite.image.gcsUrl);
+        this.loaderService.stopOperation(OPNAME);
+      }, rejectReason => {
+        this.alertService.error('Failed to load sprites (' + rejectReason + ')');
+        this.loaderService.stopOperation(OPNAME);
+      })
+      .catch(ApiHelper.handleError);
   }
 
-  onThumbnailSelected(selectedIndex: number): void {
-    console.log('Selected thumbnail index: ' + selectedIndex);
-  }
 }
