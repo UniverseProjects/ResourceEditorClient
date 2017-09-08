@@ -6,6 +6,7 @@ import {ExplorerService} from '../services/explorer.service';
 import {TreeApi} from '../swagger/api/TreeApi';
 import {Directory} from '../swagger/model/Directory';
 import {ResourceLibraryWithChildren} from '../swagger/model/ResourceLibraryWithChildren';
+import {ApiHelper} from '../common/api.helper';
 
 @Component({
   selector: 'app-directory-tree',
@@ -61,11 +62,6 @@ export class DirectoryTreeComponent implements OnInit {
     this.explorerService.changeDirectory(path);
   }
 
-  private static handleError(error: any): Promise<any> {
-    console.error('An error occurred', error);
-    return Promise.reject(error.message);
-  }
-
   private loadDirectoryTree(): void {
     const OPNAME = 'Loading directories';
 
@@ -86,7 +82,7 @@ export class DirectoryTreeComponent implements OnInit {
         this.alertService.error('Failed to load directories (' + rejectReason + ')');
         this.loaderService.stopOperation(OPNAME);
       })
-      .catch(DirectoryTreeComponent.handleError);
+      .catch(ApiHelper.handleError);
   }
 
   toRootNode(resourceLibrary: ResourceLibraryWithChildren) {
