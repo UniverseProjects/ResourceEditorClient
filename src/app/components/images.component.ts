@@ -59,7 +59,6 @@ export class ImagesComponent implements OnInit {
 
     const OPNAME = 'Loading images';
     this.loaderService.startOperation(OPNAME);
-
     this.imageApi.findImage(this.explorerService.getSelectedLibraryId(), directory)
       .toPromise()
       .then(response => {

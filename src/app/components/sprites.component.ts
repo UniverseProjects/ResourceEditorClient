@@ -59,7 +59,6 @@ export class SpritesComponent implements OnInit {
 
     const OPNAME = 'Loading sprites';
     this.loaderService.startOperation(OPNAME);
-
     this.spriteTypeApi.findSpriteType(this.explorerService.getSelectedLibraryId(), directory)
       .toPromise()
       .then(response => {
