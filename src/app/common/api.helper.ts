@@ -1,7 +1,8 @@
 export class ApiHelper {
 
   static checkDirectory(directory: string): string {
-    if (!directory || !/^\/(\w+\/)*(\w+)?$/g.test(directory)) {
+    const dirRegExp = /^\/([a-zA-Z0-9_\-]+\/)*([a-zA-Z0-9_\-]+)?$/g;
+    if (!directory || !dirRegExp.test(directory)) {
       throw new Error('Invalid directory: ' + directory);
     }
     if (directory.startsWith('/')) {
