@@ -34,7 +34,7 @@ export class DirectoryTreeComponent implements OnInit {
 
   state: ITreeState;
   treeModel: TreeModel;
-  lastFocusedNodePath: any;
+  lastFocusEventMs: number = null;
   treeNodes = [];
 
   constructor(
@@ -53,10 +53,10 @@ export class DirectoryTreeComponent implements OnInit {
   onFocus(): void {
     const focusedNode: TreeNode = this.treeModel.getFocusedNode();
     const path = focusedNode.id; // <-- the node id stores the directory path in this implementation
-    if (this.lastFocusedNodePath === path) {
-      return; // at the time of this writing, the 'focus' event fires twice... ignore
+    if (Date.now() - this.lastFocusEventMs < 500) {
+      return; // the 'focus' event sometimes fires more than once... ignore the duplicate
     }
-    this.lastFocusedNodePath = path;
+    this.lastFocusEventMs = Date.now();
 
     this.explorerService.changeDirectory(path);
   }
