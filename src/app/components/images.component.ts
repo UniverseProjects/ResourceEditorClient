@@ -8,11 +8,25 @@ import {ApiHelper} from '../common/api.helper';
 
 @Component({
   selector: 'app-images',
-  styles: [``],
+  styles: [`
+    .image-preview-container {
+      width: 300px;
+      height: 300px;
+    }
+    .image-preview {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      position: absolute;
+    }
+  `],
   template: `
     <div class="app-images-container" *ngIf="active">
       <!--<h3>Images</h3>-->
-      <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+      <app-thumbnails [hidden]="selectedImage" [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+      <div class="image-preview-container" *ngIf="selectedImage">
+        <img class="image-preview" src="{{selectedImage.gcsUrl}}"/>
+      </div>
     </div>
   `,
   providers: [
@@ -23,6 +37,7 @@ export class ImagesComponent implements OnInit {
   active = false;
   images: Image[] = [];
   thumbnailUrls: string[] = [];
+  selectedImage: Image = null;
 
   constructor(
     private alertService: AlertService,
@@ -44,10 +59,11 @@ export class ImagesComponent implements OnInit {
   }
 
   onThumbnailSelected(selectedIndex: number): void {
-    console.log('Selected thumbnail index: ' + selectedIndex);
+    this.selectedImage = this.images[selectedIndex];
   }
 
   private loadImages(directory: string): void {
+    this.selectedImage = null;
     if (!directory) {
       this.images.length = 0;
       this.thumbnailUrls.length = 0;
