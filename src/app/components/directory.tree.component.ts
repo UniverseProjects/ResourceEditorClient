@@ -23,7 +23,7 @@ import {ApiHelper} from '../common/api.helper';
   `],
   template: `
     <div class="tree-container">
-      <tree-root #tree [(state)]="state" [nodes]="treeNodes" (focus)="onFocus()"></tree-root>
+      <tree-root #tree [(state)]="state" [nodes]="treeNodes" (activate)="onActivate()"></tree-root>
     </div>`,
   providers: [
     TreeApi,
@@ -35,7 +35,7 @@ export class DirectoryTreeComponent implements OnInit {
 
   state: ITreeState;
   treeModel: TreeModel;
-  lastFocusEventMs: number = null;
+  lastActivateEventTime: number = 0;
   treeNodes = [];
 
   constructor(
@@ -51,13 +51,13 @@ export class DirectoryTreeComponent implements OnInit {
     this.loadDirectoryTree();
   }
 
-  onFocus(): void {
-    const focusedNode: TreeNode = this.treeModel.getFocusedNode();
-    const path = focusedNode.id; // <-- the node id stores the directory path in this implementation
-    if (Date.now() - this.lastFocusEventMs < 500) {
-      return; // the 'focus' event sometimes fires more than once... ignore the duplicate
+  onActivate(): void {
+    const activeNode: TreeNode = this.treeModel.getActiveNode();
+    const path = activeNode.id; // <-- the node id stores the directory path in this implementation
+    if (Date.now() - this.lastActivateEventTime < 500) {
+      return; // the event sometimes fires more than once... ignore the duplicate
     }
-    this.lastFocusEventMs = Date.now();
+    this.lastActivateEventTime = Date.now();
 
     this.explorerService.changeDirectory(path);
   }
