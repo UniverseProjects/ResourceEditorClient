@@ -25,7 +25,7 @@ const LS_ACTIVE_NODE = '[up-res-editor]active.tree.node';
   `],
   template: `
     <div class="tree-container">
-      <tree-root #tree [(state)]="state" [nodes]="treeNodes" (activate)="onActivate()"></tree-root>
+      <tree-root #tree [(state)]="state" [nodes]="treeNodes" (activate)="onActivate()" (deactivate)="onDeactivate()"></tree-root>
     </div>`,
   providers: [
     TreeApi,
@@ -37,8 +37,9 @@ export class DirectoryTreeComponent implements OnInit {
 
   state: ITreeState;
   treeModel: TreeModel;
-  lastActivateEventTime: number = 0;
   treeNodes = [];
+  lastActiveNode: TreeNode = null;
+  lastActivateEventTime: number = 0;
 
   constructor(
     private explorerService: ExplorerService,
@@ -60,9 +61,18 @@ export class DirectoryTreeComponent implements OnInit {
       return; // the event sometimes fires more than once... ignore the duplicate
     }
     this.lastActivateEventTime = Date.now();
+    this.lastActiveNode = activeNode;
     localStorage.setItem(LS_ACTIVE_NODE, path);
 
     this.explorerService.changeDirectory(path);
+  }
+
+  onDeactivate(): void {
+    if (!this.treeModel.getActiveNode()) {
+      // If there's no active node at this point, it means that the user clicked on the active node causing it to deactivate;
+      // In this case, do a content-refresh on that node by re-activating it.
+      this.treeModel.setActiveNode(this.lastActiveNode, true);
+    }
   }
 
   private loadDirectoryTree(): void {
@@ -107,7 +117,6 @@ export class DirectoryTreeComponent implements OnInit {
 
   private reactivateLastNode(): void {
     const lastActiveNodeId = localStorage.getItem(LS_ACTIVE_NODE);
-    console.log('Last active node: ' + lastActiveNodeId);
     if (!lastActiveNodeId) {
       return;
     }
