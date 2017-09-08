@@ -8,6 +8,8 @@ import {Directory} from '../swagger/model/Directory';
 import {ResourceLibraryWithChildren} from '../swagger/model/ResourceLibraryWithChildren';
 import {ApiHelper} from '../common/api.helper';
 
+const LS_ACTIVE_NODE = '[up-res-editor]active.tree.node';
+
 @Component({
   selector: 'app-directory-tree',
   styles: [`
@@ -58,6 +60,7 @@ export class DirectoryTreeComponent implements OnInit {
       return; // the event sometimes fires more than once... ignore the duplicate
     }
     this.lastActivateEventTime = Date.now();
+    localStorage.setItem(LS_ACTIVE_NODE, path);
 
     this.explorerService.changeDirectory(path);
   }
@@ -74,8 +77,7 @@ export class DirectoryTreeComponent implements OnInit {
 
         this.loaderService.stopOperation(OPNAME);
 
-        // load the contents of the root
-        this.explorerService.changeDirectory('/');
+        this.reactivateLastNode();
       }, (rejectReason) => {
         this.treeNodes.length = 0; // empty the array
         this.treeNodes.push(this.createRootNode());
@@ -101,6 +103,34 @@ export class DirectoryTreeComponent implements OnInit {
       name: directory.name,
       children: directory.children.map((child) => this.createTreeNode(child)),
     };
+  }
+
+  private reactivateLastNode(): void {
+    const lastActiveNodeId = localStorage.getItem(LS_ACTIVE_NODE);
+    console.log('Last active node: ' + lastActiveNodeId);
+    if (!lastActiveNodeId) {
+      return;
+    }
+    const node = this.treeModel.getNodeById(lastActiveNodeId);
+    if (!node) {
+      console.warn("Last-active node is no longer present in the tree: " + lastActiveNodeId);
+      return;
+    }
+    const root = this.treeModel.getFirstRoot();
+    this.expandPath(root, node);
+    this.treeModel.setActiveNode(node, true);
+  }
+
+  private expandPath(source: TreeNode, dest: TreeNode): void {
+    if (source === dest) {
+      return; // we're done
+    }
+    this.treeModel.setExpandedNode(source, true);
+    source.children.forEach(child => {
+      if (dest.isDescendantOf(child)) {
+        this.expandPath(child, dest)
+      }
+    });
   }
 
 }
