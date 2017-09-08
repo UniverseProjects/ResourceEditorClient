@@ -64,40 +64,42 @@ export class DirectoryTreeComponent implements OnInit {
 
   private loadDirectoryTree(): void {
     const OPNAME = 'Loading directories';
-
     this.loaderService.startOperation(OPNAME);
     this.treeApi.getTree(this.explorerService.getSelectedLibraryId())
       .toPromise()
       .then((resourceLibrary: ResourceLibraryWithChildren) => {
-        const rootNode = this.toRootNode(resourceLibrary);
-
         this.treeNodes.length = 0; // empty the array
-        this.treeNodes.push(rootNode);
+        this.treeNodes.push(this.createRootNode(resourceLibrary));
         this.treeModel.update();
+
         this.loaderService.stopOperation(OPNAME);
 
         // load the contents of the root
         this.explorerService.changeDirectory('/');
       }, (rejectReason) => {
+        this.treeNodes.length = 0; // empty the array
+        this.treeNodes.push(this.createRootNode());
+        this.treeModel.update();
+
         this.alertService.error('Failed to load directories (' + rejectReason + ')');
         this.loaderService.stopOperation(OPNAME);
       })
       .catch(ApiHelper.handleError);
   }
 
-  toRootNode(resourceLibrary: ResourceLibraryWithChildren) {
+  private createRootNode(resourceLibrary?: ResourceLibraryWithChildren) {
     return {
       id: '/',
       name: 'root',
-      children: resourceLibrary.children.map((child) => this.toTreeNode(child)),
+      children: resourceLibrary ? resourceLibrary.children.map((child) => this.createTreeNode(child)) : [],
     }
   }
 
-  toTreeNode(directory: Directory): any {
+  private createTreeNode(directory: Directory): any {
     return {
       id: directory.treePath,
       name: directory.name,
-      children: directory.children.map((child) => this.toTreeNode(child)),
+      children: directory.children.map((child) => this.createTreeNode(child)),
     };
   }
 
