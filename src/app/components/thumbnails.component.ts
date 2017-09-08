@@ -42,7 +42,6 @@ export class ThumbnailsComponent {
   @Output() onSelected = new EventEmitter<number>();
 
   onSelect(index: number): void {
-    // console.log('Selected thumbnail index ' + index);
     this.onSelected.emit(index);
   }
 }
