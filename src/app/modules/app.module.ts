@@ -23,6 +23,7 @@ import {DirectoryTreeComponent} from '../components/directory.tree.component';
 import {ThumbnailsComponent} from '../components/thumbnails.component';
 import {SpritesComponent} from '../components/sprites.component';
 import {AnimatedSpritesComponent} from '../components/animated.sprites.component';
+import {PropertiesComponent} from '../components/properties.component';
 
 @NgModule({
     imports: [
@@ -41,6 +42,7 @@ import {AnimatedSpritesComponent} from '../components/animated.sprites.component
         ThumbnailsComponent,
         AlertComponent,
         LoaderComponent,
+        PropertiesComponent,
         ImagesComponent,
         SpritesComponent,
         AnimatedSpritesComponent,
