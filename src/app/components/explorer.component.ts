@@ -5,7 +5,7 @@ import {ExplorerService} from '../services/explorer.service';
   selector: 'app-explorer',
   styles: [`
     .directory-content {
-      width: 500px;
+      width: 700px;
       padding: 0 10px;
       display: inline-block;
       vertical-align: top;
