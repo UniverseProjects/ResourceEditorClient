@@ -10,23 +10,23 @@ import {ApiHelper} from '../common/api.helper';
   selector: 'app-images',
   styles: [`
     .image-preview-container {
-      width: 300px;
-      height: 300px;
+      margin-bottom: 20px;
     }
     .image-preview {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      position: absolute;
+      max-width: 400px;
+      max-height: 400px;
     }
   `],
   template: `
     <div class="app-images-container" *ngIf="active">
       <!--<h3>Images</h3>-->
       <app-thumbnails [hidden]="selectedImage" [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
-      <div class="image-preview-container" *ngIf="selectedImage">
-        <img class="image-preview" src="{{selectedImage.gcsUrl}}"/>
-      </div>
+      <div *ngIf="selectedImage">
+        <div class="image-preview-container">
+          <img class="image-preview" src="{{selectedImage.gcsUrl}}"/>
+        </div>
+        <app-properties [object]="selectedImage"></app-properties>
+      </div> 
     </div>
   `,
   providers: [
