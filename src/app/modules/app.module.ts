@@ -24,6 +24,7 @@ import {ThumbnailsComponent} from '../components/thumbnails.component';
 import {SpritesComponent} from '../components/sprites.component';
 import {AnimatedSpritesComponent} from '../components/animated.sprites.component';
 import {PropertiesComponent} from '../components/properties.component';
+import {DirectoriesComponent} from '../components/directories.component';
 
 @NgModule({
     imports: [
@@ -46,6 +47,7 @@ import {PropertiesComponent} from '../components/properties.component';
         ImagesComponent,
         SpritesComponent,
         AnimatedSpritesComponent,
+        DirectoriesComponent,
         ExplorerComponent,
     ],
     providers: [

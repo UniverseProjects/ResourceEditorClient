@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 
-export enum ContentType { IMAGES, SPRITES, ANIMATED_SPRITES }
+export enum ContentType { IMAGES, SPRITES, ANIMATED_SPRITES, DIRECTORIES }
 
 @Injectable()
 export class ExplorerService {
@@ -38,6 +38,10 @@ export class ExplorerService {
 
   reloadAnimatedSprites(): void {
     this.reloadContent_.next(ContentType.ANIMATED_SPRITES);
+  }
+
+  reloadDirectories(): void {
+    this.reloadContent_.next(ContentType.DIRECTORIES);
   }
 
 }

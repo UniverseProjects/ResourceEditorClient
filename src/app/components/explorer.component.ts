@@ -23,6 +23,7 @@ import {ExplorerService} from '../services/explorer.service';
         <label class="btn btn-primary" [(ngModel)]="contentType" (click)="onClickContentType()" btnRadio="Images">Images</label>
         <label class="btn btn-primary" [(ngModel)]="contentType" (click)="onClickContentType()" btnRadio="Sprites">Sprites</label>
         <label class="btn btn-primary" [(ngModel)]="contentType" (click)="onClickContentType()" btnRadio="Animated Sprites">Animated Sprites</label>
+        <label class="btn btn-primary" [(ngModel)]="contentType" (click)="onClickContentType()" btnRadio="Directories">Directories</label>
       </div>
       <div>
         <div class="items-container">
@@ -33,6 +34,9 @@ import {ExplorerService} from '../services/explorer.service';
         </div>
         <div class="items-container">
           <app-animated-sprites></app-animated-sprites>
+        </div>
+        <div class="items-container">
+          <app-directories></app-directories>
         </div>
       </div>
     </div>
@@ -57,14 +61,13 @@ export class ExplorerComponent implements OnInit {
 
   private reloadContent(): void {
     if (this.contentType === 'Images') {
-      // console.log('Reloading images...');
       this.explorerService.reloadImages();
     } else if (this.contentType === 'Sprites') {
-      // console.log('Reloading sprites...');
       this.explorerService.reloadSprites();
     } else if (this.contentType === 'Animated Sprites') {
-      // console.log('Reloading animated sprites...');
       this.explorerService.reloadAnimatedSprites();
+    } else if (this.contentType === 'Directories') {
+      this.explorerService.reloadDirectories();
     } else {
       throw new Error('Unhandled case: ' + this.contentType);
     }
