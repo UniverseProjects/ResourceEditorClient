@@ -12,14 +12,23 @@ import {AlertService} from '../services/alert.service';
       top: 0;
       right: 0;
       z-index: 5;
-      width: 300px;
+      width: 350px;
       margin: 10px;
+    }
+    
+    .alert-message {
+      display: inline-block;
+      width: 275px;
+    }
+    
+    .alerts-container button {
+      vertical-align: middle;  
     }
   `],
   template: `
     <div class="alerts-container">
       <div *ngFor="let alert of alerts" class="alert {{cssClass(alert)}} alert-dismissable">
-        {{alert.message}}
+        <div class="alert-message">{{alert.message}}</div>
         <button type="button" class="close" (click)="removeAlert(alert)">
           <span>&times;</span>
         </button>
