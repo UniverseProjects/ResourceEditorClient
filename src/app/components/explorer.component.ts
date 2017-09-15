@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ExplorerService} from '../services/explorer.service';
+import {ContentType, ExplorerService} from '../services/explorer.service';
 
 @Component({
   selector: 'app-explorer',
@@ -10,9 +10,11 @@ import {ExplorerService} from '../services/explorer.service';
       display: inline-block;
       vertical-align: top;
     }
+
     .btn-group {
       padding-bottom: 15px;
     }
+
     .items-container {
     }
   `],
@@ -20,10 +22,14 @@ import {ExplorerService} from '../services/explorer.service';
     <app-directory-tree></app-directory-tree>
     <div class="directory-content">
       <div class="btn-group">
-        <label class="btn btn-primary" [(ngModel)]="contentType" (click)="onClickContentType()" btnRadio="Images">Images</label>
-        <label class="btn btn-primary" [(ngModel)]="contentType" (click)="onClickContentType()" btnRadio="Sprites">Sprites</label>
-        <label class="btn btn-primary" [(ngModel)]="contentType" (click)="onClickContentType()" btnRadio="Animated Sprites">Animated Sprites</label>
-        <label class="btn btn-primary" [(ngModel)]="contentType" (click)="onClickContentType()" btnRadio="Directories">Directories</label>
+        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()"
+               btnRadio="IMAGES">Images</label>
+        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()"
+               btnRadio="SPRITES">Sprites</label>
+        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()"
+               btnRadio="ANIMATED_SPRITES">Animated Sprites</label>
+        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()"
+               btnRadio="DIRECTORIES">Directories</label>
       </div>
       <div>
         <div class="items-container">
@@ -43,13 +49,19 @@ import {ExplorerService} from '../services/explorer.service';
   `,
 })
 export class ExplorerComponent implements OnInit {
-  public contentType = 'Images';
 
-  constructor(
-    private explorerService: ExplorerService
-  ) { }
+  private readonly LS_CONTENT_TYPE = 'active.content.type';
+
+  contentTypeStr = 'IMAGES';
+
+  constructor(private explorerService: ExplorerService) {
+  }
 
   ngOnInit(): void {
+    const lastContentTypeStr = localStorage.getItem(this.LS_CONTENT_TYPE);
+    if (lastContentTypeStr) {
+      this.contentTypeStr = lastContentTypeStr;
+    }
     this.explorerService.changeDirectory$.subscribe(() => {
       this.reloadContent();
     });
@@ -60,16 +72,23 @@ export class ExplorerComponent implements OnInit {
   }
 
   private reloadContent(): void {
-    if (this.contentType === 'Images') {
+    let contentType = ContentType[this.contentTypeStr];
+    if (!contentType) {
+      throw new Error('Invalid enum string value: ' + this.contentTypeStr);
+    }
+
+    localStorage.setItem(this.LS_CONTENT_TYPE, this.contentTypeStr);
+
+    if (contentType === ContentType.IMAGES) {
       this.explorerService.reloadImages();
-    } else if (this.contentType === 'Sprites') {
+    } else if (contentType === ContentType.SPRITES) {
       this.explorerService.reloadSprites();
-    } else if (this.contentType === 'Animated Sprites') {
+    } else if (contentType === ContentType.ANIMATED_SPRITES) {
       this.explorerService.reloadAnimatedSprites();
-    } else if (this.contentType === 'Directories') {
+    } else if (contentType === ContentType.DIRECTORIES) {
       this.explorerService.reloadDirectories();
     } else {
-      throw new Error('Unhandled case: ' + this.contentType);
+      throw new Error('Unhandled case: ' + this.contentTypeStr);
     }
   }
 }
