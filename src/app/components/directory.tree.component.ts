@@ -8,8 +8,6 @@ import {Directory} from '../swagger/model/Directory';
 import {ResourceLibraryWithChildren} from '../swagger/model/ResourceLibraryWithChildren';
 import {ApiHelper} from '../common/api.helper';
 
-const LS_ACTIVE_NODE = 'active.tree.node';
-
 @Component({
   selector: 'app-directory-tree',
   styles: [`
@@ -41,6 +39,8 @@ export class DirectoryTreeComponent implements OnInit {
   lastActiveNode: TreeNode = null;
   lastActivateEventTime: number = 0;
 
+  private readonly LS_ACTIVE_NODE = 'active.tree.node';
+
   constructor(
     private explorerService: ExplorerService,
     private alertService: AlertService,
@@ -62,7 +62,7 @@ export class DirectoryTreeComponent implements OnInit {
     }
     this.lastActivateEventTime = Date.now();
     this.lastActiveNode = activeNode;
-    localStorage.setItem(LS_ACTIVE_NODE, path);
+    localStorage.setItem(this.LS_ACTIVE_NODE, path);
 
     this.explorerService.changeDirectory(path);
   }
@@ -116,7 +116,7 @@ export class DirectoryTreeComponent implements OnInit {
   }
 
   private reactivateLastNode(): void {
-    const lastActiveNodeId = localStorage.getItem(LS_ACTIVE_NODE);
+    const lastActiveNodeId = localStorage.getItem(this.LS_ACTIVE_NODE);
     if (!lastActiveNodeId) {
       return;
     }
