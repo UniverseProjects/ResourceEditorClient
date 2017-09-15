@@ -17,6 +17,9 @@ export class ExplorerService {
   private changeDirectory_ = new Subject<string>();
   changeDirectory$ = this.changeDirectory_.asObservable();
 
+  private reloadDirectoryTree_ = new Subject<any>();
+  readonly reloadDirectoryTree$ = this.reloadDirectoryTree_.asObservable();
+
   private reloadContent_ = new Subject<ContentType>();
   readonly reloadContent$ = this.reloadContent_.asObservable();
 
@@ -31,6 +34,10 @@ export class ExplorerService {
 
   getCurrentDirectory(): string {
     return this.currentDirectory;
+  }
+
+  reloadDirectoryTree(): void {
+    this.reloadDirectoryTree_.next();
   }
 
   reloadImages(): void {

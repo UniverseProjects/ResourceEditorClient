@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ITreeState, TreeComponent, TreeModel, TreeNode} from 'angular-tree-component';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
@@ -7,6 +7,7 @@ import {TreeApi} from '../swagger/api/TreeApi';
 import {Directory} from '../swagger/model/Directory';
 import {ResourceLibraryWithChildren} from '../swagger/model/ResourceLibraryWithChildren';
 import {ApiHelper} from '../common/api.helper';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-directory-tree',
@@ -29,7 +30,7 @@ import {ApiHelper} from '../common/api.helper';
     TreeApi,
   ],
 })
-export class DirectoryTreeComponent implements OnInit {
+export class DirectoryTreeComponent implements OnInit, OnDestroy {
 
   @ViewChild('tree') treeComponent: TreeComponent;
 
@@ -41,6 +42,8 @@ export class DirectoryTreeComponent implements OnInit {
 
   private readonly LS_ACTIVE_NODE = 'active.tree.node';
 
+  private subscription: Subscription;
+
   constructor(
     private explorerService: ExplorerService,
     private alertService: AlertService,
@@ -51,7 +54,16 @@ export class DirectoryTreeComponent implements OnInit {
   ngOnInit(): void {
     this.treeModel = this.treeComponent.treeModel;
 
-    this.loadDirectoryTree();
+    this.subscription = this.explorerService.reloadDirectoryTree$.subscribe(() => {
+      this.reloadDirectoryTree();
+    });
+
+    this.reloadDirectoryTree();
+  }
+
+  ngOnDestroy(): void {
+    // always clean-up subscriptions when a component is destroyed
+    this.subscription.unsubscribe();
   }
 
   onActivate(): void {
@@ -75,7 +87,7 @@ export class DirectoryTreeComponent implements OnInit {
     }
   }
 
-  private loadDirectoryTree(): void {
+  private reloadDirectoryTree(): void {
     const OPNAME = 'Loading directories';
     this.loaderService.startOperation(OPNAME);
     this.treeApi.getTree(this.explorerService.getSelectedLibraryId())
