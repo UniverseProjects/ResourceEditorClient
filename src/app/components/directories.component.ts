@@ -3,6 +3,7 @@ import {TreeApi} from '../swagger/api/TreeApi';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
 import {ContentType, ExplorerService} from '../services/explorer.service';
+import {ApiHelper} from '../common/api.helper';
 
 @Component({
   selector: 'app-directories',
@@ -61,7 +62,30 @@ export class DirectoriesComponent implements OnInit {
   }
 
   createDirectory() {
-    this.alertService.warn('Creation of directories not yet supported ('+this.newDirectoryName+')');
+    if (!this.newDirectoryName || !this.newDirectoryName.trim()) {
+      this.alertService.warn('Please enter a directory name');
+      return;
+    }
+    if (!/^[a-zA-Z0-9_\-]+$/g.test(this.newDirectoryName)) {
+      this.alertService.warn('Invalid directory name: ' + this.newDirectoryName);
+      return;
+    }
+
+    const libraryId = this.explorerService.getSelectedLibraryId();
+    const currentDir = this.explorerService.getCurrentDirectory();
+
+    const OPNAME = 'Creating directory';
+    this.loaderService.startOperation(OPNAME);
+    this.treeApi.createDirectory(libraryId, currentDir, this.newDirectoryName)
+      .toPromise()
+      .then(response => {
+        this.loaderService.stopOperation(OPNAME);
+        this.explorerService.reloadDirectoryTree();
+      }, rejectReason => {
+        this.loaderService.stopOperation(OPNAME);
+        this.alertService.error('Failed to create new directory (' + rejectReason + ')');
+      })
+      .catch(ApiHelper.handleError);
   }
 
   private loadDirectories(directory: string): void {
