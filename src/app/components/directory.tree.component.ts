@@ -8,7 +8,7 @@ import {Directory} from '../swagger/model/Directory';
 import {ResourceLibraryWithChildren} from '../swagger/model/ResourceLibraryWithChildren';
 import {ApiHelper} from '../common/api.helper';
 
-const LS_ACTIVE_NODE = '[up-res-editor]active.tree.node';
+const LS_ACTIVE_NODE = 'active.tree.node';
 
 @Component({
   selector: 'app-directory-tree',
