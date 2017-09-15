@@ -72,14 +72,11 @@ export class ExplorerComponent implements OnInit {
   }
 
   private reloadContent(): void {
-    let contentType = ContentType[this.contentTypeStr];
-    if (!contentType) {
+    const contentType = ContentType[this.contentTypeStr];
+
+    if (contentType === undefined || contentType === null) {
       throw new Error('Invalid enum string value: ' + this.contentTypeStr);
-    }
-
-    localStorage.setItem(this.LS_CONTENT_TYPE, this.contentTypeStr);
-
-    if (contentType === ContentType.IMAGES) {
+    } else if (contentType === ContentType.IMAGES) {
       this.explorerService.reloadImages();
     } else if (contentType === ContentType.SPRITES) {
       this.explorerService.reloadSprites();
@@ -90,5 +87,7 @@ export class ExplorerComponent implements OnInit {
     } else {
       throw new Error('Unhandled case: ' + this.contentTypeStr);
     }
+
+    localStorage.setItem(this.LS_CONTENT_TYPE, this.contentTypeStr);
   }
 }
