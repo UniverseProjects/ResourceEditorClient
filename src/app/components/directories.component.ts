@@ -12,7 +12,7 @@ import {ApiHelper} from '../common/api.helper';
       font-size: 18px;
       font-weight: bold;
     }
-    .dir-option {
+    .dir-control {
       padding-top: 10px;
     }
   `],
@@ -20,12 +20,12 @@ import {ApiHelper} from '../common/api.helper';
     <div class="app-directories-container" *ngIf="active">
       <!--<h3>Directories</h3>-->
       <div class="current-dir-title">Current directory: {{currentDirectory}}</div>
-      <div class="dir-option">
+      <div class="dir-control">
         <label class="btn btn-primary" (click)="deleteCurrentDirectory()">Delete directory</label>
       </div>
-      <div class="dir-option">
         <label class="btn btn-primary" (click)="createDirectory()">Create new directory</label>
         <input type="text" [(ngModel)]="newDirectoryName"/>
+      <div class="dir-control">
       </div>
     </div>
   `,
