@@ -1,14 +1,18 @@
+import {PathUtil} from './path.util';
+
 export class ApiHelper {
 
-  static checkDirectory(directory: string): string {
-    const dirRegExp = /^\/([a-zA-Z0-9_\-]+\/)*([a-zA-Z0-9_\-]+)?$/g;
-    if (!directory || !dirRegExp.test(directory)) {
-      throw new Error('Invalid directory: ' + directory);
+  static verifyPath(treePath: string): string {
+    if (!PathUtil.isValid(treePath)) {
+      throw new Error('Invalid tree path: ' + treePath);
     }
-    if (directory.startsWith('/')) {
-      directory = directory.slice(1, directory.length);
+    if (treePath.startsWith('/')) {
+      treePath = treePath.slice(1, treePath.length);
     }
-    return directory;
+    if (treePath.endsWith('/')) {
+      treePath = treePath.slice(0, treePath.length - 1);
+    }
+    return treePath;
   }
 
   static handleError(error: any): Promise<any> {

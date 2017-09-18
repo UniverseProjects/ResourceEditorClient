@@ -4,6 +4,7 @@ import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
 import {ContentType, ExplorerService} from '../services/explorer.service';
 import {ApiHelper} from '../common/api.helper';
+import {PathUtil} from '../common/path.util';
 
 @Component({
   selector: 'app-directories',
@@ -83,10 +84,11 @@ export class DirectoriesComponent implements OnInit {
 
     const libraryId = this.explorerService.getSelectedLibraryId();
     const currentDir = this.explorerService.getCurrentDirectory();
+    const newDirPath = ApiHelper.verifyPath(PathUtil.combine(currentDir, this.newDirectoryName));
 
     const OPNAME = 'Creating directory';
     this.loaderService.startOperation(OPNAME);
-    this.treeApi.createDirectory(libraryId, currentDir, this.newDirectoryName)
+    this.treeApi.createDirectory(libraryId, newDirPath)
       .toPromise()
       .then(response => {
         this.loaderService.stopOperation(OPNAME);

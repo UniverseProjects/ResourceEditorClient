@@ -55,7 +55,7 @@ export class AnimatedSpritesComponent implements OnInit {
     }
 
     console.log('Loading animated sprites in directory: ' + directory);
-    directory = ApiHelper.checkDirectory(directory);
+    directory = ApiHelper.verifyPath(directory);
 
     const OPNAME = 'Loading animated sprites';
     this.loaderService.startOperation(OPNAME);

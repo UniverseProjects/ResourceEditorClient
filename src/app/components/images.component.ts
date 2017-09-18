@@ -71,7 +71,7 @@ export class ImagesComponent implements OnInit {
     }
 
     console.log('Loading images in directory: ' + directory);
-    directory = ApiHelper.checkDirectory(directory);
+    directory = ApiHelper.verifyPath(directory);
 
     const OPNAME = 'Loading images';
     this.loaderService.startOperation(OPNAME);
