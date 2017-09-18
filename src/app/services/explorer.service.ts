@@ -29,7 +29,6 @@ export class ExplorerService {
   }
 
   changeDirectory(directory: Directory) {
-    console.log('Changing directory to: ' + JSON.stringify(directory));
     this.currentDirectory = directory;
     this.changeDirectory_.next(directory);
   }
