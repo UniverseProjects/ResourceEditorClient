@@ -6,7 +6,6 @@ import {ExplorerService} from '../services/explorer.service';
 import {TreeApi} from '../swagger/api/TreeApi';
 import {Directory} from '../swagger/model/Directory';
 import {ResourceLibraryWithChildren} from '../swagger/model/ResourceLibraryWithChildren';
-import {ApiHelper} from '../common/api.helper';
 import {Subscription} from 'rxjs/Subscription';
 
 @Component({
@@ -41,6 +40,8 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
   lastActiveNode: TreeNode = null;
   lastActivateEventTime: number = 0;
 
+  private directoriesByPath = new Map<string, Directory>();
+
   private readonly LS_ACTIVE_NODE = 'active.tree.node';
 
   private subscription: Subscription;
@@ -68,16 +69,23 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
   }
 
   onActivateNode(): void {
-    const activeNode: TreeNode = this.treeModel.getActiveNode();
-    const path = activeNode.id; // <-- the node id stores the directory path in this implementation
     if (Date.now() - this.lastActivateEventTime < 500) {
       return; // the event sometimes fires more than once... ignore the duplicate
     }
+
+    const activeNode: TreeNode = this.treeModel.getActiveNode();
+    const treePath = activeNode.id; // <-- we store the tree path as the node ID (it's unique by definition)
+
     this.lastActivateEventTime = Date.now();
     this.lastActiveNode = activeNode;
-    localStorage.setItem(this.LS_ACTIVE_NODE, path);
+    localStorage.setItem(this.LS_ACTIVE_NODE, treePath);
 
-    this.explorerService.changeDirectory(path);
+    const directory = this.directoriesByPath.get(treePath);
+    if (!directory) {
+      throw new Error('Directory not found for tree path: ' + treePath);
+    }
+
+    this.explorerService.changeDirectory(directory);
   }
 
   onDeactivateNode(): void {
@@ -88,13 +96,19 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
     }
   }
 
+  private clear(): void {
+    this.directoriesByPath.clear();
+    this.treeNodes.length = 0;
+    this.treeModel.update();
+  }
+
   private reloadDirectoryTree(): void {
     const OPNAME = 'Loading directories';
     this.loaderService.startOperation(OPNAME);
     this.treeApi.getTree(this.explorerService.getSelectedLibraryId())
       .toPromise()
       .then((resourceLibrary: ResourceLibraryWithChildren) => {
-        this.treeNodes.length = 0; // empty the array
+        this.clear();
         this.treeNodes.push(this.createRootNode(resourceLibrary));
         this.treeModel.update();
 
@@ -102,7 +116,7 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
 
         this.reactivateLastNode();
       }, (rejectReason) => {
-        this.treeNodes.length = 0; // empty the array
+        this.clear();
         this.treeNodes.push(this.createRootNode());
         this.treeModel.update();
 
@@ -112,16 +126,25 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
   }
 
   private createRootNode(resourceLibrary?: ResourceLibraryWithChildren) {
-    return {
-      id: '/',
+    // we need to create a surrogate root directory object because it doesn't exist
+    let rootDirectory : Directory = {
       name: 'root',
-      children: resourceLibrary ? resourceLibrary.children.map((child) => this.createTreeNode(child)) : [],
-    }
+      treePath: '/',
+      parent: null,
+      children: resourceLibrary ? resourceLibrary.children.map((child) => child) : [], // <-- empty children array
+    };
+    return this.createTreeNode(rootDirectory);
   }
 
   private createTreeNode(directory: Directory): any {
+    const treePath = directory.treePath;
+    if (this.directoriesByPath.has(treePath)) {
+      throw new Error('Directory already registered for tree path: ' + treePath);
+    }
+    this.directoriesByPath.set(treePath, directory);
+
     return {
-      id: directory.treePath,
+      id: treePath,
       name: directory.name,
       children: directory.children.map((child) => this.createTreeNode(child)),
     };

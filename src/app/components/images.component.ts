@@ -49,7 +49,7 @@ export class ImagesComponent implements OnInit {
   ngOnInit(): void {
     this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.IMAGES) {
-        this.loadImages(this.explorerService.getCurrentDirectory());
+        this.loadImages(this.explorerService.getCurrentDirectoryPath());
         this.active = true;
       } else {
         this.loadImages(null);

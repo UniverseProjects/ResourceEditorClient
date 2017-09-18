@@ -59,7 +59,7 @@ export class DirectoriesComponent implements OnInit {
   ngOnInit(): void {
     this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.DIRECTORIES) {
-        this.loadDirectories(this.explorerService.getCurrentDirectory());
+        this.loadDirectories(this.explorerService.getCurrentDirectoryPath());
         this.active = true;
       } else {
         this.loadDirectories(null);
@@ -83,7 +83,7 @@ export class DirectoriesComponent implements OnInit {
     }
 
     const libraryId = this.explorerService.getSelectedLibraryId();
-    const currentDir = this.explorerService.getCurrentDirectory();
+    const currentDir = this.explorerService.getCurrentDirectoryPath();
     const newDirPath = ApiHelper.verifyPath(PathUtil.combine(currentDir, this.newDirectoryName));
 
     const OPNAME = 'Creating directory';

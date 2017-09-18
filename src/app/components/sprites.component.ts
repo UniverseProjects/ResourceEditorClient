@@ -34,7 +34,7 @@ export class SpritesComponent implements OnInit {
   ngOnInit(): void {
     this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.SPRITES) {
-        this.loadSprites(this.explorerService.getCurrentDirectory());
+        this.loadSprites(this.explorerService.getCurrentDirectoryPath());
         this.active = true;
       } else {
         this.loadSprites(null);

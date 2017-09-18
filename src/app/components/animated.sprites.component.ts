@@ -34,7 +34,7 @@ export class AnimatedSpritesComponent implements OnInit {
   ngOnInit(): void {
     this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.ANIMATED_SPRITES) {
-        this.loadAnimatedSprites(this.explorerService.getCurrentDirectory());
+        this.loadAnimatedSprites(this.explorerService.getCurrentDirectoryPath());
         this.active = true;
       } else {
         this.loadAnimatedSprites(null);
