@@ -69,7 +69,26 @@ export class DirectoriesComponent implements OnInit {
   }
 
   deleteCurrentDirectory() {
-    this.alertService.warn('Deletion of directories not yet supported');
+    const currentDir = this.explorerService.getCurrentDirectory();
+    if (currentDir.children.length > 0) {
+      this.alertService.warn('Only empty directories can be deleted');
+      return;
+    }
+
+    const libraryId = this.explorerService.getSelectedLibraryId();
+    const currentDirPath = ApiHelper.verifyPath(currentDir.treePath);
+
+    const OPNAME = 'Deleting directory';
+    this.loaderService.startOperation(OPNAME);
+    this.treeApi.deleteDirectory(libraryId, currentDirPath)
+      .toPromise()
+      .then(response => {
+        this.loaderService.stopOperation(OPNAME);
+        this.explorerService.reloadDirectoryTree();
+      }, rejectReason => {
+        this.loaderService.stopOperation(OPNAME);
+        this.alertService.error('Failed to delete current directory (' + rejectReason + ')');
+      });
   }
 
   createDirectory() {
