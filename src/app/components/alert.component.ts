@@ -15,18 +15,24 @@ import {AlertService} from '../services/alert.service';
       width: 350px;
       margin: 10px;
     }
-    
     .alert-message {
       display: inline-block;
       width: 275px;
     }
-    
     .alerts-container button {
       vertical-align: middle;  
     }
+    .alerts-dismiss-all {
+      height: 35px;
+    }
   `],
   template: `
-    <div class="alerts-container">
+    <div class="alerts-container" *ngIf="alerts.length > 0">
+      <div class="alerts-dismiss-all">
+        <button type="button" class="close" *ngIf="alerts.length > 1" (click)="dismissAll()">
+          <span>dismiss all</span>
+        </button>
+      </div>
       <div *ngFor="let alert of alerts" class="alert {{cssClass(alert)}} alert-dismissable">
         <div class="alert-message">{{alert.message}}</div>
         <button type="button" class="close" (click)="removeAlert(alert)">
@@ -57,6 +63,10 @@ export class AlertComponent implements OnInit {
 
   removeAlert(alert: Alert) {
     this.alerts = this.alerts.filter(x => x !== alert);
+  }
+
+  dismissAll() {
+    this.alerts = [];
   }
 
   cssClass(alert: Alert) {
