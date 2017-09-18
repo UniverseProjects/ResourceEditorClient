@@ -107,8 +107,7 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
 
         this.alertService.error('Failed to load directories (' + rejectReason + ')');
         this.loaderService.stopOperation(OPNAME);
-      })
-      .catch(ApiHelper.handleError);
+      });
   }
 
   private createRootNode(resourceLibrary?: ResourceLibraryWithChildren) {

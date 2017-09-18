@@ -86,8 +86,7 @@ export class ImagesComponent implements OnInit {
         this.alertService.error('Failed to load images (' + rejectReason + ')');
 
         this.loaderService.stopOperation(OPNAME);
-      })
-      .catch(ApiHelper.handleError);
+      });
   }
 
 }

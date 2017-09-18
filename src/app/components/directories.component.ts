@@ -96,8 +96,7 @@ export class DirectoriesComponent implements OnInit {
       }, rejectReason => {
         this.loaderService.stopOperation(OPNAME);
         this.alertService.error('Failed to create new directory (' + rejectReason + ')');
-      })
-      .catch(ApiHelper.handleError);
+      });
   }
 
   private loadDirectories(directory: string): void {
@@ -105,7 +104,6 @@ export class DirectoriesComponent implements OnInit {
       this.currentDirectory = null;
       return;
     }
-
     this.currentDirectory = directory;
   }
 

@@ -68,8 +68,7 @@ export class SpritesComponent implements OnInit {
       }, rejectReason => {
         this.alertService.error('Failed to load sprites (' + rejectReason + ')');
         this.loaderService.stopOperation(OPNAME);
-      })
-      .catch(ApiHelper.handleError);
+      });
   }
 
 }
