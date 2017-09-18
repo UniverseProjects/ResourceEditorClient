@@ -8,9 +8,13 @@ import {ApiHelper} from '../common/api.helper';
 @Component({
   selector: 'app-directories',
   styles: [`
-    .current-dir-title {
+    .current-dir-label {
+      font-size: 18px;
+    }
+    .current-dir-value {
       font-size: 18px;
       font-weight: bold;
+      font-family: "Courier New", Courier, monospace;
     }
     .dir-control {
       padding-top: 10px;
@@ -22,7 +26,10 @@ import {ApiHelper} from '../common/api.helper';
   template: `
     <div class="app-directories-container" *ngIf="active">
       <!--<h3>Directories</h3>-->
-      <div class="current-dir-title">Current directory: {{currentDirectory}}</div>
+      <div>
+        <span class="current-dir-label">Current directory: </span>
+        <span class="current-dir-value">{{currentDirectory}}</span>
+      </div>
       <div class="dir-control">
         <label class="btn btn-primary" (click)="deleteCurrentDirectory()">Delete directory</label>
       </div>
