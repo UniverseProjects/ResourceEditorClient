@@ -26,8 +26,6 @@ import {ApiHelper} from '../common/api.helper';
       <div class="dir-control">
         <label class="btn btn-primary" (click)="deleteCurrentDirectory()">Delete directory</label>
       </div>
-        <label class="btn btn-primary" (click)="createDirectory()">Create new directory</label>
-        <input type="text" [(ngModel)]="newDirectoryName"/>
       <div class="dir-control">
         <label class="btn btn-primary" (click)="createDirectory()">New directory</label>
         <input class="new-dir-name" type="text" [(ngModel)]="newDirectoryName"/>
