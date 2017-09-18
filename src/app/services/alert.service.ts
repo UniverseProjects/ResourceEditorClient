@@ -45,9 +45,10 @@ export class AlertService implements OnInit {
     this.alert(AlertType.Warning, message, keepAfterRouteChange);
   }
 
-  alert(type: AlertType, message: string, keepAfterRouteChange = false) {
+  private alert(type: AlertType, message: string, keepAfterRouteChange = false) {
     this.keepAfterRouteChange = keepAfterRouteChange;
     this.alert_.next(<Alert>{type: type, message: message});
+    console.log('['+AlertType[type].toUpperCase()+'] ' + message);
   }
 
   clear() {
