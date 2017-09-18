@@ -46,10 +46,9 @@ export class TreeApi {
      * @summary Create Directory for path
      * @param libraryId ID of the library
      * @param treePath Path to create the spriteType at
-     * @param body 
      */
-    public createDirectory(libraryId: number, treePath: string, body: models.Directory, extraHttpRequestParams?: any): Observable<models.Directory> {
-        return this.createDirectoryWithHttpInfo(libraryId, treePath, body, extraHttpRequestParams)
+    public createDirectory(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<models.Directory> {
+        return this.createDirectoryWithHttpInfo(libraryId, treePath, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -98,9 +97,8 @@ export class TreeApi {
      * 
      * @param libraryId ID of the library
      * @param treePath Path to create the spriteType at
-     * @param body 
      */
-    public createDirectoryWithHttpInfo(libraryId: number, treePath: string, body: models.Directory, extraHttpRequestParams?: any): Observable<Response> {
+    public createDirectoryWithHttpInfo(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<Response> {
         const path = this.basePath + '/library/${libraryId}/directory/${treePath}'
                     .replace('${' + 'libraryId' + '}', String(libraryId))
                     .replace('${' + 'treePath' + '}', String(treePath));
@@ -115,10 +113,6 @@ export class TreeApi {
         if (treePath === null || treePath === undefined) {
             throw new Error('Required parameter treePath was null or undefined when calling createDirectory.');
         }
-        // verify required parameter 'body' is not null or undefined
-        if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling createDirectory.');
-        }
         // to determine the Content-Type header
         let consumes: string[] = [
         ];
@@ -128,12 +122,9 @@ export class TreeApi {
             'application/json'
         ];
 
-        headers.set('Content-Type', 'application/json');
-
         let requestOptions: RequestOptionsArgs = new RequestOptions({
             method: RequestMethod.Post,
             headers: headers,
-            body: body == null ? '' : JSON.stringify(body), // https://github.com/angular/angular/issues/10612
             search: queryParameters,
             withCredentials:this.configuration.withCredentials
         });
