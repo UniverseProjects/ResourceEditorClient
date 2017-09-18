@@ -24,7 +24,8 @@ import {Subscription} from 'rxjs/Subscription';
   `],
   template: `
     <div class="tree-container">
-      <tree-root #tree [(state)]="state" [nodes]="treeNodes" (activate)="onActivate()" (deactivate)="onDeactivate()"></tree-root>
+      <tree-root #tree [(state)]="state" [nodes]="treeNodes" (activate)="onActivateNode()"
+                 (deactivate)="onDeactivateNode()"></tree-root>
     </div>`,
   providers: [
     TreeApi,
@@ -66,7 +67,7 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  onActivate(): void {
+  onActivateNode(): void {
     const activeNode: TreeNode = this.treeModel.getActiveNode();
     const path = activeNode.id; // <-- the node id stores the directory path in this implementation
     if (Date.now() - this.lastActivateEventTime < 500) {
@@ -79,7 +80,7 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
     this.explorerService.changeDirectory(path);
   }
 
-  onDeactivate(): void {
+  onDeactivateNode(): void {
     if (!this.treeModel.getActiveNode()) {
       // If there's no active node at this point, it means that the user clicked on the active node causing it to deactivate;
       // In this case, do a content-refresh on that node by re-activating it.
