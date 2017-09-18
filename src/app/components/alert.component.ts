@@ -31,7 +31,7 @@ import {AlertService} from '../services/alert.service';
     <div class="alerts-container" *ngIf="alerts.length > 0">
       <div class="alerts-dismiss-all">
         <button type="button" class="close" *ngIf="alerts.length > 1" (click)="dismissAll()">
-          <span>dismiss all</span>
+          <span>&#9660; dismiss all alerts</span>
         </button>
       </div>
       <div *ngFor="let alert of alerts" class="alert {{cssClass(alert)}} alert-dismissable">
