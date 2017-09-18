@@ -15,6 +15,9 @@ import {ApiHelper} from '../common/api.helper';
     .dir-control {
       padding-top: 10px;
     }
+    .new-dir-name {
+      width: 250px;
+    }
   `],
   template: `
     <div class="app-directories-container" *ngIf="active">
@@ -26,6 +29,8 @@ import {ApiHelper} from '../common/api.helper';
         <label class="btn btn-primary" (click)="createDirectory()">Create new directory</label>
         <input type="text" [(ngModel)]="newDirectoryName"/>
       <div class="dir-control">
+        <label class="btn btn-primary" (click)="createDirectory()">New directory</label>
+        <input class="new-dir-name" type="text" [(ngModel)]="newDirectoryName"/>
       </div>
     </div>
   `,
