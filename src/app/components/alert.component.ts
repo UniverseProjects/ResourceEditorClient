@@ -18,6 +18,7 @@ import {AlertService} from '../services/alert.service';
     .alert-message {
       display: inline-block;
       width: 275px;
+      overflow-wrap: break-word;
     }
     .alerts-container button {
       vertical-align: middle;  
