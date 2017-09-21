@@ -63,10 +63,10 @@ export class DirectoriesComponent implements OnInit {
   ngOnInit(): void {
     this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.DIRECTORIES) {
-        this.loadDirectories(this.explorerService.getCurrentDirectoryPath());
+        this.loadContent(this.explorerService.getCurrentDirectoryPath());
         this.active = true;
       } else {
-        this.loadDirectories(null);
+        this.loadContent(null);
         this.active = false;
       }
     });
@@ -126,7 +126,7 @@ export class DirectoriesComponent implements OnInit {
       });
   }
 
-  private loadDirectories(directory: string): void {
+  private loadContent(directory: string): void {
     if (!directory) {
       this.currentDirectory = null;
       return;
