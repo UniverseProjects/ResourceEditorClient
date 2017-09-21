@@ -35,7 +35,7 @@ import {PathUtil} from '../common/path.util';
         <label class="btn btn-primary" (click)="deleteCurrentDirectory()">Delete directory</label>
       </div>
       <div class="dir-control">
-        <label class="btn btn-primary" (click)="createDirectory()">New directory</label>
+        <button class="btn btn-primary" (click)="createDirectory()">New directory</button>
         <input class="new-dir-name" type="text" [(ngModel)]="newDirectoryName"/>
       </div>
     </div>
