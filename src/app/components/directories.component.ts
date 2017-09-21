@@ -75,8 +75,8 @@ export class DirectoriesComponent implements OnInit {
       return;
     }
 
-    const libraryId = this.explorerService.getSelectedLibraryId();
     const currentDirPath = ApiHelper.verifyPath(currentDir.treePath);
+    const libraryId = this.explorerService.getSelectedLibraryId();
 
     const OPNAME = 'Deleting directory';
     this.loaderService.startOperation(OPNAME);
