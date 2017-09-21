@@ -5,7 +5,6 @@ import {LoaderService} from '../services/loader.service';
 import {ContentType, ExplorerService} from '../services/explorer.service';
 import {ApiHelper} from '../common/api.helper';
 import {PathUtil} from '../common/path.util';
-import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
 
 @Component({
   selector: 'app-directories',
