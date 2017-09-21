@@ -120,6 +120,7 @@ export class DirectoryComponent implements OnInit {
       .then(response => {
         this.loaderService.stopOperation(OPNAME);
         this.explorerService.reloadDirectoryTree();
+        this.newDirectoryName = null;
       }, rejectReason => {
         this.loaderService.stopOperation(OPNAME);
         this.alertService.error('Failed to create new directory (' + rejectReason + ')');
