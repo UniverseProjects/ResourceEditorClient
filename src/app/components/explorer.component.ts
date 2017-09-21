@@ -10,11 +10,9 @@ import {ContentType, ExplorerService} from '../services/explorer.service';
       display: inline-block;
       vertical-align: top;
     }
-
     .btn-group {
       padding-bottom: 15px;
     }
-
     .items-container {
     }
   `],
