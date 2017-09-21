@@ -70,6 +70,10 @@ export class DirectoriesComponent implements OnInit {
 
   deleteCurrentDirectory() {
     const currentDir = this.explorerService.getCurrentDirectory();
+    if (currentDir.treePath === '/') {
+      this.alertService.warn('Can\'t delete the root directory');
+      return;
+    }
     if (currentDir.children.length > 0) {
       this.alertService.warn('Can\'t delete a directory with child directories');
       return;
