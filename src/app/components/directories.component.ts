@@ -5,6 +5,7 @@ import {LoaderService} from '../services/loader.service';
 import {ContentType, ExplorerService} from '../services/explorer.service';
 import {ApiHelper} from '../common/api.helper';
 import {PathUtil} from '../common/path.util';
+import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
 
 @Component({
   selector: 'app-directories',
@@ -32,10 +33,14 @@ import {PathUtil} from '../common/path.util';
         <span class="current-dir-value">{{currentDirectory}}</span>
       </div>
       <div class="dir-control">
-        <label class="btn btn-primary" (click)="deleteCurrentDirectory()">Delete directory</label>
+        <button class="btn btn-danger" 
+                mwlConfirmationPopover placement="right" title="Are you sure?"
+                message="Do you really want to delete the current directory?"
+                (confirm)="deleteCurrentDirectory()">Delete this directory</button>
+
       </div>
       <div class="dir-control">
-        <button class="btn btn-primary" (click)="createDirectory()">New directory</button>
+        <button class="btn btn-primary" (click)="createDirectory()">Create new directory</button>
         <input class="new-dir-name" type="text" [(ngModel)]="newDirectoryName"/>
       </div>
     </div>

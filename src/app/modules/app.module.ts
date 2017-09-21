@@ -25,6 +25,7 @@ import {SpritesComponent} from '../components/sprites.component';
 import {AnimatedSpritesComponent} from '../components/animated.sprites.component';
 import {PropertiesComponent} from '../components/properties.component';
 import {DirectoriesComponent} from '../components/directories.component';
+import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
 
 @NgModule({
     imports: [
@@ -36,6 +37,9 @@ import {DirectoriesComponent} from '../components/directories.component';
         AlertModule.forRoot(),
         ButtonsModule.forRoot(),
         LoadingModule,
+        ConfirmationPopoverModule.forRoot({
+          confirmButtonType: 'danger' // set defaults here
+        }),
     ],
     declarations: [
         AppComponent,
