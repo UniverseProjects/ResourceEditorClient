@@ -24,7 +24,7 @@ import {ThumbnailsComponent} from '../components/thumbnails.component';
 import {SpritesComponent} from '../components/sprites.component';
 import {AnimatedSpritesComponent} from '../components/animated.sprites.component';
 import {PropertiesComponent} from '../components/properties.component';
-import {DirectoriesComponent} from '../components/directories.component';
+import {DirectoryComponent} from '../components/directory.component';
 import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
 
 @NgModule({
@@ -51,7 +51,7 @@ import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
         ImagesComponent,
         SpritesComponent,
         AnimatedSpritesComponent,
-        DirectoriesComponent,
+        DirectoryComponent,
         ExplorerComponent,
     ],
     providers: [

@@ -48,7 +48,7 @@ import {PathUtil} from '../common/path.util';
     TreeApi,
   ],
 })
-export class DirectoriesComponent implements OnInit {
+export class DirectoryComponent implements OnInit {
   active = false;
   currentDirectory: string = null;
   newDirectoryName: string = null;
@@ -62,7 +62,7 @@ export class DirectoriesComponent implements OnInit {
 
   ngOnInit(): void {
     this.explorerService.reloadContent$.subscribe((contentType) => {
-      if (contentType === ContentType.DIRECTORIES) {
+      if (contentType === ContentType.DIRECTORY) {
         this.loadContent(this.explorerService.getCurrentDirectoryPath());
         this.active = true;
       } else {

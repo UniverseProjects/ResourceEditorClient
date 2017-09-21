@@ -20,14 +20,10 @@ import {ContentType, ExplorerService} from '../services/explorer.service';
     <app-directory-tree></app-directory-tree>
     <div class="directory-content">
       <div class="btn-group">
-        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()"
-               btnRadio="IMAGES">Images</label>
-        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()"
-               btnRadio="SPRITES">Sprites</label>
-        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()"
-               btnRadio="ANIMATED_SPRITES">Animated Sprites</label>
-        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()"
-               btnRadio="DIRECTORIES">Directories</label>
+        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="DIRECTORY">Directory</label>
+        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="IMAGES">Images</label>
+        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="SPRITES">Sprites</label>
+        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="ANIMATED_SPRITES">Animated Sprites</label>
       </div>
       <div>
         <div class="items-container">
@@ -50,7 +46,7 @@ export class ExplorerComponent implements OnInit {
 
   private readonly LS_CONTENT_TYPE = 'active.content.type';
 
-  contentTypeStr = 'IMAGES';
+  contentTypeStr = 'DIRECTORY';
 
   constructor(private explorerService: ExplorerService) {
   }
@@ -80,8 +76,8 @@ export class ExplorerComponent implements OnInit {
       this.explorerService.reloadSprites();
     } else if (contentType === ContentType.ANIMATED_SPRITES) {
       this.explorerService.reloadAnimatedSprites();
-    } else if (contentType === ContentType.DIRECTORIES) {
-      this.explorerService.reloadDirectories();
+    } else if (contentType === ContentType.DIRECTORY) {
+      this.explorerService.reloadDirectory();
     } else {
       throw new Error('Unhandled case: ' + this.contentTypeStr);
     }

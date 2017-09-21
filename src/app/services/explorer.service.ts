@@ -3,10 +3,10 @@ import {Subject} from 'rxjs/Subject';
 import {Directory} from '../swagger/model/Directory';
 
 export enum ContentType {
+  DIRECTORY,
   IMAGES,
   SPRITES,
   ANIMATED_SPRITES,
-  DIRECTORIES
 }
 
 @Injectable()
@@ -45,6 +45,10 @@ export class ExplorerService {
     this.reloadDirectoryTree_.next();
   }
 
+  reloadDirectory(): void {
+    this.reloadContent_.next(ContentType.DIRECTORY);
+  }
+
   reloadImages(): void {
     this.reloadContent_.next(ContentType.IMAGES);
   }
@@ -55,10 +59,6 @@ export class ExplorerService {
 
   reloadAnimatedSprites(): void {
     this.reloadContent_.next(ContentType.ANIMATED_SPRITES);
-  }
-
-  reloadDirectories(): void {
-    this.reloadContent_.next(ContentType.DIRECTORIES);
   }
 
 }
