@@ -157,7 +157,7 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
     }
     const node = this.treeModel.getNodeById(lastActiveNodeId);
     if (!node) {
-      console.warn("Last-active node is no longer present in the tree: " + lastActiveNodeId);
+      //Last-active node is no longer present in the tree
       return;
     }
     const root = this.treeModel.getFirstRoot();
