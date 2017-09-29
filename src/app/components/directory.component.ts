@@ -40,7 +40,7 @@ import {PathUtil} from '../common/path.util';
       </div>
       <div class="dir-control">
         <button class="btn btn-primary" (click)="createDirectory()">Create new directory</button>
-        <input class="new-dir-name" type="text" placeholder="Enter directory name..." [(ngModel)]="newDirectoryName"/>
+        <input class="new-dir-name" type="text" placeholder="Enter directory name..." [(ngModel)]="newDirectoryName" (keyup.enter)="createDirectory()"/>
       </div>
     </div>
   `,
