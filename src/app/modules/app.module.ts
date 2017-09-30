@@ -26,6 +26,11 @@ import {AnimatedSpritesComponent} from '../components/animated.sprites.component
 import {PropertiesComponent} from '../components/properties.component';
 import {DirectoryComponent} from '../components/directory.component';
 import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
+import {DirectoryService} from '../services/directory.service';
+import {TreeApi} from '../swagger/api/TreeApi';
+import {ImageApi} from '../swagger/api/ImageApi';
+import {SpriteTypeApi} from '../swagger/api/SpriteTypeApi';
+import {AnimatedSpriteTypeApi} from '../swagger/api/AnimatedSpriteTypeApi';
 
 @NgModule({
     imports: [
@@ -58,6 +63,11 @@ import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
         AlertService,
         LoaderService,
         ExplorerService,
+        DirectoryService,
+        TreeApi,
+        ImageApi,
+        SpriteTypeApi,
+        AnimatedSpriteTypeApi,
     ],
     bootstrap: [
         AppComponent,

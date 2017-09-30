@@ -5,6 +5,7 @@ import {ContentType, ExplorerService} from '../services/explorer.service';
 import {AnimatedSpriteTypeApi} from '../swagger/api/AnimatedSpriteTypeApi';
 import {AnimatedSpriteType} from '../swagger/model/AnimatedSpriteType';
 import {ApiHelper} from '../common/api.helper';
+import {DirectoryService} from '../services/directory.service';
 
 @Component({
   selector: 'app-animated-sprites',
@@ -15,9 +16,6 @@ import {ApiHelper} from '../common/api.helper';
       <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
     </div>
   `,
-  providers: [
-    AnimatedSpriteTypeApi,
-  ],
 })
 export class AnimatedSpritesComponent implements OnInit {
   active = false;
@@ -28,13 +26,14 @@ export class AnimatedSpritesComponent implements OnInit {
     private alertService: AlertService,
     private loaderService: LoaderService,
     private explorerService: ExplorerService,
+    private directoryService: DirectoryService,
     private animatedSpriteTypeApi: AnimatedSpriteTypeApi,
   ) { }
 
   ngOnInit(): void {
     this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.ANIMATED_SPRITES) {
-        this.loadAnimatedSprites(this.explorerService.getCurrentDirectoryPath());
+        this.loadAnimatedSprites(this.directoryService.getCurrentDirectoryPath());
         this.active = true;
       } else {
         this.loadAnimatedSprites(null);

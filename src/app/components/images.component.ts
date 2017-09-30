@@ -5,6 +5,7 @@ import {ContentType, ExplorerService} from '../services/explorer.service';
 import {ImageApi} from '../swagger/api/ImageApi';
 import {Image} from '../swagger/model/Image';
 import {ApiHelper} from '../common/api.helper';
+import {DirectoryService} from '../services/directory.service';
 
 @Component({
   selector: 'app-images',
@@ -29,9 +30,6 @@ import {ApiHelper} from '../common/api.helper';
       </div> 
     </div>
   `,
-  providers: [
-    ImageApi,
-  ],
 })
 export class ImagesComponent implements OnInit {
   active = false;
@@ -43,13 +41,14 @@ export class ImagesComponent implements OnInit {
     private alertService: AlertService,
     private loaderService: LoaderService,
     private explorerService: ExplorerService,
+    private directoryService: DirectoryService,
     private imageApi: ImageApi,
   ) { }
 
   ngOnInit(): void {
     this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.IMAGES) {
-        this.loadImages(this.explorerService.getCurrentDirectoryPath());
+        this.loadImages(this.directoryService.getCurrentDirectoryPath());
         this.active = true;
       } else {
         this.loadImages(null);

@@ -5,6 +5,7 @@ import {LoaderService} from '../services/loader.service';
 import {ContentType, ExplorerService} from '../services/explorer.service';
 import {ApiHelper} from '../common/api.helper';
 import {PathUtil} from '../common/path.util';
+import {DirectoryService} from '../services/directory.service';
 
 @Component({
   selector: 'app-directories',
@@ -44,9 +45,6 @@ import {PathUtil} from '../common/path.util';
       </div>
     </div>
   `,
-  providers: [
-    TreeApi,
-  ],
 })
 export class DirectoryComponent implements OnInit {
   active = false;
@@ -57,13 +55,14 @@ export class DirectoryComponent implements OnInit {
     private alertService: AlertService,
     private loaderService: LoaderService,
     private explorerService: ExplorerService,
+    private directoryService: DirectoryService,
     private treeApi: TreeApi,
   ) { }
 
   ngOnInit(): void {
     this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.DIRECTORY) {
-        this.loadContent(this.explorerService.getCurrentDirectoryPath());
+        this.loadContent(this.directoryService.getCurrentDirectoryPath());
         this.active = true;
       } else {
         this.loadContent(null);
@@ -73,7 +72,7 @@ export class DirectoryComponent implements OnInit {
   }
 
   deleteCurrentDirectory() {
-    const currentDir = this.explorerService.getCurrentDirectory();
+    const currentDir = this.directoryService.getCurrentDirectory();
     if (currentDir.treePath === '/') {
       this.alertService.warn('Can\'t delete the root directory');
       return;
@@ -90,9 +89,10 @@ export class DirectoryComponent implements OnInit {
     this.loaderService.startOperation(OPNAME);
     this.treeApi.deleteDirectory(libraryId, currentDirPath)
       .toPromise()
-      .then(response => {
+      .then(() => {
         this.loaderService.stopOperation(OPNAME);
-        this.explorerService.reloadDirectoryTree();
+        this.directoryService.changeDirectoryToParent();
+        this.directoryService.reloadDirectoryTree();
       }, rejectReason => {
         this.loaderService.stopOperation(OPNAME);
         this.alertService.error('Failed to delete current directory (' + rejectReason + ')');
@@ -110,16 +110,16 @@ export class DirectoryComponent implements OnInit {
     }
 
     const libraryId = this.explorerService.getSelectedLibraryId();
-    const currentDir = this.explorerService.getCurrentDirectoryPath();
+    const currentDir = this.directoryService.getCurrentDirectoryPath();
     const newDirPath = ApiHelper.verifyPath(PathUtil.combine(currentDir, this.newDirectoryName));
 
     const OPNAME = 'Creating directory';
     this.loaderService.startOperation(OPNAME);
     this.treeApi.createDirectory(libraryId, newDirPath)
       .toPromise()
-      .then(response => {
+      .then(() => {
         this.loaderService.stopOperation(OPNAME);
-        this.explorerService.reloadDirectoryTree();
+        this.directoryService.reloadDirectoryTree();
         this.newDirectoryName = null;
       }, rejectReason => {
         this.loaderService.stopOperation(OPNAME);

@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ContentType, ExplorerService} from '../services/explorer.service';
+import {DirectoryService} from "../services/directory.service";
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-explorer',
@@ -42,23 +44,32 @@ import {ContentType, ExplorerService} from '../services/explorer.service';
     </div>
   `,
 })
-export class ExplorerComponent implements OnInit {
+export class ExplorerComponent implements OnInit, OnDestroy {
 
   private readonly LS_CONTENT_TYPE = 'active.content.type';
 
   contentTypeStr = 'DIRECTORY';
 
-  constructor(private explorerService: ExplorerService) {
-  }
+  private subscription: Subscription;
+
+  constructor(
+    private explorerService: ExplorerService,
+    private directoryService: DirectoryService,
+  ) {}
 
   ngOnInit(): void {
     const lastContentTypeStr = localStorage.getItem(this.LS_CONTENT_TYPE);
     if (lastContentTypeStr) {
       this.contentTypeStr = lastContentTypeStr;
     }
-    this.explorerService.changeDirectory$.subscribe(() => {
+    this.subscription = this.directoryService.directoryChanged$.subscribe(() => {
       this.reloadContent();
     });
+  }
+
+  ngOnDestroy(): void {
+    // always clean-up subscriptions when a component is destroyed
+    this.subscription.unsubscribe();
   }
 
   onClickContentType(): void {
@@ -70,14 +81,14 @@ export class ExplorerComponent implements OnInit {
 
     if (contentType === undefined || contentType === null) {
       throw new Error('Invalid enum string value: ' + this.contentTypeStr);
+    } else if (contentType === ContentType.DIRECTORY) {
+      this.explorerService.reloadDirectory();
     } else if (contentType === ContentType.IMAGES) {
       this.explorerService.reloadImages();
     } else if (contentType === ContentType.SPRITES) {
       this.explorerService.reloadSprites();
     } else if (contentType === ContentType.ANIMATED_SPRITES) {
       this.explorerService.reloadAnimatedSprites();
-    } else if (contentType === ContentType.DIRECTORY) {
-      this.explorerService.reloadDirectory();
     } else {
       throw new Error('Unhandled case: ' + this.contentTypeStr);
     }

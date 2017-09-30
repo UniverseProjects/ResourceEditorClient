@@ -1,12 +1,8 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ITreeState, TreeComponent, TreeModel, TreeNode} from 'angular-tree-component';
-import {AlertService} from '../services/alert.service';
-import {LoaderService} from '../services/loader.service';
-import {ExplorerService} from '../services/explorer.service';
-import {TreeApi} from '../swagger/api/TreeApi';
 import {Directory} from '../swagger/model/Directory';
-import {ResourceLibraryWithChildren} from '../swagger/model/ResourceLibraryWithChildren';
 import {Subscription} from 'rxjs/Subscription';
+import {DirectoryService} from '../services/directory.service';
 
 @Component({
   selector: 'app-directory-tree',
@@ -26,9 +22,6 @@ import {Subscription} from 'rxjs/Subscription';
       <tree-root #tree [(state)]="state" [nodes]="treeNodes" (activate)="onActivateNode()"
                  (deactivate)="onDeactivateNode()"></tree-root>
     </div>`,
-  providers: [
-    TreeApi,
-  ],
 })
 export class DirectoryTreeComponent implements OnInit, OnDestroy {
 
@@ -40,32 +33,37 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
   lastActiveNode: TreeNode = null;
   lastActivateEventTime: number = 0;
 
-  private directoriesByPath = new Map<string, Directory>();
-
   private readonly LS_ACTIVE_NODE = 'active.tree.node';
 
-  private subscription: Subscription;
+  private subscriptions: Subscription[] = [];
 
   constructor(
-    private explorerService: ExplorerService,
-    private alertService: AlertService,
-    private loaderService: LoaderService,
-    private treeApi: TreeApi,
+    private directoryService: DirectoryService,
   ) {}
 
   ngOnInit(): void {
     this.treeModel = this.treeComponent.treeModel;
 
-    this.subscription = this.explorerService.reloadDirectoryTree$.subscribe(() => {
-      this.reloadDirectoryTree();
-    });
+    this.subscriptions.push(this.directoryService.directoryTreeReloaded$.subscribe((rootDirectory) => {
+      this.updateTreeModel(rootDirectory);
+    }));
 
-    this.reloadDirectoryTree();
+    this.subscriptions.push(this.directoryService.directoryChanged$.subscribe((directory) => {
+      const path = directory.treePath;
+      const node = this.treeModel.getNodeById(path);
+      if (!node) {
+        throw new Error('Tree node not found for directory path: ' + path);
+      }
+      this.activateNode(node);
+    }));
+
+    this.directoryService.reloadDirectoryTree();
   }
 
   ngOnDestroy(): void {
     // always clean-up subscriptions when a component is destroyed
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.length = 0;
   }
 
   onActivateNode(): void {
@@ -80,12 +78,7 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
     this.lastActiveNode = activeNode;
     localStorage.setItem(this.LS_ACTIVE_NODE, treePath);
 
-    const directory = this.directoriesByPath.get(treePath);
-    if (!directory) {
-      throw new Error('Directory not found for tree path: ' + treePath);
-    }
-
-    this.explorerService.changeDirectory(directory);
+    this.directoryService.changeDirectory(treePath);
   }
 
   onDeactivateNode(): void {
@@ -96,69 +89,28 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
     }
   }
 
-  private clear(): void {
-    this.directoriesByPath.clear();
+  private updateTreeModel(rootDirectory: Directory) {
     this.treeNodes.length = 0;
+    this.treeNodes.push(this.createTreeNode(rootDirectory));
     this.treeModel.update();
-  }
 
-  private reloadDirectoryTree(): void {
-    const OPNAME = 'Loading directories';
-    this.loaderService.startOperation(OPNAME);
-    this.treeApi.getTree(this.explorerService.getSelectedLibraryId())
-      .toPromise()
-      .then((resourceLibrary: ResourceLibraryWithChildren) => {
-        this.clear();
-        this.treeNodes.push(this.createRootNode(resourceLibrary));
-        this.treeModel.update();
-
-        this.loaderService.stopOperation(OPNAME);
-
-        this.reactivateLastNode();
-      }, (rejectReason) => {
-        this.clear();
-        this.treeNodes.push(this.createRootNode());
-        this.treeModel.update();
-
-        this.alertService.error('Failed to load directories (' + rejectReason + ')');
-        this.loaderService.stopOperation(OPNAME);
-      });
-  }
-
-  private createRootNode(resourceLibrary?: ResourceLibraryWithChildren) {
-    // we need to create a surrogate root directory object because it doesn't exist
-    let rootDirectory : Directory = {
-      name: 'root',
-      treePath: '/',
-      parent: null,
-      children: resourceLibrary ? resourceLibrary.children.map((child) => child) : [], // <-- empty children array
-    };
-    return this.createTreeNode(rootDirectory);
+    // if applicable, re-activate the node that was active before the tree update, or the root
+    const savedNodeId = localStorage.getItem(this.LS_ACTIVE_NODE);
+    const savedNode = savedNodeId ? this.treeModel.getNodeById(savedNodeId) : null;
+    this.activateNode(savedNode || this.treeModel.getFirstRoot());
   }
 
   private createTreeNode(directory: Directory): any {
-    const treePath = directory.treePath;
-    if (this.directoriesByPath.has(treePath)) {
-      throw new Error('Directory already registered for tree path: ' + treePath);
-    }
-    this.directoriesByPath.set(treePath, directory);
-
     return {
-      id: treePath,
+      id: directory.treePath,
       name: directory.name,
       children: directory.children.map((child) => this.createTreeNode(child)),
     };
   }
 
-  private reactivateLastNode(): void {
-    const lastActiveNodeId = localStorage.getItem(this.LS_ACTIVE_NODE);
-    if (!lastActiveNodeId) {
-      return;
-    }
-    const node = this.treeModel.getNodeById(lastActiveNodeId);
+  private activateNode(node: TreeNode) {
     if (!node) {
-      //Last-active node is no longer present in the tree
-      return;
+      throw new Error('Node to activate must be provided');
     }
     const root = this.treeModel.getFirstRoot();
     this.expandPath(root, node);
