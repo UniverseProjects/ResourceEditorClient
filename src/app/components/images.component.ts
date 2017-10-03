@@ -10,6 +10,10 @@ import {DirectoryService} from '../services/directory.service';
 @Component({
   selector: 'app-images',
   styles: [`
+    .controls-top {
+      margin-bottom: 10px;
+    }
+
     .image-preview-container {
       margin-bottom: 20px;
     }
@@ -20,8 +24,12 @@ import {DirectoryService} from '../services/directory.service';
   `],
   template: `
     <div class="app-images-container" *ngIf="active">
-      <!--<h3>Images</h3>-->
-      <app-thumbnails [hidden]="selectedImage" [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+      <div [hidden]="selectedImage">
+        <div class="controls-top">
+          <button class="btn btn-primary" (click)="uploadImage()">Upload new image</button>
+        </div>
+        <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+      </div>
       <div *ngIf="selectedImage">
         <div class="image-preview-container">
           <img class="image-preview" src="{{selectedImage.gcsUrl}}"/>
@@ -59,6 +67,10 @@ export class ImagesComponent implements OnInit {
 
   onThumbnailSelected(selectedIndex: number): void {
     this.selectedImage = this.images[selectedIndex];
+  }
+
+  uploadImage() {
+    this.alertService.warn('Not implemented yet!')
   }
 
   private loadImages(directory: string): void {
