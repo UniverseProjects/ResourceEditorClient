@@ -14,9 +14,14 @@ import {DirectoryService} from '../services/directory.service';
       margin-bottom: 10px;
     }
 
+    .controls-bottom {
+      margin-top: 10px;
+    }
+
     .image-preview-container {
       margin-bottom: 20px;
     }
+
     .image-preview {
       max-width: 400px;
       max-height: 400px;
@@ -35,7 +40,13 @@ import {DirectoryService} from '../services/directory.service';
           <img class="image-preview" src="{{selectedImage.gcsUrl}}"/>
         </div>
         <app-properties [object]="selectedImage"></app-properties>
-      </div> 
+        <div class="controls-bottom">
+          <button class="btn btn-danger"
+                  mwlConfirmationPopover placement="right" title="Are you sure?"
+                  message="Do you really want to delete this image?"
+                  (confirm)="deleteImage()">Delete this image</button>
+        </div>
+      </div>
     </div>
   `,
 })
@@ -71,6 +82,10 @@ export class ImagesComponent implements OnInit {
 
   uploadImage() {
     this.alertService.warn('Not implemented yet!')
+  }
+
+  deleteImage() {
+    this.alertService.warn('Not implemented yet!');
   }
 
   private loadImages(directory: string): void {
