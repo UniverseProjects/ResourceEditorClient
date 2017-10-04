@@ -12,7 +12,6 @@ import {DirectoryService} from '../services/directory.service';
   styles: [``],
   template: `
     <div class="app-animated-sprites-container" *ngIf="active">
-      <!--<h3>Animated Sprites</h3>-->
       <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
     </div>
   `,

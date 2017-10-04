@@ -27,7 +27,6 @@ import {DirectoryService} from '../services/directory.service';
   `],
   template: `
     <div class="app-directories-container" *ngIf="active">
-      <!--<h3>Directories</h3>-->
       <div>
         <span class="current-dir-label">Current directory: </span>
         <span class="current-dir-value">{{currentDirectory}}</span>
