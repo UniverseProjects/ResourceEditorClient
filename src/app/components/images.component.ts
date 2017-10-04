@@ -10,7 +10,7 @@ import {Headers, Http, RequestOptions} from '@angular/http';
 import {Subscription} from 'rxjs/Subscription';
 
 @Component({
-  selector: 'app-images',
+  selector: 'app-images-view',
   styles: [`
     .controls-top {
       margin-bottom: 10px;
@@ -34,19 +34,21 @@ import {Subscription} from 'rxjs/Subscription';
     
   `],
   template: `
-    <div class="app-images-container" *ngIf="active">
+    <div class="images-view-container" *ngIf="active">
       <div [hidden]="selectedImage">
         <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
         <div class="controls-bottom">
           <div class="input-group">
             <label class="input-group-btn">
               <span class="btn btn-default">
-                  Browse&hellip; <input type="file" accept=".png, .jpg" style="display: none;" (change)="onFileSelectionUpdate($event)">
+                  Browse&hellip; <input type="file" accept=".png, .jpg" style="display: none;"
+                                        (change)="onFileSelectionUpdate($event)">
               </span>
             </label>
-            <input id="uploadFileName" type="text" class="form-control" readonly placeholder="Select image to upload" value="{{fileToUpload ? fileToUpload.name : null}}">
+            <input id="uploadFileName" type="text" class="form-control" readonly placeholder="Select image to upload"
+                   value="{{fileToUpload ? fileToUpload.name : null}}">
             <button id="uploadImageBtn" class="btn btn-default" (click)="uploadImage()">&#9658; UPLOAD</button>
-          </div>  
+          </div>
         </div>
       </div>
       <div *ngIf="selectedImage">

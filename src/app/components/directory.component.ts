@@ -9,7 +9,7 @@ import {DirectoryService} from '../services/directory.service';
 import {Subscription} from 'rxjs/Subscription';
 
 @Component({
-  selector: 'app-directories',
+  selector: 'app-directory-view',
   styles: [`
     .current-dir-label {
       font-size: 18px;
@@ -27,14 +27,15 @@ import {Subscription} from 'rxjs/Subscription';
     }
   `],
   template: `
-    <div class="app-directories-container" *ngIf="active">
+    <div class="directory-view-container" *ngIf="active">
       <div>
         <span class="current-dir-label">Current directory: </span>
         <span class="current-dir-value">{{currentDirectory}}</span>
       </div>
       <div class="dir-control">
         <div class="input-group new-dir-name ">
-          <input class="form-control" type="text" placeholder="New directory name..." [(ngModel)]="newDirectoryName" (keyup.enter)="createDirectory()"/>
+          <input class="form-control" type="text" placeholder="New directory name..." [(ngModel)]="newDirectoryName"
+                 (keyup.enter)="createDirectory()"/>
           <div class="input-group-btn">
             <button class="btn btn-default" (click)="createDirectory()">Create</button>
           </div>
@@ -44,7 +45,8 @@ import {Subscription} from 'rxjs/Subscription';
         <button class="btn btn-danger"
                 mwlConfirmationPopover placement="right" title="Are you sure?"
                 message="Do you really want to delete the current directory?"
-                (confirm)="deleteCurrentDirectory()">Delete this directory</button>
+                (confirm)="deleteCurrentDirectory()">Delete this directory
+        </button>
       </div>
     </div>
   `,

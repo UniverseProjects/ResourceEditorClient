@@ -9,10 +9,10 @@ import {DirectoryService} from '../services/directory.service';
 import {Subscription} from 'rxjs/Subscription';
 
 @Component({
-  selector: 'app-animated-sprites',
+  selector: 'app-animated-sprites-view',
   styles: [``],
   template: `
-    <div class="app-animated-sprites-container" *ngIf="active">
+    <div class="animated-sprites-view-container" *ngIf="active">
       <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
     </div>
   `,

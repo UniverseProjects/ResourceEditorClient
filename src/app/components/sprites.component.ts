@@ -9,7 +9,7 @@ import {DirectoryService} from '../services/directory.service';
 import {Subscription} from 'rxjs/Subscription';
 
 @Component({
-  selector: 'app-sprites',
+  selector: 'app-sprites-view',
   styles: [`
     .controls-top {
       margin-bottom: 10px;
@@ -29,7 +29,7 @@ import {Subscription} from 'rxjs/Subscription';
     }
   `],
   template: `
-    <div class="app-sprites-container" *ngIf="active">
+    <div class="sprites-view-container" *ngIf="active">
       <div [hidden]="selectedSprite">
         <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
       </div>
