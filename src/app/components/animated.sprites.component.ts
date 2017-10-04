@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
 import {ContentType, ExplorerService} from '../services/explorer.service';
@@ -6,6 +6,7 @@ import {AnimatedSpriteTypeApi} from '../swagger/api/AnimatedSpriteTypeApi';
 import {AnimatedSpriteType} from '../swagger/model/AnimatedSpriteType';
 import {ApiHelper} from '../common/api.helper';
 import {DirectoryService} from '../services/directory.service';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-animated-sprites',
@@ -16,10 +17,12 @@ import {DirectoryService} from '../services/directory.service';
     </div>
   `,
 })
-export class AnimatedSpritesComponent implements OnInit {
+export class AnimatedSpritesComponent implements OnInit, OnDestroy {
   active = false;
   animatedSprites: AnimatedSpriteType[] = [];
   thumbnailUrls: string[] = [];
+
+  private subscription: Subscription;
 
   constructor(
     private alertService: AlertService,
@@ -30,7 +33,7 @@ export class AnimatedSpritesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.explorerService.reloadContent$.subscribe((contentType) => {
+    this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.ANIMATED_SPRITES) {
         this.loadAnimatedSprites(this.directoryService.getCurrentDirectoryPath());
         this.active = true;
@@ -39,6 +42,10 @@ export class AnimatedSpritesComponent implements OnInit {
         this.active = false;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onThumbnailSelected(selectedIndex: number): void {

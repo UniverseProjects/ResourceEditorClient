@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
 import {ContentType, ExplorerService} from '../services/explorer.service';
@@ -6,6 +6,7 @@ import {SpriteTypeApi} from '../swagger/api/SpriteTypeApi';
 import {SpriteType} from '../swagger/model/SpriteType';
 import {ApiHelper} from '../common/api.helper';
 import {DirectoryService} from '../services/directory.service';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-sprites',
@@ -48,11 +49,13 @@ import {DirectoryService} from '../services/directory.service';
     </div>
   `,
 })
-export class SpritesComponent implements OnInit {
+export class SpritesComponent implements OnInit, OnDestroy {
   active = false;
   sprites: SpriteType[] = [];
   thumbnailUrls: string[] = [];
   selectedSprite: SpriteType;
+
+  private subscription: Subscription;
 
   constructor(
     private alertService: AlertService,
@@ -63,7 +66,7 @@ export class SpritesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.explorerService.reloadContent$.subscribe((contentType) => {
+    this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.SPRITES) {
         this.loadSprites(this.directoryService.getCurrentDirectoryPath());
         this.active = true;
@@ -72,6 +75,10 @@ export class SpritesComponent implements OnInit {
         this.active = false;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onThumbnailSelected(selectedIndex: number): void {

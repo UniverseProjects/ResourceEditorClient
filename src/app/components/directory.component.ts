@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TreeApi} from '../swagger/api/TreeApi';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
@@ -6,6 +6,7 @@ import {ContentType, ExplorerService} from '../services/explorer.service';
 import {ApiHelper} from '../common/api.helper';
 import {PathUtil} from '../common/path.util';
 import {DirectoryService} from '../services/directory.service';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-directories',
@@ -48,10 +49,12 @@ import {DirectoryService} from '../services/directory.service';
     </div>
   `,
 })
-export class DirectoryComponent implements OnInit {
+export class DirectoryComponent implements OnInit, OnDestroy {
   active = false;
   currentDirectory: string = null;
   newDirectoryName: string = null;
+
+  private subscription: Subscription;
 
   constructor(
     private alertService: AlertService,
@@ -62,7 +65,7 @@ export class DirectoryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.explorerService.reloadContent$.subscribe((contentType) => {
+    this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.DIRECTORY) {
         this.loadContent(this.directoryService.getCurrentDirectoryPath());
         this.active = true;
@@ -71,6 +74,10 @@ export class DirectoryComponent implements OnInit {
         this.active = false;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   deleteCurrentDirectory() {

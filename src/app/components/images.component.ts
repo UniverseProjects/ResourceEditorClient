@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
 import {ContentType, ExplorerService} from '../services/explorer.service';
@@ -7,6 +7,7 @@ import {Image} from '../swagger/model/Image';
 import {ApiHelper} from '../common/api.helper';
 import {DirectoryService} from '../services/directory.service';
 import {Headers, Http, RequestOptions} from '@angular/http';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-images',
@@ -64,12 +65,14 @@ import {Headers, Http, RequestOptions} from '@angular/http';
     </div>
   `,
 })
-export class ImagesComponent implements OnInit {
+export class ImagesComponent implements OnInit, OnDestroy {
   active = false;
   images: Image[] = [];
   thumbnailUrls: string[] = [];
   selectedImage: Image;
   fileToUpload: File;
+
+  private subscription: Subscription;
 
   constructor(
     private alertService: AlertService,
@@ -81,7 +84,8 @@ export class ImagesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.explorerService.reloadContent$.subscribe((contentType) => {
+    this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
+      console.log('Images - reload content');
       if (contentType === ContentType.IMAGES) {
         this.loadImages(this.directoryService.getCurrentDirectoryPath());
         this.active = true;
@@ -90,6 +94,10 @@ export class ImagesComponent implements OnInit {
         this.active = false;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   onThumbnailSelected(selectedIndex: number): void {
