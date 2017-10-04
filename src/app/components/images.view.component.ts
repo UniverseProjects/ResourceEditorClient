@@ -8,6 +8,7 @@ import {ApiHelper} from '../common/api.helper';
 import {DirectoryService} from '../services/directory.service';
 import {Headers, Http, RequestOptions} from '@angular/http';
 import {Subscription} from 'rxjs/Subscription';
+import {PathUtil} from '../common/path.util';
 
 @Component({
   selector: 'app-images-view',
@@ -125,25 +126,28 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let formData:FormData = new FormData();
-    formData.append('uploadFile', this.fileToUpload, this.fileToUpload.name);
+    let libraryId = this.explorerService.getSelectedLibraryId();
+    let directoryPath = this.directoryService.getCurrentDirectoryPath();
+    let fileName = this.fileToUpload.name;
+    let filePath = ApiHelper.verifyPath(PathUtil.combine(directoryPath, fileName));
+
+    let contentType = this.getContentType(fileName);
+    if (!contentType) {
+      this.alertService.warn('Unsupported file type: ' + fileName);
+      return;
+    }
+
     let headers = new Headers();
-    /** No need to include Content-Type in Angular 4 */
-    // headers.append('Content-Type', 'multipart/form-data');
-    headers.append('Accept', 'application/json');
+    headers.append('Content-Type', contentType);
     let options = new RequestOptions({ headers: headers });
 
-    let libraryId = this.explorerService.getSelectedLibraryId();
-    let path = ApiHelper.verifyPath(this.directoryService.getCurrentDirectoryPath());
-    const uploadUrl = 'https://www.universeprojects.com/api/v1/upload/' + libraryId + '/' + path;
-
     const operation = this.loaderService.startOperation('Uploading file...');
-    this.http.post(uploadUrl, formData, options)
-      .map(res => res.json())
+    this.imageApi.uploadImage(libraryId, filePath, this.fileToUpload, options)
       .toPromise()
       .then(() => {
           operation.stop();
           console.log('upload success');
+          this.loadImages(directoryPath);
         },
         rejectReason => {
           operation.stop();
@@ -155,6 +159,20 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
 
   deleteImage() {
     this.alertService.warn('Not implemented yet!');
+  }
+
+  private getContentType(fileName: string): string {
+    fileName = fileName.toLowerCase();
+    if (fileName.endsWith('.gif')) {
+      return 'image/gif';
+    }
+    if (fileName.endsWith('.png')) {
+      return 'image/png';
+    }
+    if (fileName.endsWith('jpg') || fileName.endsWith('jpeg')) {
+      return 'image/jpeg';
+    }
+    return null;
   }
 
   private loadImages(directory: string): void {
