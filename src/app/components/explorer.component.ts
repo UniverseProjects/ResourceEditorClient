@@ -27,19 +27,11 @@ import {Subscription} from 'rxjs/Subscription';
         <label class="btn btn-lg btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="SPRITES">Sprites</label>
         <label class="btn btn-lg btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="ANIMATED_SPRITES">Animated Sprites</label>
       </div>
-      <div>
-        <div class="items-container">
-          <app-images></app-images>
-        </div>
-        <div class="items-container">
-          <app-sprites></app-sprites>
-        </div>
-        <div class="items-container">
-          <app-animated-sprites></app-animated-sprites>
-        </div>
-        <div class="items-container">
-          <app-directories></app-directories>
-        </div>
+      <div class="items-container">
+        <app-directories></app-directories>
+        <app-images></app-images>
+        <app-sprites></app-sprites>
+        <app-animated-sprites></app-animated-sprites>
       </div>
     </div>
   `,
