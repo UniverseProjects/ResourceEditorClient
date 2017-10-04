@@ -9,10 +9,42 @@ import {DirectoryService} from '../services/directory.service';
 
 @Component({
   selector: 'app-sprites',
-  styles: [``],
+  styles: [`
+    .controls-top {
+      margin-bottom: 10px;
+    }
+
+    .controls-bottom {
+      margin-top: 10px;
+    }
+
+    .preview-container {
+      margin-bottom: 20px;
+    }
+
+    .preview {
+      max-width: 400px;
+      max-height: 400px;
+    }
+  `],
   template: `
     <div class="app-sprites-container" *ngIf="active">
-      <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+      <div [hidden]="selectedSprite">
+        <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+      </div>
+      <div *ngIf="selectedSprite">
+        <div class="preview-container">
+          <img class="preview" src="{{selectedSprite.image.gcsUrl}}"/>
+        </div>
+        <app-properties [object]="selectedSprite"></app-properties>
+        <div class="controls-bottom">
+          <button class="btn btn-danger"
+                  mwlConfirmationPopover placement="right" title="Are you sure?"
+                  message="Do you really want to delete this sprite?"
+                  (confirm)="deleteSprite()">Delete this sprite
+          </button>
+        </div>
+      </div>
     </div>
   `,
 })
@@ -20,6 +52,7 @@ export class SpritesComponent implements OnInit {
   active = false;
   sprites: SpriteType[] = [];
   thumbnailUrls: string[] = [];
+  selectedSprite: SpriteType;
 
   constructor(
     private alertService: AlertService,
@@ -42,10 +75,15 @@ export class SpritesComponent implements OnInit {
   }
 
   onThumbnailSelected(selectedIndex: number): void {
-    console.log('Selected thumbnail index: ' + selectedIndex);
+    this.selectedSprite = this.sprites[selectedIndex];
+  }
+
+  deleteSprite() {
+    this.alertService.warn('Not implemented yet!');
   }
 
   private loadSprites(directory: string): void {
+    this.selectedSprite = null;
     if (!directory) {
       this.sprites.length = 0;
       this.thumbnailUrls.length = 0;
