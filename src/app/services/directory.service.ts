@@ -59,15 +59,14 @@ export class DirectoryService {
   }
 
   reloadDirectoryTree(): void {
-    const OPNAME = 'Loading directory tree';
-    this.loaderService.startOperation(OPNAME);
+    const operation = this.loaderService.startOperation('Loading directory tree');
     this.treeApi.getTree(this.explorerService.getSelectedLibraryId())
       .toPromise()
       .then((resourceLibrary: ResourceLibraryWithChildren) => {
-        this.loaderService.stopOperation(OPNAME);
+        operation.stop();
         this.refreshData(resourceLibrary);
       }, (rejectReason) => {
-        this.loaderService.stopOperation(OPNAME);
+        operation.stop();
         this.alertService.error('Failed to load directories (' + rejectReason + ')');
         this.refreshData();
       });

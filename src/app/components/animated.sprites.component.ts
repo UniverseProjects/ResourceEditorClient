@@ -56,17 +56,16 @@ export class AnimatedSpritesComponent implements OnInit {
     console.log('Loading animated sprites in directory: ' + directory);
     directory = ApiHelper.verifyPath(directory);
 
-    const OPNAME = 'Loading animated sprites';
-    this.loaderService.startOperation(OPNAME);
+    const operation = this.loaderService.startOperation('Loading animated sprites');
     this.animatedSpriteTypeApi.findAnimatedSpriteType(this.explorerService.getSelectedLibraryId(), directory)
       .toPromise()
       .then(response => {
+        operation.stop();
         this.animatedSprites = response.values;
         this.thumbnailUrls = this.animatedSprites.map(sprite => sprite.frames[0].spriteType.image.gcsUrl);
-        this.loaderService.stopOperation(OPNAME);
       }, (rejectReason) => {
+        operation.stop();
         this.alertService.error('Failed to load animated sprites (' + rejectReason + ')');
-        this.loaderService.stopOperation(OPNAME);
       });
   }
 

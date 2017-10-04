@@ -85,16 +85,15 @@ export class DirectoryComponent implements OnInit {
     const currentDirPath = ApiHelper.verifyPath(currentDir.treePath);
     const libraryId = this.explorerService.getSelectedLibraryId();
 
-    const OPNAME = 'Deleting directory';
-    this.loaderService.startOperation(OPNAME);
+    const operation = this.loaderService.startOperation('Deleting directory');
     this.treeApi.deleteDirectory(libraryId, currentDirPath)
       .toPromise()
       .then(() => {
-        this.loaderService.stopOperation(OPNAME);
+        operation.stop();
         this.directoryService.changeDirectoryToParent();
         this.directoryService.reloadDirectoryTree();
       }, rejectReason => {
-        this.loaderService.stopOperation(OPNAME);
+        operation.stop();
         this.alertService.error('Failed to delete current directory (' + rejectReason + ')');
       });
   }
@@ -113,16 +112,15 @@ export class DirectoryComponent implements OnInit {
     const currentDir = this.directoryService.getCurrentDirectoryPath();
     const newDirPath = ApiHelper.verifyPath(PathUtil.combine(currentDir, this.newDirectoryName));
 
-    const OPNAME = 'Creating directory';
-    this.loaderService.startOperation(OPNAME);
+    const operation = this.loaderService.startOperation('Creating directory');
     this.treeApi.createDirectory(libraryId, newDirPath)
       .toPromise()
       .then(() => {
-        this.loaderService.stopOperation(OPNAME);
+        operation.stop();
         this.directoryService.reloadDirectoryTree();
         this.newDirectoryName = null;
       }, rejectReason => {
-        this.loaderService.stopOperation(OPNAME);
+        operation.stop();
         this.alertService.error('Failed to create new directory (' + rejectReason + ')');
       });
   }

@@ -8,12 +8,13 @@ export class LoaderService {
   private subject = new Subject<string>();
   readonly runningOperation$ = this.subject.asObservable();
 
-  startOperation(opName: string) {
+  startOperation(opName: string): Operation {
     if (!opName) {
       throw new Error('Operation name can\'t be empty');
     }
 
     this.subject.next(opName);
+    return new Operation(this, opName);
   }
 
   stopOperation(opName: string) {
@@ -32,4 +33,16 @@ export class LoaderService {
     this.subject.next();
   }
 
+}
+
+export class Operation {
+  private loaderService: LoaderService;
+  private name: string;
+  constructor(loaderService: LoaderService, name: string) {
+    this.loaderService = loaderService;
+    this.name = name;
+  }
+  stop() {
+    this.loaderService.stopOperation(this.name);
+  }
 }

@@ -56,17 +56,16 @@ export class SpritesComponent implements OnInit {
     console.log('Loading sprites in directory: ' + directory);
     directory = ApiHelper.verifyPath(directory);
 
-    const OPNAME = 'Loading sprites';
-    this.loaderService.startOperation(OPNAME);
+    const operation = this.loaderService.startOperation('Loading sprites');
     this.spriteTypeApi.findSpriteType(this.explorerService.getSelectedLibraryId(), directory)
       .toPromise()
       .then(response => {
+        operation.stop();
         this.sprites = response.values;
         this.thumbnailUrls = this.sprites.map(sprite => sprite.image.gcsUrl);
-        this.loaderService.stopOperation(OPNAME);
       }, rejectReason => {
+        operation.stop();
         this.alertService.error('Failed to load sprites (' + rejectReason + ')');
-        this.loaderService.stopOperation(OPNAME);
       });
   }
 
