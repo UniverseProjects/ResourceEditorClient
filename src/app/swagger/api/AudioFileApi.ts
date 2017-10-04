@@ -67,25 +67,8 @@ export class AudioFileApi {
      * @param limit limit amount of entities returned
      * @param cursor cursor to fetch a batch (for paging)
      */
-    public findAudioFiles(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2003> {
+    public findAudioFiles(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2002> {
         return this.findAudioFilesWithHttpInfo(libraryId, treePath, tag, limit, cursor, extraHttpRequestParams)
-            .map((response: Response) => {
-                if (response.status === 204) {
-                    return undefined;
-                } else {
-                    return response.json() || {};
-                }
-            });
-    }
-
-    /**
-     * 
-     * @summary Generates an upload-URL for the path
-     * @param libraryId ID of the library
-     * @param treePath directory path to upload to
-     */
-    public generateAudioFileUpload(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2002> {
-        return this.generateAudioFileUploadWithHttpInfo(libraryId, treePath, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -121,6 +104,24 @@ export class AudioFileApi {
      */
     public updateAudioFile(libraryId: number, treePath: string, body: models.AudioFile, extraHttpRequestParams?: any): Observable<models.AudioFile> {
         return this.updateAudioFileWithHttpInfo(libraryId, treePath, body, extraHttpRequestParams)
+            .map((response: Response) => {
+                if (response.status === 204) {
+                    return undefined;
+                } else {
+                    return response.json() || {};
+                }
+            });
+    }
+
+    /**
+     * 
+     * @summary Upload an audio-file to the path
+     * @param libraryId ID of the library
+     * @param treePath directory path to upload to
+     * @param file the file to upload
+     */
+    public uploadAudioFile(libraryId: number, treePath: string, file: any, extraHttpRequestParams?: any): Observable<models.AudioFile> {
+        return this.uploadAudioFileWithHttpInfo(libraryId, treePath, file, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -237,50 +238,6 @@ export class AudioFileApi {
     }
 
     /**
-     * Generates an upload-URL for the path
-     * 
-     * @param libraryId ID of the library
-     * @param treePath directory path to upload to
-     */
-    public generateAudioFileUploadWithHttpInfo(libraryId: number, treePath: string, extraHttpRequestParams?: any): Observable<Response> {
-        const path = this.basePath + '/library/${libraryId}/generateAudioFileUpload/${treePath}'
-                    .replace('${' + 'libraryId' + '}', String(libraryId))
-                    .replace('${' + 'treePath' + '}', String(treePath));
-
-        let queryParameters = new URLSearchParams();
-        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
-        // verify required parameter 'libraryId' is not null or undefined
-        if (libraryId === null || libraryId === undefined) {
-            throw new Error('Required parameter libraryId was null or undefined when calling generateAudioFileUpload.');
-        }
-        // verify required parameter 'treePath' is not null or undefined
-        if (treePath === null || treePath === undefined) {
-            throw new Error('Required parameter treePath was null or undefined when calling generateAudioFileUpload.');
-        }
-        // to determine the Content-Type header
-        let consumes: string[] = [
-        ];
-
-        // to determine the Accept header
-        let produces: string[] = [
-            'application/json'
-        ];
-
-        let requestOptions: RequestOptionsArgs = new RequestOptions({
-            method: RequestMethod.Get,
-            headers: headers,
-            search: queryParameters,
-            withCredentials:this.configuration.withCredentials
-        });
-        // https://github.com/swagger-api/swagger-codegen/issues/4037
-        if (extraHttpRequestParams) {
-            requestOptions = (<any>Object).assign(requestOptions, extraHttpRequestParams);
-        }
-
-        return this.http.request(path, requestOptions);
-    }
-
-    /**
      * Load audio file for path
      * 
      * @param libraryId ID of the library
@@ -365,6 +322,67 @@ export class AudioFileApi {
             method: RequestMethod.Put,
             headers: headers,
             body: body == null ? '' : JSON.stringify(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            withCredentials:this.configuration.withCredentials
+        });
+        // https://github.com/swagger-api/swagger-codegen/issues/4037
+        if (extraHttpRequestParams) {
+            requestOptions = (<any>Object).assign(requestOptions, extraHttpRequestParams);
+        }
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * Upload an audio-file to the path
+     * 
+     * @param libraryId ID of the library
+     * @param treePath directory path to upload to
+     * @param file the file to upload
+     */
+    public uploadAudioFileWithHttpInfo(libraryId: number, treePath: string, file: any, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/uploadAudioFile/${treePath}'
+                    .replace('${' + 'libraryId' + '}', String(libraryId))
+                    .replace('${' + 'treePath' + '}', String(treePath));
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        let formParams = new URLSearchParams();
+
+        // verify required parameter 'libraryId' is not null or undefined
+        if (libraryId === null || libraryId === undefined) {
+            throw new Error('Required parameter libraryId was null or undefined when calling uploadAudioFile.');
+        }
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling uploadAudioFile.');
+        }
+        // verify required parameter 'file' is not null or undefined
+        if (file === null || file === undefined) {
+            throw new Error('Required parameter file was null or undefined when calling uploadAudioFile.');
+        }
+        // to determine the Content-Type header
+        let consumes: string[] = [
+            'multipart/form-data',
+            'audio/mpeg3',
+            'audio/x-mpeg-3'
+        ];
+
+        // to determine the Accept header
+        let produces: string[] = [
+            'application/json'
+        ];
+
+        headers.set('Content-Type', 'application/x-www-form-urlencoded');
+
+        if (file !== undefined) {
+            formParams.set('file', <any>file);
+        }
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Post,
+            headers: headers,
+            body: formParams.toString(),
             search: queryParameters,
             withCredentials:this.configuration.withCredentials
         });

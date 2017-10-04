@@ -123,7 +123,7 @@ export class SpriteTypeApi {
      * @param limit limit amount of entities returned
      * @param cursor cursor to fetch a batch (for paging)
      */
-    public findSpriteType(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2004> {
+    public findSpriteType(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2003> {
         return this.findSpriteTypeWithHttpInfo(libraryId, treePath, tag, limit, cursor, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {

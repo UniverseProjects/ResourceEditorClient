@@ -17,6 +17,6 @@ export interface InlineResponse2003 {
 
     cursor?: string;
 
-    values?: Array<models.AudioFile>;
+    values?: Array<models.SpriteType>;
 
 }

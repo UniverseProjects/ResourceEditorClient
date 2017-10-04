@@ -17,6 +17,6 @@ export interface InlineResponse2004 {
 
     cursor?: string;
 
-    values?: Array<models.SpriteType>;
+    values?: Array<models.AnimatedSpriteType>;
 
 }

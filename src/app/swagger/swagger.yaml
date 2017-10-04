@@ -338,12 +338,17 @@ paths:
           description: successful operation
         '404':
           description: Image not found for path
-  '/library/{libraryId}/generateImageUpload/{treePath}':
-    get:
+  '/library/{libraryId}/uploadImage/{treePath}':
+    post:
       tags:
         - image
-      summary: Generates an upload-URL for the path
-      operationId: generateImageUpload
+      summary: Upload an image to the path
+      operationId: uploadImage
+      consumes:
+        - multipart/form-data 
+        - image/jpeg
+        - image/gif
+        - image/png
       produces:
         - application/json
       parameters:
@@ -358,14 +363,20 @@ paths:
           required: true
           description: directory path to upload to
           type: string
+        - name: file
+          in: formData
+          type: file
+          required: true
+          description: the file to upload
       responses:
         '200':
           description: successful operation
           schema:
-            type: object
-            properties:
-              url:
-                type: string
+            $ref: '#/definitions/Image'
+        '415':
+          description: invalid content-type
+        '409':
+          description: a file with this name already exists
   '/library/{libraryId}/audioFiles/{treePath}':
     get:
       tags:
@@ -503,34 +514,44 @@ paths:
           description: successful operation
         '404':
           description: Audio file not found for path
-  '/library/{libraryId}/generateAudioFileUpload/{treePath}':
-    get:
-      tags:
-        - audioFile
-      summary: Generates an upload-URL for the path
-      operationId: generateAudioFileUpload
-      produces:
-        - application/json
-      parameters:
-        - name: libraryId
-          in: path
-          description: ID of the library
-          required: true
-          type: integer
-          format: int64
-        - name: treePath
-          in: path
-          required: true
-          description: directory path to upload to
-          type: string
-      responses:
-        '200':
-          description: successful operation
-          schema:
-            type: object
-            properties:
-              url:
-                type: string
+  '/library/{libraryId}/uploadAudioFile/{treePath}':
+      post:
+        tags:
+          - audioFile
+        summary: Upload an audio-file to the path
+        operationId: uploadAudioFile
+        consumes:
+          - multipart/form-data
+          - audio/mpeg3
+          - audio/x-mpeg-3
+        produces:
+          - application/json
+        parameters:
+          - name: libraryId
+            in: path
+            description: ID of the library
+            required: true
+            type: integer
+            format: int64
+          - name: treePath
+            in: path
+            required: true
+            description: directory path to upload to
+            type: string
+          - name: file
+            in: formData
+            type: file
+            required: true
+            description: the file to upload
+        responses:
+          '200':
+            description: successful operation
+            schema:
+              $ref: '#/definitions/AudioFile'
+          '415':
+            description: invalid content-type
+          '409':
+            description: a file with this name already exists
   '/library/{libraryId}/spriteTypes/{treePath}':
     get:
       tags:

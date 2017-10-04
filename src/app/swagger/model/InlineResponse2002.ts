@@ -13,6 +13,10 @@
 import * as models from './models';
 
 export interface InlineResponse2002 {
-    url?: string;
+    count?: number;
+
+    cursor?: string;
+
+    values?: Array<models.AudioFile>;
 
 }
