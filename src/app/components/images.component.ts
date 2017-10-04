@@ -154,8 +154,6 @@ export class ImagesComponent implements OnInit {
       this.thumbnailUrls.length = 0;
       return;
     }
-
-    console.log('Loading images in directory: ' + directory);
     directory = ApiHelper.verifyPath(directory);
 
     const operation = this.loaderService.startOperation('Loading images');

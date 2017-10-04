@@ -51,8 +51,6 @@ export class SpritesComponent implements OnInit {
       this.thumbnailUrls.length = 0;
       return;
     }
-
-    console.log('Loading sprites in directory: ' + directory);
     directory = ApiHelper.verifyPath(directory);
 
     const operation = this.loaderService.startOperation('Loading sprites');
