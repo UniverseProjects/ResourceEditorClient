@@ -6,6 +6,7 @@ import {ImageApi} from '../swagger/api/ImageApi';
 import {Image} from '../swagger/model/Image';
 import {ApiHelper} from '../common/api.helper';
 import {DirectoryService} from '../services/directory.service';
+import {Headers, Http, RequestOptions} from '@angular/http';
 
 @Component({
   selector: 'app-images',
@@ -23,12 +24,27 @@ import {DirectoryService} from '../services/directory.service';
       max-width: 400px;
       max-height: 400px;
     }
+    #uploadFileName {
+      width: 200px;
+    }
+    #uploadImageBtn {
+      margin-left: 10px;
+    }
+    
   `],
   template: `
     <div class="app-images-container" *ngIf="active">
       <div [hidden]="selectedImage">
         <div class="controls-top">
-          <button class="btn btn-primary" (click)="uploadImage()">Upload new image</button>
+          <div class="input-group">
+            <label class="input-group-btn">
+              <span class="btn btn-primary">
+                  Browse&hellip; <input type="file" accept=".png, .jpg" style="display: none;" (change)="onFileSelectionUpdate($event)">
+              </span>
+            </label>
+            <input id="uploadFileName" type="text" class="form-control" readonly value="{{fileToUpload ? fileToUpload.name : null}}">
+            <button id="uploadImageBtn" class="btn btn-primary" (click)="uploadImage()">&#9658;&#9658; UPLOAD</button>
+          </div>
         </div>
         <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
       </div>
@@ -52,6 +68,7 @@ export class ImagesComponent implements OnInit {
   images: Image[] = [];
   thumbnailUrls: string[] = [];
   selectedImage: Image;
+  fileToUpload: File;
 
   constructor(
     private alertService: AlertService,
@@ -59,6 +76,7 @@ export class ImagesComponent implements OnInit {
     private explorerService: ExplorerService,
     private directoryService: DirectoryService,
     private imageApi: ImageApi,
+    private http: Http,
   ) { }
 
   ngOnInit(): void {
@@ -77,8 +95,52 @@ export class ImagesComponent implements OnInit {
     this.selectedImage = this.images[selectedIndex];
   }
 
+  onFileSelectionUpdate(event) {
+    let fileList: FileList = event.target.files;
+    if (fileList.length == 0) {
+      this.fileToUpload = null;
+      return;
+    }
+    if (fileList.length > 1) {
+      this.alertService.warn('Unsupported: multiple file upload');
+      this.fileToUpload = null;
+      return;
+    }
+    this.fileToUpload = fileList[0];
+  }
+
   uploadImage() {
-    this.alertService.warn('Not implemented yet!')
+    if (!this.fileToUpload) {
+      this.alertService.warn('Please select a file to upload');
+      return;
+    }
+
+    let formData:FormData = new FormData();
+    formData.append('uploadFile', this.fileToUpload, this.fileToUpload.name);
+    let headers = new Headers();
+    /** No need to include Content-Type in Angular 4 */
+    // headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+
+    let libraryId = this.explorerService.getSelectedLibraryId();
+    let path = ApiHelper.verifyPath(this.directoryService.getCurrentDirectoryPath());
+    const uploadUrl = 'https://www.universeprojects.com/api/v1/upload/' + libraryId + '/' + path;
+
+    const operation = this.loaderService.startOperation('Uploading file...');
+    this.http.post(uploadUrl, formData, options)
+      .map(res => res.json())
+      .toPromise()
+      .then(() => {
+          operation.stop();
+          console.log('upload success');
+        },
+        rejectReason => {
+          operation.stop();
+          console.log('upload rejected: ' + rejectReason);
+          this.alertService.error('Image upload failed (reason: ' + rejectReason + ')');
+        }
+      );
   }
 
   deleteImage() {
