@@ -51,7 +51,7 @@ export class ImagesComponent implements OnInit {
   active = false;
   images: Image[] = [];
   thumbnailUrls: string[] = [];
-  selectedImage: Image = null;
+  selectedImage: Image;
 
   constructor(
     private alertService: AlertService,
