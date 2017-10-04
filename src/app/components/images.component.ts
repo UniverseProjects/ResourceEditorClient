@@ -38,12 +38,12 @@ import {Headers, Http, RequestOptions} from '@angular/http';
         <div class="controls-top">
           <div class="input-group">
             <label class="input-group-btn">
-              <span class="btn btn-primary">
+              <span class="btn btn-default">
                   Browse&hellip; <input type="file" accept=".png, .jpg" style="display: none;" (change)="onFileSelectionUpdate($event)">
               </span>
             </label>
-            <input id="uploadFileName" type="text" class="form-control" readonly value="{{fileToUpload ? fileToUpload.name : null}}">
-            <button id="uploadImageBtn" class="btn btn-primary" (click)="uploadImage()">&#9658;&#9658; UPLOAD</button>
+            <input id="uploadFileName" type="text" class="form-control" readonly placeholder="Select image to upload" value="{{fileToUpload ? fileToUpload.name : null}}">
+            <button id="uploadImageBtn" class="btn btn-default" (click)="uploadImage()">&#9658; UPLOAD</button>
           </div>
         </div>
         <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
