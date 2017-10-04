@@ -85,7 +85,6 @@ export class ImagesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
-      console.log('Images - reload content');
       if (contentType === ContentType.IMAGES) {
         this.loadImages(this.directoryService.getCurrentDirectoryPath());
         this.active = true;
