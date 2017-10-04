@@ -22,7 +22,7 @@ import {DirectoryService} from '../services/directory.service';
       padding-top: 10px;
     }
     .new-dir-name {
-      width: 250px;
+      width: 300px;
     }
   `],
   template: `
@@ -32,15 +32,18 @@ import {DirectoryService} from '../services/directory.service';
         <span class="current-dir-value">{{currentDirectory}}</span>
       </div>
       <div class="dir-control">
-        <button class="btn btn-danger" 
+        <div class="input-group new-dir-name ">
+          <input class="form-control" type="text" placeholder="New directory name..." [(ngModel)]="newDirectoryName" (keyup.enter)="createDirectory()"/>
+          <div class="input-group-btn">
+            <button class="btn btn-default" (click)="createDirectory()">Create</button>
+          </div>
+        </div>
+      </div>
+      <div class="dir-control">
+        <button class="btn btn-danger"
                 mwlConfirmationPopover placement="right" title="Are you sure?"
                 message="Do you really want to delete the current directory?"
                 (confirm)="deleteCurrentDirectory()">Delete this directory</button>
-
-      </div>
-      <div class="dir-control">
-        <button class="btn btn-primary" (click)="createDirectory()">Create new directory</button>
-        <input class="new-dir-name" type="text" placeholder="Enter directory name..." [(ngModel)]="newDirectoryName" (keyup.enter)="createDirectory()"/>
       </div>
     </div>
   `,
