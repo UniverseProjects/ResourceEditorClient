@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {LoaderService} from '../services/loader.service';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-loader',
@@ -8,7 +9,7 @@ import {LoaderService} from '../services/loader.service';
       <ngx-loading [show]="loading" [config]="LOADER_CONFIG"></ngx-loading>
     </div>`,
 })
-export class LoaderComponent implements OnInit {
+export class LoaderComponent implements OnInit, OnDestroy {
   readonly LOADER_CONFIG = {
     backdropBackgroundColour: 'rgba(200,200,200,0.3)',
     primaryColour: '#999',
@@ -17,12 +18,13 @@ export class LoaderComponent implements OnInit {
   };
 
   loading = false;
+  private subscription: Subscription;
 
   constructor(private loaderService: LoaderService) {
   }
 
   ngOnInit() {
-    this.loaderService.runningOperation$.subscribe((opName: string) => {
+    this.subscription = this.loaderService.runningOperation$.subscribe((opName: string) => {
       // noinspection RedundantIfStatementJS
       if (opName) {
         // console.log('Activating loader for operation: ' + opName);
@@ -32,6 +34,10 @@ export class LoaderComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }
