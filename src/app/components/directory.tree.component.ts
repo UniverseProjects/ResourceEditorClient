@@ -67,7 +67,7 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
   }
 
   onActivateNode(): void {
-    if (Date.now() - this.lastActivateEventTime < 500) {
+    if (Date.now() - this.lastActivateEventTime < 25) {
       return; // the event sometimes fires more than once... ignore the duplicate
     }
 
