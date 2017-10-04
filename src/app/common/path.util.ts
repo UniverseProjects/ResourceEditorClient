@@ -1,7 +1,7 @@
 export class PathUtil {
 
   static isValid(path: string): boolean {
-    const dirRegExp = /^\/?([a-zA-Z0-9_\-]+\/)*([a-zA-Z0-9_\-]+\/?)?$/g;
+    const dirRegExp = /^\/?([a-zA-Z0-9_\-]+\/)*([a-zA-Z0-9_\-]+(\/|\.[a-zA-Z0-9]{1,5})?)?$/g;
     return path && dirRegExp.test(path);
   }
 
