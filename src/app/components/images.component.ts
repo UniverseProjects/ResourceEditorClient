@@ -13,15 +13,12 @@ import {DirectoryService} from '../services/directory.service';
     .controls-top {
       margin-bottom: 10px;
     }
-
     .controls-bottom {
       margin-top: 10px;
     }
-
     .image-preview-container {
       margin-bottom: 20px;
     }
-
     .image-preview {
       max-width: 400px;
       max-height: 400px;
