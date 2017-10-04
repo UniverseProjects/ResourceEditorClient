@@ -117,7 +117,7 @@ export class ImageApi {
      * 
      * @summary Upload an image to the path
      * @param libraryId ID of the library
-     * @param treePath directory path to upload to
+     * @param treePath file path to upload to
      * @param file the file to upload
      */
     public uploadImage(libraryId: number, treePath: string, file: any, extraHttpRequestParams?: any): Observable<models.Image> {
@@ -337,7 +337,7 @@ export class ImageApi {
      * Upload an image to the path
      * 
      * @param libraryId ID of the library
-     * @param treePath directory path to upload to
+     * @param treePath file path to upload to
      * @param file the file to upload
      */
     public uploadImageWithHttpInfo(libraryId: number, treePath: string, file: any, extraHttpRequestParams?: any): Observable<Response> {

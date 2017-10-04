@@ -117,7 +117,7 @@ export class AudioFileApi {
      * 
      * @summary Upload an audio-file to the path
      * @param libraryId ID of the library
-     * @param treePath directory path to upload to
+     * @param treePath file path to upload to
      * @param file the file to upload
      */
     public uploadAudioFile(libraryId: number, treePath: string, file: any, extraHttpRequestParams?: any): Observable<models.AudioFile> {
@@ -337,7 +337,7 @@ export class AudioFileApi {
      * Upload an audio-file to the path
      * 
      * @param libraryId ID of the library
-     * @param treePath directory path to upload to
+     * @param treePath file path to upload to
      * @param file the file to upload
      */
     public uploadAudioFileWithHttpInfo(libraryId: number, treePath: string, file: any, extraHttpRequestParams?: any): Observable<Response> {

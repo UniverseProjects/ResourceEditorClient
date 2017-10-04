@@ -361,7 +361,7 @@ paths:
         - name: treePath
           in: path
           required: true
-          description: directory path to upload to
+          description: file path to upload to
           type: string
         - name: file
           in: formData
@@ -536,7 +536,7 @@ paths:
           - name: treePath
             in: path
             required: true
-            description: directory path to upload to
+            description: file path to upload to
             type: string
           - name: file
             in: formData
