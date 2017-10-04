@@ -99,19 +99,16 @@ export class ImagesComponent implements OnInit {
     console.log('Loading images in directory: ' + directory);
     directory = ApiHelper.verifyPath(directory);
 
-    const OPNAME = 'Loading images';
-    this.loaderService.startOperation(OPNAME);
+    const operation = this.loaderService.startOperation('Loading images');
     this.imageApi.findImage(this.explorerService.getSelectedLibraryId(), directory)
       .toPromise()
       .then(response => {
+        operation.stop();
         this.images = response.values;
         this.thumbnailUrls = this.images.map(image => image.gcsUrl);
-
-        this.loaderService.stopOperation(OPNAME);
       },rejectReason => {
+        operation.stop();
         this.alertService.error('Failed to load images (' + rejectReason + ')');
-
-        this.loaderService.stopOperation(OPNAME);
       });
   }
 
