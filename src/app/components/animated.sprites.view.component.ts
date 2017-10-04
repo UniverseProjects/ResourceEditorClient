@@ -17,7 +17,7 @@ import {Subscription} from 'rxjs/Subscription';
     </div>
   `,
 })
-export class AnimatedSpritesComponent implements OnInit, OnDestroy {
+export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
   active = false;
   animatedSprites: AnimatedSpriteType[] = [];
   thumbnailUrls: string[] = [];

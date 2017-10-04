@@ -51,7 +51,7 @@ import {Subscription} from 'rxjs/Subscription';
     </div>
   `,
 })
-export class DirectoryComponent implements OnInit, OnDestroy {
+export class DirectoryViewComponent implements OnInit, OnDestroy {
   active = false;
   currentDirectory: string = null;
   newDirectoryName: string = null;

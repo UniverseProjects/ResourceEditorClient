@@ -49,7 +49,7 @@ import {Subscription} from 'rxjs/Subscription';
     </div>
   `,
 })
-export class SpritesComponent implements OnInit, OnDestroy {
+export class SpritesViewComponent implements OnInit, OnDestroy {
   active = false;
   sprites: SpriteType[] = [];
   thumbnailUrls: string[] = [];

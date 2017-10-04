@@ -67,7 +67,7 @@ import {Subscription} from 'rxjs/Subscription';
     </div>
   `,
 })
-export class ImagesComponent implements OnInit, OnDestroy {
+export class ImagesViewComponent implements OnInit, OnDestroy {
   active = false;
   images: Image[] = [];
   thumbnailUrls: string[] = [];

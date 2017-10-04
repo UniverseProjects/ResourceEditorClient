@@ -16,15 +16,15 @@ import {ExplorerService} from '../services/explorer.service';
 
 import {AppComponent} from '../components/app.component';
 import {ExplorerComponent} from '../components/explorer.component';
-import {ImagesComponent} from '../components/images.component';
+import {ImagesViewComponent} from '../components/images.view.component';
 import {AlertComponent} from '../components/alert.component';
 import {LoaderComponent} from '../components/loader.component';
 import {DirectoryTreeComponent} from '../components/directory.tree.component';
 import {ThumbnailsComponent} from '../components/thumbnails.component';
-import {SpritesComponent} from '../components/sprites.component';
-import {AnimatedSpritesComponent} from '../components/animated.sprites.component';
+import {SpritesViewComponent} from '../components/sprites.view.component';
+import {AnimatedSpritesViewComponent} from '../components/animated.sprites.view.component';
 import {PropertiesComponent} from '../components/properties.component';
-import {DirectoryComponent} from '../components/directory.component';
+import {DirectoryViewComponent} from '../components/directory.view.component';
 import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
 import {DirectoryService} from '../services/directory.service';
 import {TreeApi} from '../swagger/api/TreeApi';
@@ -53,10 +53,10 @@ import {AnimatedSpriteTypeApi} from '../swagger/api/AnimatedSpriteTypeApi';
         AlertComponent,
         LoaderComponent,
         PropertiesComponent,
-        ImagesComponent,
-        SpritesComponent,
-        AnimatedSpritesComponent,
-        DirectoryComponent,
+        ImagesViewComponent,
+        SpritesViewComponent,
+        AnimatedSpritesViewComponent,
+        DirectoryViewComponent,
         ExplorerComponent,
     ],
     providers: [
