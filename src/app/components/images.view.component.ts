@@ -136,7 +136,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
       this.alertService.warn('Unsupported file type: ' + fileName);
       return;
     }
-
+    
     let headers = new Headers();
     headers.append('Content-Type', contentType);
     let options = new RequestOptions({ headers: headers });
