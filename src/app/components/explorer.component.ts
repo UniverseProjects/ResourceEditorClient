@@ -22,10 +22,10 @@ import {Subscription} from 'rxjs/Subscription';
     <app-directory-tree></app-directory-tree>
     <div class="directory-content">
       <div class="btn-group">
-        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="DIRECTORY">Directory</label>
-        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="IMAGES">Images</label>
-        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="SPRITES">Sprites</label>
-        <label class="btn btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="ANIMATED_SPRITES">Animated Sprites</label>
+        <label class="btn btn-lg btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="DIRECTORY">Directory</label>
+        <label class="btn btn-lg btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="IMAGES">Images</label>
+        <label class="btn btn-lg btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="SPRITES">Sprites</label>
+        <label class="btn btn-lg btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="ANIMATED_SPRITES">Animated Sprites</label>
       </div>
       <div>
         <div class="items-container">
