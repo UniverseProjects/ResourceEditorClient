@@ -35,7 +35,8 @@ import {Headers, Http, RequestOptions} from '@angular/http';
   template: `
     <div class="app-images-container" *ngIf="active">
       <div [hidden]="selectedImage">
-        <div class="controls-top">
+        <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+        <div class="controls-bottom">
           <div class="input-group">
             <label class="input-group-btn">
               <span class="btn btn-default">
@@ -44,9 +45,8 @@ import {Headers, Http, RequestOptions} from '@angular/http';
             </label>
             <input id="uploadFileName" type="text" class="form-control" readonly placeholder="Select image to upload" value="{{fileToUpload ? fileToUpload.name : null}}">
             <button id="uploadImageBtn" class="btn btn-default" (click)="uploadImage()">&#9658; UPLOAD</button>
-          </div>
+          </div>  
         </div>
-        <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
       </div>
       <div *ngIf="selectedImage">
         <div class="image-preview-container">
