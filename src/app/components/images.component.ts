@@ -57,7 +57,8 @@ import {Headers, Http, RequestOptions} from '@angular/http';
           <button class="btn btn-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete this image?"
-                  (confirm)="deleteImage()">Delete this image</button>
+                  (confirm)="deleteImage()">Delete this image
+          </button>
         </div>
       </div>
     </div>
