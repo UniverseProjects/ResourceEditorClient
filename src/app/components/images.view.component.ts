@@ -186,6 +186,8 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
 
   private loadImages(directory: string): void {
     this.selectedImage = null;
+    this.fileToUpload = null;
+
     if (!directory) {
       this.images.length = 0;
       this.thumbnailUrls.length = 0;
