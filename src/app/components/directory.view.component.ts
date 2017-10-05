@@ -101,6 +101,7 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
       .toPromise()
       .then(() => {
         operation.stop();
+        this.alertService.success('Directory \"' + currentDir.treePath + '\" deleted');
         this.directoryService.changeDirectoryToParent();
         this.directoryService.reloadDirectoryTree();
       }, rejectReason => {
@@ -134,6 +135,7 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
       .toPromise()
       .then(() => {
         operation.stop();
+        this.alertService.success('Directory created: ' + newDirPath);
         this.directoryService.reloadDirectoryTree();
         this.newDirectoryName = null;
       }, rejectReason => {
