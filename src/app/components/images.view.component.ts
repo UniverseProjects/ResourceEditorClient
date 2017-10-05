@@ -42,8 +42,8 @@ import {PathUtil} from '../common/path.util';
           <div class="input-group">
             <label class="input-group-btn">
               <span class="btn btn-default">
-                  Browse&hellip; <input type="file" accept=".png, .jpg" style="display: none;"
-                                        (change)="onFileSelectionUpdate($event)">
+                  Browse&hellip; <input #fileUploadInput type="file" accept=".png, .jpg" style="display: none;"
+                                        (change)="onFileSelectionUpdate($event); fileUploadInput.value = '';">
               </span>
             </label>
             <input id="uploadFileName" type="text" class="form-control" readonly placeholder="Select image to upload"
