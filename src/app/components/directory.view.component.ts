@@ -128,10 +128,10 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
 
     const libraryId = this.explorerService.getSelectedLibraryId();
     const currentDir = this.directoryService.getCurrentDirectoryPath();
-    const newDirPath = ApiHelper.verifyPath(PathUtil.combine(currentDir, directoryName));
+    const newDirPath = PathUtil.combine(currentDir, directoryName);
 
     const operation = this.loaderService.startOperation('Creating directory');
-    this.treeApi.createDirectory(libraryId, newDirPath)
+    this.treeApi.createDirectory(libraryId, ApiHelper.verifyPath(newDirPath))
       .toPromise()
       .then(() => {
         operation.stop();
