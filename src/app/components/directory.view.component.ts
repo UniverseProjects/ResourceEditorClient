@@ -110,18 +110,24 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
   }
 
   createDirectory() {
-    if (!this.newDirectoryName || !this.newDirectoryName.trim()) {
+    let directoryName = this.newDirectoryName;
+    if (!directoryName || !directoryName.trim()) {
       this.alertService.warn('Please enter a directory name');
       return;
     }
-    if (!/^[a-zA-Z0-9_\-]+$/g.test(this.newDirectoryName)) {
-      this.alertService.warn('Invalid directory name: ' + this.newDirectoryName);
+    directoryName = directoryName.trim();
+    if (!/^[a-zA-Z0-9_\-]+$/g.test(directoryName)) {
+      this.alertService.warn('Invalid directory name: ' + directoryName);
+      return;
+    }
+    if (this.directoryService.doesCurrentDirectoryContain(directoryName)) {
+      this.alertService.warn('Directory with name \"' + directoryName + '\" already exists here');
       return;
     }
 
     const libraryId = this.explorerService.getSelectedLibraryId();
     const currentDir = this.directoryService.getCurrentDirectoryPath();
-    const newDirPath = ApiHelper.verifyPath(PathUtil.combine(currentDir, this.newDirectoryName));
+    const newDirPath = ApiHelper.verifyPath(PathUtil.combine(currentDir, directoryName));
 
     const operation = this.loaderService.startOperation('Creating directory');
     this.treeApi.createDirectory(libraryId, newDirPath)
