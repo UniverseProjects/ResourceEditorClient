@@ -345,10 +345,7 @@ paths:
       summary: Upload an image to the path
       operationId: uploadImage
       consumes:
-        - multipart/form-data 
-        - image/jpeg
-        - image/gif
-        - image/png
+        - multipart/form-data
       produces:
         - application/json
       parameters:
@@ -522,8 +519,6 @@ paths:
         operationId: uploadAudioFile
         consumes:
           - multipart/form-data
-          - audio/mpeg3
-          - audio/x-mpeg-3
         produces:
           - application/json
         parameters:

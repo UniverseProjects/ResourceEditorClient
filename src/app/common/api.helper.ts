@@ -2,7 +2,9 @@ import {PathUtil} from './path.util';
 
 export class ApiHelper {
 
-  static verifyPath(treePath: string): string {
+  public static readonly BASE_URL = 'https://www.universeprojects.com/api/v1/';
+
+  static path(treePath: string): string {
     if (!PathUtil.isValid(treePath)) {
       throw new Error('Invalid tree path: ' + treePath);
     }

@@ -58,6 +58,15 @@ export class DirectoryService {
     return this.currentDirectory.treePath;
   }
 
+  doesCurrentDirectoryContain(childDirectoryName: string) {
+    for (let child of this.currentDirectory.children) {
+      if (child.name === childDirectoryName) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   reloadDirectoryTree(): void {
     const operation = this.loaderService.startOperation('Loading directory tree');
     this.treeApi.getTree(this.explorerService.getSelectedLibraryId())
