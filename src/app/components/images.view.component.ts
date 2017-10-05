@@ -136,13 +136,9 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
       this.alertService.warn('Unsupported file type: ' + fileName);
       return;
     }
-    
-    let headers = new Headers();
-    headers.append('Content-Type', contentType);
-    let options = new RequestOptions({ headers: headers });
 
     const operation = this.loaderService.startOperation('Uploading file...');
-    this.imageApi.uploadImage(libraryId, filePath, this.fileToUpload, options)
+    this.imageApi.uploadImage(libraryId, filePath, this.fileToUpload)
       .toPromise()
       .then(() => {
           operation.stop();
@@ -155,6 +151,39 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
           this.alertService.error('Image upload failed (reason: ' + rejectReason + ')');
         }
       );
+
+
+    // TODO: the code below attempts to do the same, without using the generated ImageApi class
+    /*
+    const uploadUrl = 'https://www.universeprojects.com/api/v1/library/' + libraryId + '/uploadImage/' + filePath;
+
+    let formData:FormData = new FormData();
+    formData.append('uploadFile', this.fileToUpload, this.fileToUpload.name);
+
+    let headers = new Headers();
+
+    // headers.append('Content-Type', contentType);
+    headers.append('Content-Type', 'multipart/form-data'); // Apparently, no need to include Content-Type in Angular 4
+    headers.append('Accept', 'application/json');
+    let options = new RequestOptions({ headers: headers });
+
+    const operation = this.loaderService.startOperation('Uploading file...');
+    this.http.post(uploadUrl, formData, options)
+      .map(res => res.json())
+      .toPromise()
+      .then(() => {
+          operation.stop();
+          console.log('upload success');
+          this.loadImages(directoryPath);
+        },
+        rejectReason => {
+          operation.stop();
+          console.log('upload rejected: ' + rejectReason);
+          this.alertService.error('Image upload failed (reason: ' + rejectReason + ')');
+        }
+      );
+    */
+
   }
 
   deleteImage() {
