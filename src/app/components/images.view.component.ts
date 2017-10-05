@@ -19,10 +19,10 @@ import {PathUtil} from '../common/path.util';
     .controls-bottom {
       margin-top: 10px;
     }
-    .image-preview-container {
+    .preview-container {
       margin-bottom: 20px;
     }
-    .image-preview {
+    .preview {
       max-width: 400px;
       max-height: 400px;
     }
@@ -32,7 +32,7 @@ import {PathUtil} from '../common/path.util';
     #uploadImageBtn {
       margin-left: 10px;
     }
-    
+
   `],
   template: `
     <div class="images-view-container" *ngIf="active">
@@ -53,8 +53,8 @@ import {PathUtil} from '../common/path.util';
         </div>
       </div>
       <div *ngIf="selectedImage">
-        <div class="image-preview-container">
-          <img class="image-preview" src="{{selectedImage.gcsUrl}}"/>
+        <div class="preview-container">
+          <img class="preview" src="{{selectedImage.gcsUrl}}"/>
         </div>
         <app-properties [object]="selectedImage"></app-properties>
         <div class="controls-bottom">
