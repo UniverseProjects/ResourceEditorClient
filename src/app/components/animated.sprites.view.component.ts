@@ -10,10 +10,39 @@ import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-animated-sprites-view',
-  styles: [``],
+  styles: [`
+    .controls-top {
+      margin-bottom: 10px;
+    }
+    .controls-bottom {
+      margin-top: 10px;
+    }
+    .preview-container {
+      margin-bottom: 20px;
+    }
+    .preview {
+      max-width: 400px;
+      max-height: 400px;
+    }
+  `],
   template: `
     <div class="animated-sprites-view-container" *ngIf="active">
-      <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+      <div [hidden]="selectedAnimatedSprite">
+        <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+      </div>
+      <div *ngIf="selectedAnimatedSprite">
+        <div class="preview-container">
+          <img class="preview" src="{{selectedAnimatedSprite.frames[0].spriteType.image.gcsUrl}}"/>
+        </div>
+        <app-properties [object]="selectedAnimatedSprite"></app-properties>
+        <div class="controls-bottom">
+          <button class="btn btn-danger"
+                  mwlConfirmationPopover placement="right" title="Are you sure?"
+                  message="Do you really want to delete this animated sprite?"
+                  (confirm)="deleteAnimatedSprite()">Delete this animated sprite
+          </button>
+        </div>
+      </div>
     </div>
   `,
 })
@@ -21,6 +50,7 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
   active = false;
   animatedSprites: AnimatedSpriteType[] = [];
   thumbnailUrls: string[] = [];
+  selectedAnimatedSprite: AnimatedSpriteType;
 
   private subscription: Subscription;
 
@@ -49,10 +79,15 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
   }
 
   onThumbnailSelected(selectedIndex: number): void {
-    console.log('Selected thumbnail index: ' + selectedIndex);
+    this.selectedAnimatedSprite = this.animatedSprites[selectedIndex];
+  }
+
+  deleteAnimatedSprite() {
+    this.alertService.warn('Deletion not implemented yet');
   }
 
   private loadAnimatedSprites(directory: string): void {
+    this.selectedAnimatedSprite = null;
     if (!directory) {
       this.animatedSprites.length = 0;
       this.thumbnailUrls.length = 0;
