@@ -113,7 +113,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
       return;
     }
     if (fileList.length > 1) {
-      this.alertService.warn('Unsupported: multiple file upload');
+      this.alertService.warn('Multiple file upload not supported');
       this.fileToUpload = null;
       return;
     }
