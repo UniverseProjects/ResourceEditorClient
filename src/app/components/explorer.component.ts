@@ -12,10 +12,19 @@ import {Subscription} from 'rxjs/Subscription';
       display: inline-block;
       vertical-align: top;
     }
-    .btn-group {
-      padding-bottom: 15px;
+    .current-dir {
+      margin-top: 10px;
+    }
+    .current-dir-label {
+      font-size: 18px;
+    }
+    .current-dir-value {
+      font-size: 18px;
+      font-weight: bold;
+      font-family: "Courier New", Courier, monospace;
     }
     .items-container {
+      margin-top: 20px;
     }
   `],
   template: `
@@ -26,6 +35,10 @@ import {Subscription} from 'rxjs/Subscription';
         <label class="btn btn-lg btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="IMAGES">Images</label>
         <label class="btn btn-lg btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="SPRITES">Sprites</label>
         <label class="btn btn-lg btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="ANIMATED_SPRITES">Animated Sprites</label>
+      </div>
+      <div class="current-dir">
+        <span class="current-dir-label">Current directory: </span>
+        <span class="current-dir-value">{{currentDirectory || '???'}}</span>
       </div>
       <div class="items-container">
         <app-directory-view></app-directory-view>
@@ -41,6 +54,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   private readonly LS_CONTENT_TYPE = 'active.content.type';
 
   contentTypeStr = 'DIRECTORY';
+  currentDirectory: string = null;
 
   private subscription: Subscription;
 
@@ -54,7 +68,8 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     if (lastContentTypeStr) {
       this.contentTypeStr = lastContentTypeStr;
     }
-    this.subscription = this.directoryService.directoryChanged$.subscribe(() => {
+    this.subscription = this.directoryService.directoryChanged$.subscribe((directory) => {
+      this.currentDirectory = directory.treePath;
       this.reloadContent();
     });
   }

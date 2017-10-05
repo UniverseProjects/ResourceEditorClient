@@ -7,20 +7,13 @@ import {ApiHelper} from '../common/api.helper';
 import {PathUtil} from '../common/path.util';
 import {DirectoryService} from '../services/directory.service';
 import {Subscription} from 'rxjs/Subscription';
+import {Directory} from '../swagger/model/Directory';
 
 @Component({
   selector: 'app-directory-view',
   styles: [`
-    .current-dir-label {
-      font-size: 18px;
-    }
-    .current-dir-value {
-      font-size: 18px;
-      font-weight: bold;
-      font-family: "Courier New", Courier, monospace;
-    }
     .dir-control {
-      padding-top: 10px;
+      padding-bottom: 10px;
     }
     .new-dir-name {
       width: 300px;
@@ -28,10 +21,6 @@ import {Subscription} from 'rxjs/Subscription';
   `],
   template: `
     <div class="directory-view-container" *ngIf="active">
-      <div>
-        <span class="current-dir-label">Current directory: </span>
-        <span class="current-dir-value">{{currentDirectory}}</span>
-      </div>
       <div class="dir-control">
         <div class="input-group new-dir-name ">
           <input class="form-control" type="text" placeholder="New directory name..." [(ngModel)]="newDirectoryName"
@@ -53,8 +42,8 @@ import {Subscription} from 'rxjs/Subscription';
 })
 export class DirectoryViewComponent implements OnInit, OnDestroy {
   active = false;
-  currentDirectory: string = null;
-  newDirectoryName: string = null;
+  currentDirectory: Directory;
+  newDirectoryName: string;
 
   private subscription: Subscription;
 
@@ -83,18 +72,17 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
   }
 
   deleteCurrentDirectory() {
-    const currentDir = this.directoryService.getCurrentDirectory();
-    if (currentDir.treePath === '/') {
+    if (this.currentDirectory.treePath === '/') {
       this.alertService.warn('Can\'t delete the root directory');
       return;
     }
-    if (currentDir.children.length > 0) {
+    if (this.currentDirectory.children.length > 0) {
       this.alertService.warn('Can\'t delete a directory with child directories');
       return;
     }
 
-    const currentDirPath = currentDir.treePath;
     const libraryId = this.explorerService.getSelectedLibraryId();
+    const currentDirPath = this.currentDirectory.treePath;
 
     const operation = this.loaderService.startOperation('Deleting directory');
     this.treeApi.deleteDirectory(libraryId, ApiHelper.path(currentDirPath))
@@ -127,8 +115,7 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
     }
 
     const libraryId = this.explorerService.getSelectedLibraryId();
-    const currentDir = this.directoryService.getCurrentDirectoryPath();
-    const newDirPath = PathUtil.combine(currentDir, directoryName);
+    const newDirPath = PathUtil.combine(this.currentDirectory.treePath, directoryName);
 
     const operation = this.loaderService.startOperation('Creating directory');
     this.treeApi.createDirectory(libraryId, ApiHelper.path(newDirPath))
@@ -146,10 +133,12 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
 
   private clear() {
     this.currentDirectory = null;
+    this.newDirectoryName = null;
   }
 
   private reloadContent() {
-    this.currentDirectory = this.directoryService.getCurrentDirectoryPath();
+    this.clear();
+    this.currentDirectory = this.directoryService.getCurrentDirectory();
   }
 
 }
