@@ -93,7 +93,7 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const currentDirPath = ApiHelper.verifyPath(currentDir.treePath);
+    const currentDirPath = ApiHelper.path(currentDir.treePath);
     const libraryId = this.explorerService.getSelectedLibraryId();
 
     const operation = this.loaderService.startOperation('Deleting directory');
@@ -131,7 +131,7 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
     const newDirPath = PathUtil.combine(currentDir, directoryName);
 
     const operation = this.loaderService.startOperation('Creating directory');
-    this.treeApi.createDirectory(libraryId, ApiHelper.verifyPath(newDirPath))
+    this.treeApi.createDirectory(libraryId, ApiHelper.path(newDirPath))
       .toPromise()
       .then(() => {
         operation.stop();

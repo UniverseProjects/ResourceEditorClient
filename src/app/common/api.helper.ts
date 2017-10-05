@@ -4,7 +4,7 @@ export class ApiHelper {
 
   public static readonly BASE_URL = 'https://www.universeprojects.com/api/v1/';
 
-  static verifyPath(treePath: string): string {
+  static path(treePath: string): string {
     if (!PathUtil.isValid(treePath)) {
       throw new Error('Invalid tree path: ' + treePath);
     }

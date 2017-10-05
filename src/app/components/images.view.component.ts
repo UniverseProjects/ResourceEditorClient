@@ -129,7 +129,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
     let libraryId = this.explorerService.getSelectedLibraryId();
     let directoryPath = this.directoryService.getCurrentDirectoryPath();
     let fileName = this.fileToUpload.name;
-    let filePath = ApiHelper.verifyPath(PathUtil.combine(directoryPath, fileName));
+    let filePath = ApiHelper.path(PathUtil.combine(directoryPath, fileName));
 
     for (let image of this.images) {
       if (image.name === fileName) {
@@ -175,7 +175,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
 
     let libraryId = this.explorerService.getSelectedLibraryId();
     let directoryPath = this.directoryService.getCurrentDirectoryPath();
-    let treePath = ApiHelper.verifyPath(this.selectedImage.treePath);
+    let treePath = ApiHelper.path(this.selectedImage.treePath);
 
     let operation = this.loaderService.startOperation('Deleting image');
     this.imageApi.deleteImage(libraryId, treePath)
@@ -200,7 +200,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
       this.thumbnailUrls.length = 0;
       return;
     }
-    directory = ApiHelper.verifyPath(directory);
+    directory = ApiHelper.path(directory);
 
     const operation = this.loaderService.startOperation('Loading images');
     this.imageApi.findImage(this.explorerService.getSelectedLibraryId(), directory)

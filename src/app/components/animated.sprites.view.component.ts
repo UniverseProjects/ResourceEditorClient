@@ -58,7 +58,7 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
       this.thumbnailUrls.length = 0;
       return;
     }
-    directory = ApiHelper.verifyPath(directory);
+    directory = ApiHelper.path(directory);
 
     const operation = this.loaderService.startOperation('Loading animated sprites');
     this.animatedSpriteTypeApi.findAnimatedSpriteType(this.explorerService.getSelectedLibraryId(), directory)
