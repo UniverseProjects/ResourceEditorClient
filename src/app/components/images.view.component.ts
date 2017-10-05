@@ -131,6 +131,13 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
     let fileName = this.fileToUpload.name;
     let filePath = ApiHelper.verifyPath(PathUtil.combine(directoryPath, fileName));
 
+    for (let image of this.images) {
+      if (image.name === fileName) {
+        this.alertService.warn('This directory already contains an image with name \"' + fileName + '\"');
+        return;
+      }
+    }
+
     /*
      * At the time of this writing, generated method ImageApi.uploadImage() is broken and can't be used.
      * GitHub issue: https://github.com/swagger-api/swagger-codegen/issues/6006
