@@ -65,10 +65,10 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.ANIMATED_SPRITES) {
-        this.loadAnimatedSprites(this.directoryService.getCurrentDirectoryPath());
+        this.reloadContent();
         this.active = true;
       } else {
-        this.loadAnimatedSprites(null);
+        this.clear();
         this.active = false;
       }
     });
@@ -86,24 +86,27 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
     this.alertService.warn('Deletion not implemented yet');
   }
 
-  private loadAnimatedSprites(directory: string): void {
+  private clear(): void {
     this.selectedAnimatedSprite = null;
-    if (!directory) {
-      this.animatedSprites.length = 0;
-      this.thumbnailUrls.length = 0;
-      return;
-    }
+    this.animatedSprites.length = 0;
+    this.thumbnailUrls.length = 0;
+  }
+
+  private reloadContent() {
     let libraryId = this.explorerService.getSelectedLibraryId();
+    let currentDir = this.directoryService.getCurrentDirectoryPath();
 
     const operation = this.loaderService.startOperation('Loading animated sprites');
-    this.animatedSpriteTypeApi.findAnimatedSpriteType(libraryId, ApiHelper.path(directory))
+    this.animatedSpriteTypeApi.findAnimatedSpriteType(libraryId, ApiHelper.path(currentDir))
       .toPromise()
       .then(response => {
         operation.stop();
+        this.clear();
         this.animatedSprites = response.values;
         this.thumbnailUrls = this.animatedSprites.map(sprite => sprite.frames[0].spriteType.image.gcsUrl);
       }, (rejectReason) => {
         operation.stop();
+        this.clear();
         this.alertService.error('Failed to load animated sprites (' + rejectReason + ')');
       });
   }

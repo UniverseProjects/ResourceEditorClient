@@ -65,10 +65,10 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.SPRITES) {
-        this.loadSprites(this.directoryService.getCurrentDirectoryPath());
+        this.reloadContent();
         this.active = true;
       } else {
-        this.loadSprites(null);
+        this.clear();
         this.active = false;
       }
     });
@@ -86,24 +86,27 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
     this.alertService.warn('Not implemented yet!');
   }
 
-  private loadSprites(directory: string): void {
+  private clear() {
     this.selectedSprite = null;
-    if (!directory) {
-      this.sprites.length = 0;
-      this.thumbnailUrls.length = 0;
-      return;
-    }
+    this.sprites.length = 0;
+    this.thumbnailUrls.length = 0;
+  }
+
+  private reloadContent() {
     let libraryId = this.explorerService.getSelectedLibraryId();
+    let currentDir = this.directoryService.getCurrentDirectoryPath();
 
     const operation = this.loaderService.startOperation('Loading sprites');
-    this.spriteTypeApi.findSpriteType(libraryId, ApiHelper.path(directory))
+    this.spriteTypeApi.findSpriteType(libraryId, ApiHelper.path(currentDir))
       .toPromise()
       .then(response => {
         operation.stop();
+        this.clear();
         this.sprites = response.values;
         this.thumbnailUrls = this.sprites.map(sprite => sprite.image.gcsUrl);
       }, rejectReason => {
         operation.stop();
+        this.clear();
         this.alertService.error('Failed to load sprites (' + rejectReason + ')');
       });
   }

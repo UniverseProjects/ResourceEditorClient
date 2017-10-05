@@ -69,10 +69,10 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.DIRECTORY) {
-        this.loadContent(this.directoryService.getCurrentDirectoryPath());
+        this.reloadContent();
         this.active = true;
       } else {
-        this.loadContent(null);
+        this.clear();
         this.active = false;
       }
     });
@@ -144,12 +144,12 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
       });
   }
 
-  private loadContent(directory: string): void {
-    if (!directory) {
-      this.currentDirectory = null;
-      return;
-    }
-    this.currentDirectory = directory;
+  private clear() {
+    this.currentDirectory = null;
+  }
+
+  private reloadContent() {
+    this.currentDirectory = this.directoryService.getCurrentDirectoryPath();
   }
 
 }

@@ -89,10 +89,10 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.IMAGES) {
-        this.loadImages(this.directoryService.getCurrentDirectoryPath());
+        this.reloadContent();
         this.active = true;
       } else {
-        this.loadImages(null);
+        this.clear();
         this.active = false;
       }
     });
@@ -157,7 +157,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
       .then(() => {
           operation.stop();
           this.alertService.success('\"' + fileName + '\" uploaded successfully to ' + directoryPath);
-          this.loadImages(directoryPath);
+          this.reloadContent();
         },
         rejectReason => {
           operation.stop();
@@ -174,7 +174,6 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
     }
 
     let libraryId = this.explorerService.getSelectedLibraryId();
-    let directoryPath = this.directoryService.getCurrentDirectoryPath();
     let treePath = this.selectedImage.treePath;
 
     let operation = this.loaderService.startOperation('Deleting image');
@@ -183,7 +182,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
       .then(() => {
           operation.stop();
           this.alertService.success('Image deleted: ' + treePath);
-          this.loadImages(directoryPath);
+          this.reloadContent();
         },
         rejectReason => {
           operation.stop();
@@ -191,26 +190,28 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
         });
   }
 
-  private loadImages(directory: string): void {
+  private clear() {
     this.selectedImage = null;
     this.fileToUpload = null;
+    this.images.length = 0;
+    this.thumbnailUrls.length = 0;
+  }
 
-    if (!directory) {
-      this.images.length = 0;
-      this.thumbnailUrls.length = 0;
-      return;
-    }
+  private reloadContent() {
     let libraryId = this.explorerService.getSelectedLibraryId();
-    const operation = this.loaderService.startOperation('Loading images');
+    let currentDir = this.directoryService.getCurrentDirectoryPath();
 
-    this.imageApi.findImage(libraryId, ApiHelper.path(directory))
+    const operation = this.loaderService.startOperation('Loading images');
+    this.imageApi.findImage(libraryId, ApiHelper.path(currentDir))
       .toPromise()
       .then(response => {
         operation.stop();
+        this.clear();
         this.images = response.values;
         this.thumbnailUrls = this.images.map(image => image.gcsUrl);
       },rejectReason => {
         operation.stop();
+        this.clear();
         this.alertService.error('Failed to load images (' + rejectReason + ')');
       });
   }
