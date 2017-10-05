@@ -363,10 +363,7 @@ export class ImageApi {
         }
         // to determine the Content-Type header
         let consumes: string[] = [
-            'multipart/form-data',
-            'image/jpeg',
-            'image/gif',
-            'image/png'
+            'multipart/form-data'
         ];
 
         // to determine the Accept header

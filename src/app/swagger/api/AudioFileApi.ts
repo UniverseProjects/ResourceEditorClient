@@ -363,9 +363,7 @@ export class AudioFileApi {
         }
         // to determine the Content-Type header
         let consumes: string[] = [
-            'multipart/form-data',
-            'audio/mpeg3',
-            'audio/x-mpeg-3'
+            'multipart/form-data'
         ];
 
         // to determine the Accept header
