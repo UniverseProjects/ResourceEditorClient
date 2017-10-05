@@ -14,15 +14,12 @@ import {Subscription} from 'rxjs/Subscription';
     .controls-top {
       margin-bottom: 10px;
     }
-
     .controls-bottom {
       margin-top: 10px;
     }
-
     .preview-container {
       margin-bottom: 20px;
     }
-
     .preview {
       max-width: 400px;
       max-height: 400px;
