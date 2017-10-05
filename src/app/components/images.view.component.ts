@@ -131,40 +131,16 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
     let fileName = this.fileToUpload.name;
     let filePath = ApiHelper.verifyPath(PathUtil.combine(directoryPath, fileName));
 
-    let contentType = this.getContentType(fileName);
-    if (!contentType) {
-      this.alertService.warn('Unsupported file type: ' + fileName);
-      return;
-    }
-
-    const operation = this.loaderService.startOperation('Uploading file...');
-    this.imageApi.uploadImage(libraryId, filePath, this.fileToUpload)
-      .toPromise()
-      .then(() => {
-          operation.stop();
-          console.log('upload success');
-          this.loadImages(directoryPath);
-        },
-        rejectReason => {
-          operation.stop();
-          console.log('upload rejected: ' + rejectReason);
-          this.alertService.error('Image upload failed (reason: ' + rejectReason + ')');
-        }
-      );
-
-
-    // TODO: the code below attempts to do the same, without using the generated ImageApi class
     /*
-    const uploadUrl = 'https://www.universeprojects.com/api/v1/library/' + libraryId + '/uploadImage/' + filePath;
+     * At the time of this writing, generated method ImageApi.uploadImage() is broken and can't be used.
+     * GitHub issue: https://github.com/swagger-api/swagger-codegen/issues/6006
+     *
+     */
+    const uploadUrl = ApiHelper.BASE_URL + 'library/' + libraryId + '/uploadImage/' + filePath;
 
-    let formData:FormData = new FormData();
-    formData.append('uploadFile', this.fileToUpload, this.fileToUpload.name);
-
+    let formData = new FormData();
+    formData.append('file', this.fileToUpload, fileName);
     let headers = new Headers();
-
-    // headers.append('Content-Type', contentType);
-    headers.append('Content-Type', 'multipart/form-data'); // Apparently, no need to include Content-Type in Angular 4
-    headers.append('Accept', 'application/json');
     let options = new RequestOptions({ headers: headers });
 
     const operation = this.loaderService.startOperation('Uploading file...');
@@ -173,35 +149,39 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
       .toPromise()
       .then(() => {
           operation.stop();
-          console.log('upload success');
+          this.alertService.success('\"' + fileName + '\" uploaded successfully to ' + directoryPath);
           this.loadImages(directoryPath);
         },
         rejectReason => {
           operation.stop();
-          console.log('upload rejected: ' + rejectReason);
           this.alertService.error('Image upload failed (reason: ' + rejectReason + ')');
         }
       );
-    */
 
   }
 
   deleteImage() {
-    this.alertService.warn('Not implemented yet!');
-  }
+    if (!this.selectedImage) {
+      this.alertService.warn('Please select an image to delete');
+      return;
+    }
 
-  private getContentType(fileName: string): string {
-    fileName = fileName.toLowerCase();
-    if (fileName.endsWith('.gif')) {
-      return 'image/gif';
-    }
-    if (fileName.endsWith('.png')) {
-      return 'image/png';
-    }
-    if (fileName.endsWith('jpg') || fileName.endsWith('jpeg')) {
-      return 'image/jpeg';
-    }
-    return null;
+    let libraryId = this.explorerService.getSelectedLibraryId();
+    let directoryPath = this.directoryService.getCurrentDirectoryPath();
+    let treePath = ApiHelper.verifyPath(this.selectedImage.treePath);
+
+    let operation = this.loaderService.startOperation('Deleting image');
+    this.imageApi.deleteImage(libraryId, treePath)
+      .toPromise()
+      .then(() => {
+          operation.stop();
+          this.alertService.success('Image deleted: ' + treePath);
+          this.loadImages(directoryPath);
+        },
+        rejectReason => {
+          operation.stop();
+          this.alertService.error('Image deletion failed (reason: ' + rejectReason + ')');
+        });
   }
 
   private loadImages(directory: string): void {
