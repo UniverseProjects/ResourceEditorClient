@@ -93,15 +93,15 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const currentDirPath = ApiHelper.path(currentDir.treePath);
+    const currentDirPath = currentDir.treePath;
     const libraryId = this.explorerService.getSelectedLibraryId();
 
     const operation = this.loaderService.startOperation('Deleting directory');
-    this.treeApi.deleteDirectory(libraryId, currentDirPath)
+    this.treeApi.deleteDirectory(libraryId, ApiHelper.path(currentDirPath))
       .toPromise()
       .then(() => {
         operation.stop();
-        this.alertService.success('Directory \"' + currentDir.treePath + '\" deleted');
+        this.alertService.success('Directory deleted: ' + currentDirPath);
         this.directoryService.changeDirectoryToParent();
         this.directoryService.reloadDirectoryTree();
       }, rejectReason => {

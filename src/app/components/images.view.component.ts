@@ -129,7 +129,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
     let libraryId = this.explorerService.getSelectedLibraryId();
     let directoryPath = this.directoryService.getCurrentDirectoryPath();
     let fileName = this.fileToUpload.name;
-    let filePath = ApiHelper.path(PathUtil.combine(directoryPath, fileName));
+    let filePath = PathUtil.combine(directoryPath, fileName);
 
     for (let image of this.images) {
       if (image.name === fileName) {
@@ -143,7 +143,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
      * GitHub issue: https://github.com/swagger-api/swagger-codegen/issues/6006
      *
      */
-    const uploadUrl = ApiHelper.BASE_URL + 'library/' + libraryId + '/uploadImage/' + filePath;
+    const uploadUrl = ApiHelper.BASE_URL + 'library/' + libraryId + '/uploadImage/' + ApiHelper.path(filePath);
 
     let formData = new FormData();
     formData.append('file', this.fileToUpload, fileName);
@@ -175,10 +175,10 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
 
     let libraryId = this.explorerService.getSelectedLibraryId();
     let directoryPath = this.directoryService.getCurrentDirectoryPath();
-    let treePath = ApiHelper.path(this.selectedImage.treePath);
+    let treePath = this.selectedImage.treePath;
 
     let operation = this.loaderService.startOperation('Deleting image');
-    this.imageApi.deleteImage(libraryId, treePath)
+    this.imageApi.deleteImage(libraryId, ApiHelper.path(treePath))
       .toPromise()
       .then(() => {
           operation.stop();
@@ -200,10 +200,10 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
       this.thumbnailUrls.length = 0;
       return;
     }
-    directory = ApiHelper.path(directory);
-
+    let libraryId = this.explorerService.getSelectedLibraryId();
     const operation = this.loaderService.startOperation('Loading images');
-    this.imageApi.findImage(this.explorerService.getSelectedLibraryId(), directory)
+
+    this.imageApi.findImage(libraryId, ApiHelper.path(directory))
       .toPromise()
       .then(response => {
         operation.stop();

@@ -96,10 +96,10 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
       this.thumbnailUrls.length = 0;
       return;
     }
-    directory = ApiHelper.path(directory);
+    let libraryId = this.explorerService.getSelectedLibraryId();
 
     const operation = this.loaderService.startOperation('Loading sprites');
-    this.spriteTypeApi.findSpriteType(this.explorerService.getSelectedLibraryId(), directory)
+    this.spriteTypeApi.findSpriteType(libraryId, ApiHelper.path(directory))
       .toPromise()
       .then(response => {
         operation.stop();
