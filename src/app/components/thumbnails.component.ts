@@ -29,13 +29,15 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
       transform: translate(-50%, -50%);
     }
   `],
-  template: `<div class="thumbnails-container">
-    <div *ngFor="let imageUrl of imageUrls; let i = index"
-         (click)="onSelect(i)"
-         class="image-container" [class.selected]="false">
-      <img src="{{imageUrl}}"/>
+  template: `
+    <div class="thumbnails-container">
+      <div *ngFor="let imageUrl of imageUrls; let i = index"
+           (click)="onSelect(i)"
+           class="image-container" [class.selected]="false">
+        <img src="{{imageUrl}}"/>
+      </div>
     </div>
-  </div>`,
+  `,
 })
 export class ThumbnailsComponent {
   @Input() imageUrls: string[] = [];
