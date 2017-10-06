@@ -9,6 +9,7 @@ import {DirectoryService} from '../services/directory.service';
 import {Headers, Http, RequestOptions} from '@angular/http';
 import {Subscription} from 'rxjs/Subscription';
 import {PathUtil} from '../common/path.util';
+import {ImageFrameProperties} from './image.frame.component';
 
 @Component({
   selector: 'app-images-view',
@@ -21,10 +22,6 @@ import {PathUtil} from '../common/path.util';
     }
     .preview-container {
       margin-bottom: 20px;
-    }
-    .preview {
-      max-width: 400px;
-      max-height: 400px;
     }
     #uploadFileName {
       width: 200px;
@@ -54,7 +51,7 @@ import {PathUtil} from '../common/path.util';
       </div>
       <div *ngIf="selectedImage">
         <div class="preview-container">
-          <img class="preview" src="{{selectedImage.gcsUrl}}"/>
+          <app-image-frame [properties]="selectedImageFrameProperties"></app-image-frame>
         </div>
         <app-properties [object]="selectedImage"></app-properties>
         <div class="controls-bottom">
@@ -72,8 +69,9 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
   active = false;
   images: Image[] = [];
   thumbnailUrls: string[] = [];
-  selectedImage: Image;
   fileToUpload: File;
+  selectedImage: Image;
+  selectedImageFrameProperties: ImageFrameProperties;
 
   private subscription: Subscription;
 
@@ -103,7 +101,14 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
   }
 
   onThumbnailSelected(selectedIndex: number): void {
-    this.selectedImage = this.images[selectedIndex];
+    let image = this.images[selectedIndex];
+    this.selectedImage = image;
+    this.selectedImageFrameProperties = {
+      imageUrl: image.gcsUrl,
+      frameWidth: 400,
+      frameHeight: 400,
+      scaleToFrame: true,
+    }
   }
 
   onFileSelectionUpdate(event) {
@@ -191,10 +196,11 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
   }
 
   private clear() {
-    this.selectedImage = null;
     this.fileToUpload = null;
     this.images.length = 0;
     this.thumbnailUrls.length = 0;
+    this.selectedImage = null;
+    this.selectedImageFrameProperties = null;
   }
 
   private reloadContent() {
