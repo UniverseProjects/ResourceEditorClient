@@ -13,7 +13,8 @@ import {DomSanitizer, SafeValue} from '@angular/platform-browser';
       <div class="image-frame"
            [style.width]="getCssWidth()"
            [style.height]="getCssHeight()"
-           [style.background]="getCssBackground()"></div>
+           [style.background-image]="getCssBackgroundImage()"
+           [style.background-position]="getCssBackgroundPosition()"></div>
   `
 })
 export class ImageFrameComponent implements OnInit, OnDestroy {
@@ -43,17 +44,25 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
     return p.frameHeight ? p.frameHeight+'px' : 'auto';
   }
 
-  getCssBackground(): SafeValue {
+  getCssBackgroundImage(): SafeValue {
     let p = this.properties;
-    let offsetX = (p.frameX ? p.frameX : 0) + 'px';
-    let offsetY = (p.frameY ? p.frameY : 0) + 'px';
-    return this.sanitizer.bypassSecurityTrustStyle('url("'+p.imageUrl+'") ' + offsetX + ' ' + offsetY);
+    return this.sanitizer.bypassSecurityTrustStyle('url("'+p.imageUrl+'")');
+  }
+
+  getCssBackgroundPosition(): string {
+    let p = this.properties;
+    let posX = (p.frameX ? p.frameX : 0) + 'px';
+    let posY = (p.frameY ? p.frameY : 0) + 'px';
+    return posX + ' ' + posY;
   }
 
 }
 
 export interface ImageFrameProperties {
   imageUrl: string;
+
+  displayWidth?: number;
+  displayHeight?: number;
 
   frameWidth?: number;
   frameHeight?: number;
