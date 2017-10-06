@@ -31,9 +31,7 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   `],
   template: `
     <div class="thumbnails-container">
-      <div *ngFor="let imageUrl of imageUrls; let i = index"
-           (click)="onSelect(i)"
-           class="image-container" [class.selected]="false">
+      <div class="image-container" *ngFor="let imageUrl of imageUrls; let i = index" (click)="onSelect(i)">
         <img src="{{imageUrl}}"/>
       </div>
     </div>
