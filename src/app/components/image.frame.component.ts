@@ -6,7 +6,9 @@ import {DomSanitizer, SafeValue} from '@angular/platform-browser';
   styles:[`
     .image-frame {
       border: solid #888 1px;
-      padding: 2px;
+      /*padding: 2px;*/
+      /*background-clip: padding-box;*/
+      /*background-origin: padding-box;*/
     }
   `],
   template:`
