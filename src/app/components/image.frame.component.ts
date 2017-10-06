@@ -9,6 +9,7 @@ import {DomSanitizer, SafeValue} from '@angular/platform-browser';
       /*padding: 2px;*/
       /*background-clip: padding-box;*/
       /*background-origin: padding-box;*/
+      background-repeat: no-repeat;
     }
   `],
   template:`
