@@ -28,6 +28,8 @@ import {ImageFrameProperties} from './image.frame.component';
     }
     #uploadImageBtn {
       margin-left: 10px;
+      padding-left: 8px;
+      padding-right: 10px;
     }
 
   `],
@@ -45,7 +47,7 @@ import {ImageFrameProperties} from './image.frame.component';
             </label>
             <input id="uploadFileName" type="text" class="form-control" readonly placeholder="Select image to upload"
                    value="{{fileToUpload ? fileToUpload.name : null}}">
-            <button id="uploadImageBtn" class="btn btn-default" (click)="uploadImage()">&#9658; UPLOAD</button>
+            <button id="uploadImageBtn" class="btn btn-default" (click)="uploadImage()">&#8679; UPLOAD</button>
           </div>
         </div>
       </div>
