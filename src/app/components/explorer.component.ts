@@ -38,7 +38,7 @@ import {Subscription} from 'rxjs/Subscription';
       </div>
       <div class="current-dir">
         <span class="current-dir-label">Current directory: </span>
-        <span class="current-dir-value">{{currentDirectory || '???'}}</span>
+        <span class="current-dir-value">{{currentDirectory || '...'}}</span>
       </div>
       <div class="items-container">
         <app-directory-view></app-directory-view>
