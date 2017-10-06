@@ -31,6 +31,7 @@ import {TreeApi} from '../swagger/api/TreeApi';
 import {ImageApi} from '../swagger/api/ImageApi';
 import {SpriteTypeApi} from '../swagger/api/SpriteTypeApi';
 import {AnimatedSpriteTypeApi} from '../swagger/api/AnimatedSpriteTypeApi';
+import {ImageFrameComponent} from '../components/image.frame.component';
 
 @NgModule({
     imports: [
@@ -52,6 +53,7 @@ import {AnimatedSpriteTypeApi} from '../swagger/api/AnimatedSpriteTypeApi';
         ThumbnailsComponent,
         AlertComponent,
         LoaderComponent,
+        ImageFrameComponent,
         PropertiesComponent,
         ImagesViewComponent,
         SpritesViewComponent,

@@ -7,6 +7,7 @@ import {SpriteType} from '../swagger/model/SpriteType';
 import {ApiHelper} from '../common/api.helper';
 import {DirectoryService} from '../services/directory.service';
 import {Subscription} from 'rxjs/Subscription';
+import {ImageFrameProperties} from './image.frame.component';
 
 @Component({
   selector: 'app-sprites-view',
@@ -20,10 +21,6 @@ import {Subscription} from 'rxjs/Subscription';
     .preview-container {
       margin-bottom: 20px;
     }
-    .preview {
-      max-width: 400px;
-      max-height: 400px;
-    }
   `],
   template: `
     <div class="sprites-view-container" *ngIf="active">
@@ -32,7 +29,7 @@ import {Subscription} from 'rxjs/Subscription';
       </div>
       <div *ngIf="selectedSprite">
         <div class="preview-container">
-          <img class="preview" src="{{selectedSprite.image.gcsUrl}}"/>
+          <app-image-frame [properties]="selectedSpriteFrameProperties"></app-image-frame>
         </div>
         <app-properties [object]="selectedSprite"></app-properties>
         <div class="controls-bottom">
@@ -51,6 +48,7 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
   sprites: SpriteType[] = [];
   thumbnailUrls: string[] = [];
   selectedSprite: SpriteType;
+  selectedSpriteFrameProperties: ImageFrameProperties;
 
   private subscription: Subscription;
 
@@ -79,7 +77,15 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
   }
 
   onThumbnailSelected(selectedIndex: number): void {
-    this.selectedSprite = this.sprites[selectedIndex];
+    let sprite = this.sprites[selectedIndex];
+    this.selectedSprite = sprite;
+    this.selectedSpriteFrameProperties = {
+      imageUrl: sprite.image.gcsUrl,
+      frameWidth: sprite.areaWidth,
+      frameHeight: sprite.areaHeight,
+      frameX: sprite.areaX,
+      frameY: sprite.areaY,
+    }
   }
 
   deleteSprite() {
@@ -87,9 +93,10 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
   }
 
   private clear() {
-    this.selectedSprite = null;
     this.sprites.length = 0;
     this.thumbnailUrls.length = 0;
+    this.selectedSprite = null;
+    this.selectedSpriteFrameProperties = null;
   }
 
   private reloadContent() {
