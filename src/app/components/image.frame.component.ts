@@ -17,7 +17,9 @@ import {DomSanitizer, SafeValue} from '@angular/platform-browser';
            [style.width]="getCssWidth()"
            [style.height]="getCssHeight()"
            [style.background-image]="getCssBackgroundImage()"
-           [style.background-position]="getCssBackgroundPosition()"></div>
+           [style.background-position]="getCssBackgroundPosition()"
+           [style.background-size]="getCssBackgroundSize()"
+      ></div> 
   `
 })
 export class ImageFrameComponent implements OnInit, OnDestroy {
@@ -31,6 +33,11 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (!this.properties) {
       throw new Error('Properties must be provided');
+    }
+    let p = this.properties;
+
+    if (p.scaleToFrame === true && (p.frameX || p.frameY)) {
+      throw new Error('Frame-position and scale-to-frame are not supported together');
     }
   }
 
@@ -54,19 +61,31 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
 
   getCssBackgroundPosition(): string {
     let p = this.properties;
-    let posX = (p.frameX ? p.frameX : 0) + 'px';
-    let posY = (p.frameY ? p.frameY : 0) + 'px';
-    return posX + ' ' + posY;
+    if (p.scaleToFrame === true) {
+      return 'center';
+    }
+    else {
+      let posX = -(p.frameX ? p.frameX : 0) + 'px';
+      let posY = -(p.frameY ? p.frameY : 0) + 'px';
+      return posX + ' ' + posY;
+    }
+  }
+
+  getCssBackgroundSize(): string {
+    let p = this.properties;
+    if (p.scaleToFrame === true) {
+      return 'contain';
+    }
+    else {
+      return 'auto';
+    }
   }
 
 }
 
 export interface ImageFrameProperties {
   imageUrl: string;
-
-  displayWidth?: number;
-  displayHeight?: number;
-
+  scaleToFrame?: boolean;
   frameWidth?: number;
   frameHeight?: number;
   frameX?: number;
