@@ -7,8 +7,6 @@ import {C} from '../common/common';
   styles:[`
     .frame-container {
       border: solid #888 1px;
-      margin: 0 5px 5px 0;
-      padding: 2px;
       box-sizing: content-box;
     }
 
