@@ -9,6 +9,7 @@ import {C} from '../common/common';
       border: solid #888 1px;
       margin: 0 5px 5px 0;
       padding: 2px;
+      box-sizing: content-box;
     }
 
     .image-container {
