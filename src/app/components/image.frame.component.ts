@@ -25,7 +25,6 @@ import {C} from '../common/common';
       border: solid #888 1px;
     }
 
-    /* conditional class - not detected by the IDE :( */
     .image-fit-frame { 
       max-width: 100%;
       max-height: 100%;
