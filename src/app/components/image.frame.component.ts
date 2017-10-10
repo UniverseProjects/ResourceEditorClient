@@ -17,10 +17,12 @@ import {C} from '../common/common';
       vertical-align: top;
       position: relative;
       overflow: hidden;
+      box-sizing: content-box;
     }
 
     .image {
       position: absolute;
+      border: solid #888 1px;
     }
 
     /* conditional class - not detected by the IDE :( */
