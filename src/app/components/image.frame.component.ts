@@ -1,5 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
+import {C} from '../common/common';
 
 @Component({
   selector: 'app-image-frame',
@@ -52,7 +53,7 @@ import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
 export class ImageFrameComponent implements OnInit, OnDestroy {
 
   @Input() properties: ImageFrameProperties;
-  
+
   private containerTransform: SafeStyle = null;
 
   constructor(
@@ -62,6 +63,23 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (!this.properties) {
       throw new Error('Properties must be provided');
+    }
+    let p = this.properties;
+
+    if (C.xor(C.defined(p.sectionWidth), C.defined(p.sectionHeight))) {
+      throw new Error('Both section-width and section-height must be defined');
+    }
+    if (C.defined(p.sectionWidth)) {
+      if (!C.defined(p.sectionX)) {
+        p.sectionX = 0;
+      }
+      if (!C.defined(p.sectionY)) {
+        p.sectionY = 0;
+      }
+    }
+
+    if (C.defined(p.sectionWidth) && p.fitFrame === false) {
+      throw new Error('When an image section is defined, the fit-frame behaviour can\'t be disabled');
     }
   }
 
