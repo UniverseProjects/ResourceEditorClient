@@ -106,10 +106,10 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
     let image = this.images[selectedIndex];
     this.selectedImage = image;
     this.selectedImageFrameProperties = {
+      width: 400,
+      height: 400,
       imageUrl: image.gcsUrl,
-      frameWidth: 400,
-      frameHeight: 400,
-      scaleToFrame: true,
+      fitFrame: true,
     }
   }
 

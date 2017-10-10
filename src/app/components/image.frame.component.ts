@@ -1,30 +1,59 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {DomSanitizer, SafeValue} from '@angular/platform-browser';
+import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-image-frame',
   styles:[`
-    .image-frame {
+    .frame-container {
       border: solid #888 1px;
-      /*padding: 2px;*/
-      /*background-clip: padding-box;*/
-      /*background-origin: padding-box;*/
-      background-repeat: no-repeat;
+      margin: 0 5px 5px 0;
+      padding: 2px;
+    }
+
+    .image-container {
+      display: inline-block;
+      vertical-align: top;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .image {
+      position: absolute;
+    }
+
+    /* conditional class - not detected by the IDE :( */
+    .image-fit-frame { 
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      -ms-transform: translate(-50%, -50%); /* IE 9 */
+      -webkit-transform: translate(-50%, -50%); /* Safari */
+      transform: translate(-50%, -50%);
     }
   `],
   template:`
-      <div class="image-frame"
-           [style.width]="getCssWidth()"
-           [style.height]="getCssHeight()"
-           [style.background-image]="getCssBackgroundImage()"
-           [style.background-position]="getCssBackgroundPosition()"
-           [style.background-size]="getCssBackgroundSize()"
-      ></div> 
+    <div class="frame-container"
+         [style.width.px]="getWidth()"
+         [style.height.px]="getHeight()">
+
+      <div class="image-container"
+           [style.width.px]="getContainerWidth()"
+           [style.height.px]="getContainerHeight()"
+           [style.transform]="getContainerTransform()" [style.msTransform]="getContainerTransform()" [style.webkitTransform]="getContainerTransform()">
+
+        <img class="image" [src]="properties.imageUrl"
+             [class.image-fit-frame]="properties.fitFrame"
+             [style.left.px]="getImageOffsetX()"
+             [style.top.px]="getImageOffsetY()"/>
+      </div>
+    </div>
   `
 })
 export class ImageFrameComponent implements OnInit, OnDestroy {
 
   @Input() properties: ImageFrameProperties;
+  
+  private containerTransform: SafeStyle = null;
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -34,60 +63,70 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
     if (!this.properties) {
       throw new Error('Properties must be provided');
     }
-    let p = this.properties;
-
-    if (p.scaleToFrame === true && (p.frameX || p.frameY)) {
-      throw new Error('Frame-position and scale-to-frame are not supported together');
-    }
   }
 
   ngOnDestroy(): void {
   }
 
-  getCssWidth(): string {
-    let p = this.properties;
-    return p.frameWidth ? p.frameWidth+'px' : 'auto';
+  getWidth(): number {
+    return this.properties.width;
   }
 
-  getCssHeight(): string {
-    let p = this.properties;
-    return p.frameHeight ? p.frameHeight+'px' : 'auto';
+  getHeight(): number {
+    return this.properties.height;
   }
 
-  getCssBackgroundImage(): SafeValue {
+  getContainerWidth(): number {
     let p = this.properties;
-    return this.sanitizer.bypassSecurityTrustStyle('url("'+p.imageUrl+'")');
+    return p.fitFrame ? p.width : p.sectionWidth;
   }
 
-  getCssBackgroundPosition(): string {
+  getContainerHeight(): number {
     let p = this.properties;
-    if (p.scaleToFrame === true) {
-      return 'center';
-    }
-    else {
-      let posX = -(p.frameX ? p.frameX : 0) + 'px';
-      let posY = -(p.frameY ? p.frameY : 0) + 'px';
-      return posX + ' ' + posY;
-    }
+    return p.fitFrame ? p.height : p.sectionHeight;
   }
 
-  getCssBackgroundSize(): string {
+  getContainerTransform(): SafeStyle {
+    if (this.containerTransform == null) {
+      let transformStr = null;
+      let p = this.properties;
+      if (p.fitFrame) {
+        transformStr = 'none';
+      }
+      else if (p.width === p.sectionWidth && p.height === p.sectionHeight) {
+        transformStr = 'none';
+      }
+      else {
+        let scaleX = p.width / p.sectionWidth;
+        let scaleY = p.height / p.sectionHeight;
+        transformStr = 'translate(-50%, -50%) scale(' + scaleX + ', ' + scaleY + ') translate(50%, 50%)';
+      }
+      this.containerTransform = this.sanitizer.bypassSecurityTrustStyle(transformStr);
+    }
+
+    return this.containerTransform;
+  }
+
+  getImageOffsetX(): number {
     let p = this.properties;
-    if (p.scaleToFrame === true) {
-      return 'contain';
-    }
-    else {
-      return 'auto';
-    }
+    return p.fitFrame ? p.width/2 : -p.sectionX;
+  }
+
+  getImageOffsetY(): number {
+    let p = this.properties;
+    return p.fitFrame ? p.height/2 : -p.sectionY;
   }
 
 }
 
 export interface ImageFrameProperties {
   imageUrl: string;
-  scaleToFrame?: boolean;
-  frameWidth?: number;
-  frameHeight?: number;
-  frameX?: number;
-  frameY?: number;
+  width: number;
+  height: number;
+  fitFrame: boolean;
+
+  sectionWidth?: number;
+  sectionHeight?: number;
+  sectionX?: number;
+  sectionY?: number;
 }
