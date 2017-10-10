@@ -59,6 +59,7 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
   @Input() properties: ImageFrameProperties;
 
   private containerTransform: SafeStyle = null;
+  private sectionDefined: boolean = false;
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -86,9 +87,7 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
         p.sectionY = 0;
       }
     }
-    if (C.defined(p.sectionWidth) && p.fitFrame === false) {
-      throw new Error('When an image section is defined, the fit-frame behaviour can\'t be disabled');
-    }
+    this.sectionDefined = C.defined(p.sectionWidth);
   }
 
   ngOnDestroy(): void {
@@ -104,12 +103,12 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
 
   getContainerWidth(): number {
     let p = this.properties;
-    return p.fitFrame ? p.width : p.sectionWidth;
+    return this.sectionDefined ? p.sectionWidth : p.width;
   }
 
   getContainerHeight(): number {
     let p = this.properties;
-    return p.fitFrame ? p.height : p.sectionHeight;
+    return this.sectionDefined ? p.sectionHeight : p.height;
   }
 
   getContainerTransform(): SafeStyle {
@@ -135,12 +134,12 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
 
   getImageOffsetX(): number {
     let p = this.properties;
-    return p.fitFrame ? p.width/2 : -p.sectionX;
+    return this.sectionDefined ? -p.sectionX : p.width/2;
   }
 
   getImageOffsetY(): number {
     let p = this.properties;
-    return p.fitFrame ? p.height/2 : -p.sectionY;
+    return this.sectionDefined ? -p.sectionY : p.height/2;
   }
 
 }
@@ -149,11 +148,12 @@ export interface ImageFrameProperties {
   imageUrl: string;
   width: number;
   height: number;
-  fitFrame: boolean;
-  imageBorder: boolean;
 
   sectionWidth?: number;
   sectionHeight?: number;
   sectionX?: number;
   sectionY?: number;
+
+  fitFrame?: boolean;
+  imageBorder?: boolean;
 }
