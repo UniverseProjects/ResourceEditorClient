@@ -71,9 +71,14 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
       throw new Error('Properties must be provided');
     }
     let p = this.properties;
-
+    if (!C.defined(p.imageUrl)) {
+      throw new Error('Image-url must be defined')
+    }
+    if (!C.defined(p.width) || !C.defined(p.height)) {
+      throw new Error('Width and height must be defined');
+    }
     if (C.xor(C.defined(p.sectionWidth), C.defined(p.sectionHeight))) {
-      throw new Error('Both section-width and section-height must be defined');
+      throw new Error('When using a section, both section-width and section-height must be defined');
     }
     if (C.defined(p.sectionWidth)) {
       if (!C.defined(p.sectionX)) {
@@ -83,7 +88,6 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
         p.sectionY = 0;
       }
     }
-
     if (C.defined(p.sectionWidth) && p.fitFrame === false) {
       throw new Error('When an image section is defined, the fit-frame behaviour can\'t be disabled');
     }
