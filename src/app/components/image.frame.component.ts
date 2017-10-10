@@ -21,8 +21,11 @@ import {C} from '../common/common';
 
     .image {
       position: absolute;
-      border: solid #888 1px;
       box-sizing: content-box;
+    }
+    
+    .image-border {
+      border: solid #888 1px;
     }
 
     .image-fit-frame { 
@@ -46,6 +49,7 @@ import {C} from '../common/common';
 
         <img class="image" [src]="properties.imageUrl"
              [class.image-fit-frame]="properties.fitFrame"
+             [class.image-border]="properties.imageBorder"
              [style.left.px]="getImageOffsetX()"
              [style.top.px]="getImageOffsetY()"/>
       </div>
@@ -144,6 +148,7 @@ export interface ImageFrameProperties {
   width: number;
   height: number;
   fitFrame: boolean;
+  imageBorder: boolean;
 
   sectionWidth?: number;
   sectionHeight?: number;

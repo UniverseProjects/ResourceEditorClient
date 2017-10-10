@@ -110,6 +110,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
       height: 400,
       imageUrl: image.gcsUrl,
       fitFrame: true,
+      imageBorder: true,
     }
   }
 

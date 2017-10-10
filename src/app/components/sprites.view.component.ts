@@ -83,6 +83,7 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
       width: sprite.areaWidth,
       height: sprite.areaHeight,
       imageUrl: sprite.image.gcsUrl,
+      imageBorder: false,
       fitFrame: true,
       sectionWidth: sprite.areaWidth,
       sectionHeight: sprite.areaHeight,
