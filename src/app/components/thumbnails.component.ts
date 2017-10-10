@@ -1,4 +1,6 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {C} from '../common/common';
+import {ImageFrameProperties} from './image.frame.component';
 
 @Component({
   selector: 'app-thumbnails',
@@ -14,24 +16,47 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
   `],
   template: `
     <div class="thumbnails-container">
-      <div class="thumbnail-container" *ngFor="let imageUrl of imageUrls; let i = index" (click)="onSelect(i)">
-        <app-image-frame 
-          [properties]="{
-            imageUrl: imageUrl, 
-            width: 100, 
-            height: 100, 
-            fitFrame: true, 
-            imageBorder:false
-          }"></app-image-frame>
+      <div class="thumbnail-container" *ngFor="let th of thumbnails; let i = index" (click)="onSelect(i)">
+        <app-image-frame [properties]="toFrameProperties(th)"></app-image-frame>
       </div>
     </div>
   `,
 })
-export class ThumbnailsComponent {
-  @Input() imageUrls: string[] = [];
+export class ThumbnailsComponent implements OnInit {
+
+  @Input() size = 100;
+  @Input() thumbnails: ThumbnailProperties[];
   @Output() onSelected = new EventEmitter<number>();
 
-  onSelect(index: number): void {
+  ngOnInit() {
+    if (!C.defined(this.thumbnails)) {
+      throw new Error('Thumbnail data must be provided');
+    }
+  }
+
+  onSelect(index: number) {
     this.onSelected.emit(index);
   }
+
+  toFrameProperties(th: ThumbnailProperties): ImageFrameProperties {
+    return {
+      imageUrl: th.imageUrl,
+      width: this.size,
+      height: this.size,
+      fitFrame: !C.defined(th.sectionWidth),
+      imageBorder: false,
+      sectionWidth: th.sectionWidth,
+      sectionHeight: th.sectionHeight,
+      sectionX: th.sectionX,
+      sectionY: th.sectionY,
+    }
+  }
+}
+
+export interface ThumbnailProperties {
+  imageUrl: string
+  sectionWidth?: number
+  sectionHeight?: number
+  sectionX?: number
+  sectionY?: number
 }

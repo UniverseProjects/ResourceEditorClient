@@ -10,6 +10,7 @@ import {Headers, Http, RequestOptions} from '@angular/http';
 import {Subscription} from 'rxjs/Subscription';
 import {PathUtil} from '../common/path.util';
 import {ImageFrameProperties} from './image.frame.component';
+import {ThumbnailProperties} from './thumbnails.component';
 
 @Component({
   selector: 'app-images-view',
@@ -36,7 +37,7 @@ import {ImageFrameProperties} from './image.frame.component';
   template: `
     <div class="images-view-container" *ngIf="active">
       <div [hidden]="selectedImage">
-        <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+        <app-thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
         <div class="controls-bottom">
           <div class="input-group">
             <label class="input-group-btn">
@@ -70,7 +71,7 @@ import {ImageFrameProperties} from './image.frame.component';
 export class ImagesViewComponent implements OnInit, OnDestroy {
   active = false;
   images: Image[] = [];
-  thumbnailUrls: string[] = [];
+  thumbnails: ThumbnailProperties[] = [];
   fileToUpload: File;
   selectedImage: Image;
   selectedImageFrameProperties: ImageFrameProperties;
@@ -201,7 +202,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
   private clear() {
     this.fileToUpload = null;
     this.images.length = 0;
-    this.thumbnailUrls.length = 0;
+    this.thumbnails.length = 0;
     this.selectedImage = null;
     this.selectedImageFrameProperties = null;
   }
@@ -217,12 +218,18 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
         operation.stop();
         this.clear();
         this.images = response.values;
-        this.thumbnailUrls = this.images.map(image => image.gcsUrl);
+        this.thumbnails = this.images.map(image => ImagesViewComponent.toThumbnail(image));
       },rejectReason => {
         operation.stop();
         this.clear();
         this.alertService.error('Failed to load images (' + rejectReason + ')');
       });
+  }
+
+  private static toThumbnail(image: Image): ThumbnailProperties {
+    return {
+      imageUrl: image.gcsUrl,
+    };
   }
 
 }

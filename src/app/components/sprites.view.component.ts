@@ -8,6 +8,7 @@ import {ApiHelper} from '../common/api.helper';
 import {DirectoryService} from '../services/directory.service';
 import {Subscription} from 'rxjs/Subscription';
 import {ImageFrameProperties} from './image.frame.component';
+import {ThumbnailProperties} from "./thumbnails.component";
 
 @Component({
   selector: 'app-sprites-view',
@@ -25,7 +26,7 @@ import {ImageFrameProperties} from './image.frame.component';
   template: `
     <div class="sprites-view-container" *ngIf="active">
       <div [hidden]="selectedSprite">
-        <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+        <app-thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
       </div>
       <div *ngIf="selectedSprite">
         <div class="preview-container">
@@ -46,7 +47,7 @@ import {ImageFrameProperties} from './image.frame.component';
 export class SpritesViewComponent implements OnInit, OnDestroy {
   active = false;
   sprites: SpriteType[] = [];
-  thumbnailUrls: string[] = [];
+  thumbnails: ThumbnailProperties[] = [];
   selectedSprite: SpriteType;
   selectedSpriteFrameProperties: ImageFrameProperties;
 
@@ -84,7 +85,6 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
       height: sprite.areaHeight,
       imageUrl: sprite.image.gcsUrl,
       imageBorder: false,
-      fitFrame: true,
       sectionWidth: sprite.areaWidth,
       sectionHeight: sprite.areaHeight,
       sectionX: sprite.areaX,
@@ -98,7 +98,7 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
 
   private clear() {
     this.sprites.length = 0;
-    this.thumbnailUrls.length = 0;
+    this.thumbnails.length = 0;
     this.selectedSprite = null;
     this.selectedSpriteFrameProperties = null;
   }
@@ -114,12 +114,22 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
         operation.stop();
         this.clear();
         this.sprites = response.values;
-        this.thumbnailUrls = this.sprites.map(sprite => sprite.image.gcsUrl);
+        this.thumbnails = this.sprites.map(sprite => SpritesViewComponent.toThumbnail(sprite));
       }, rejectReason => {
         operation.stop();
         this.clear();
         this.alertService.error('Failed to load sprites (' + rejectReason + ')');
       });
+  }
+
+  static toThumbnail(sprite: SpriteType): ThumbnailProperties {
+    return {
+      imageUrl: sprite.image.gcsUrl,
+      sectionWidth: sprite.areaWidth,
+      sectionHeight: sprite.areaHeight,
+      sectionX: sprite.areaX,
+      sectionY: sprite.areaY,
+    };
   }
 
 }

@@ -7,6 +7,8 @@ import {AnimatedSpriteType} from '../swagger/model/AnimatedSpriteType';
 import {ApiHelper} from '../common/api.helper';
 import {DirectoryService} from '../services/directory.service';
 import {Subscription} from 'rxjs/Subscription';
+import {SpritesViewComponent} from './sprites.view.component';
+import {ThumbnailProperties} from './thumbnails.component';
 
 @Component({
   selector: 'app-animated-sprites-view',
@@ -28,7 +30,7 @@ import {Subscription} from 'rxjs/Subscription';
   template: `
     <div class="animated-sprites-view-container" *ngIf="active">
       <div [hidden]="selectedAnimatedSprite">
-        <app-thumbnails [imageUrls]="thumbnailUrls" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+        <app-thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
       </div>
       <div *ngIf="selectedAnimatedSprite">
         <div class="preview-container">
@@ -49,7 +51,7 @@ import {Subscription} from 'rxjs/Subscription';
 export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
   active = false;
   animatedSprites: AnimatedSpriteType[] = [];
-  thumbnailUrls: string[] = [];
+  thumbnails: ThumbnailProperties[] = [];
   selectedAnimatedSprite: AnimatedSpriteType;
 
   private subscription: Subscription;
@@ -89,7 +91,7 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
   private clear(): void {
     this.selectedAnimatedSprite = null;
     this.animatedSprites.length = 0;
-    this.thumbnailUrls.length = 0;
+    this.thumbnails.length = 0;
   }
 
   private reloadContent() {
@@ -103,7 +105,7 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
         operation.stop();
         this.clear();
         this.animatedSprites = response.values;
-        this.thumbnailUrls = this.animatedSprites.map(sprite => sprite.frames[0].spriteType.image.gcsUrl);
+        this.thumbnails = this.animatedSprites.map(sprite => SpritesViewComponent.toThumbnail(sprite.frames[0].spriteType));
       }, (rejectReason) => {
         operation.stop();
         this.clear();
