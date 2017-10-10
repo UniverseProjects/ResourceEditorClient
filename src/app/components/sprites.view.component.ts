@@ -80,10 +80,10 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
     let sprite = this.sprites[selectedIndex];
     this.selectedSprite = sprite;
     this.selectedSpriteFrameProperties = {
-      width: 400,
-      height: 400,
+      width: sprite.areaWidth,
+      height: sprite.areaHeight,
       imageUrl: sprite.image.gcsUrl,
-      fitFrame: false,
+      fitFrame: true,
       sectionWidth: sprite.areaWidth,
       sectionHeight: sprite.areaHeight,
       sectionX: sprite.areaX,
