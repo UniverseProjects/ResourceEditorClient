@@ -50,8 +50,8 @@ import {C} from '../common/common';
            [style.webkitTransform]="getContainerTransform()">
 
         <img class="image" [src]="properties.imageUrl"
-             [class.image-fit-frame]="properties.fitFrame"
              [class.image-border]="properties.imageBorder"
+             [class.image-fit-frame]="imageFitFrame"
              [style.left.px]="getImageOffsetX()"
              [style.top.px]="getImageOffsetY()"/>
       </div>
@@ -62,7 +62,8 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
 
   @Input() properties: ImageFrameProperties;
 
-  private sectionDefined = false;
+  imageFitFrame: boolean;
+  sectionDefined: boolean;
   private containerTransformScale: number = null;
   private containerTransform: SafeStyle = null;
 
@@ -78,11 +79,17 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
     if (!C.defined(p.imageUrl)) {
       throw new Error('Image-url must be defined')
     }
-    if (!C.defined(p.width) || !C.defined(p.height)) {
-      throw new Error('Width and height must be defined');
+    if (!C.defined(p.width)) {
+      p.width = 200;
     }
-    if (C.xor(C.defined(p.sectionWidth), C.defined(p.sectionHeight))) {
-      throw new Error('When using a section, both section-width and section-height must be defined');
+    if (!C.defined(p.height)) {
+      p.height = 200;
+    }
+    if (C.defined(p.sectionWidth) && !C.defined(p.sectionHeight)) {
+      p.sectionHeight = p.sectionWidth;
+    }
+    if (!C.defined(p.sectionWidth) && C.defined(p.sectionHeight)) {
+      p.sectionWidth = p.sectionHeight;
     }
     if (C.defined(p.sectionWidth)) {
       if (!C.defined(p.sectionX)) {
@@ -93,6 +100,7 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
       }
     }
     this.sectionDefined = C.defined(p.sectionWidth);
+    this.imageFitFrame = !this.sectionDefined;
   }
 
   ngOnDestroy() {
@@ -182,14 +190,11 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
 
 export interface ImageFrameProperties {
   imageUrl: string;
-  width: number;
-  height: number;
-
+  width?: number;
+  height?: number;
+  imageBorder?: boolean;
   sectionWidth?: number;
   sectionHeight?: number;
   sectionX?: number;
   sectionY?: number;
-
-  fitFrame?: boolean;
-  imageBorder?: boolean;
 }

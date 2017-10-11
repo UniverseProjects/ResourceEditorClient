@@ -43,7 +43,6 @@ export class ThumbnailsComponent implements OnInit {
       imageUrl: th.imageUrl,
       width: this.size,
       height: this.size,
-      fitFrame: !C.defined(th.sectionWidth),
       imageBorder: false,
       sectionWidth: th.sectionWidth,
       sectionHeight: th.sectionHeight,
