@@ -73,7 +73,7 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (!this.properties) {
-      throw new Error('Properties must be provided');
+      throw new Error('Image-frame properties must be provided');
     }
     let p = this.properties;
     if (!C.defined(p.imageUrl)) {
@@ -85,21 +85,21 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
     if (!C.defined(p.height)) {
       p.height = 200;
     }
+
+    this.sectionDefined = C.defined(p.sectionWidth) || C.defined(p.sectionHeight);
     if (C.defined(p.sectionWidth) && !C.defined(p.sectionHeight)) {
       p.sectionHeight = p.sectionWidth;
     }
     if (!C.defined(p.sectionWidth) && C.defined(p.sectionHeight)) {
       p.sectionWidth = p.sectionHeight;
     }
-    if (C.defined(p.sectionWidth)) {
-      if (!C.defined(p.sectionX)) {
-        p.sectionX = 0;
-      }
-      if (!C.defined(p.sectionY)) {
-        p.sectionY = 0;
-      }
+    if (this.sectionDefined && !C.defined(p.sectionX)) {
+      p.sectionX = 0;
     }
-    this.sectionDefined = C.defined(p.sectionWidth);
+    if (this.sectionDefined && !C.defined(p.sectionY)) {
+      p.sectionY = 0;
+    }
+
     this.imageFitFrame = !this.sectionDefined;
   }
 
