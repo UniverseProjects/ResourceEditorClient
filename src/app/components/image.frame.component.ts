@@ -43,7 +43,11 @@ import {C} from '../common/common';
       <div class="image-container"
            [style.width.px]="getContainerWidth()"
            [style.height.px]="getContainerHeight()"
-           [style.transform]="getContainerTransform()" [style.msTransform]="getContainerTransform()" [style.webkitTransform]="getContainerTransform()">
+           [style.left.px]="getContainerOffsetX()"
+           [style.top.px]="getContainerOffsetY()"
+           [style.transform]="getContainerTransform()" 
+           [style.msTransform]="getContainerTransform()" 
+           [style.webkitTransform]="getContainerTransform()">
 
         <img class="image" [src]="properties.imageUrl"
              [class.image-fit-frame]="properties.fitFrame"
@@ -58,14 +62,15 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
 
   @Input() properties: ImageFrameProperties;
 
+  private sectionDefined = false;
+  private containerTransformScale: number = null;
   private containerTransform: SafeStyle = null;
-  private sectionDefined: boolean = false;
 
   constructor(
     private sanitizer: DomSanitizer,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (!this.properties) {
       throw new Error('Properties must be provided');
     }
@@ -90,7 +95,7 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
     this.sectionDefined = C.defined(p.sectionWidth);
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
   }
 
   getWidth(): number {
@@ -111,20 +116,51 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
     return this.sectionDefined ? p.sectionHeight : p.height;
   }
 
-  getContainerTransform(): SafeStyle {
-    if (this.containerTransform == null) {
-      let transformStr = null;
+  getContainerOffsetX(): number {
+    if (!this.sectionDefined) {
+      return 0; // only applicable in section-mode
+    }
+    let p = this.properties;
+    let displayWidth = p.sectionWidth * this.getTransformScale();
+    return p.width > displayWidth ? (p.width - displayWidth) / 2 : 0;
+  }
+
+  getContainerOffsetY(): number {
+    if (!this.sectionDefined) {
+      return 0; // only applicable in section-mode
+    }
+    let p = this.properties;
+    let displayHeight = p.sectionHeight * this.getTransformScale();
+    return p.height > displayHeight ? (p.height - displayHeight) / 2 : 0;
+  }
+
+  getTransformScale(): number {
+    if (this.containerTransformScale == null) {
       let p = this.properties;
-      if (p.fitFrame) {
-        transformStr = 'none';
+      if (!this.sectionDefined) {
+        // Not applicable outside of section-mode
+        this.containerTransformScale = 1;
       }
-      else if (p.width === p.sectionWidth && p.height === p.sectionHeight) {
-        transformStr = 'none';
+      else if (p.width >= p.sectionWidth && p.height >= p.sectionHeight) {
+        // Not applicable when the frame dimensions can fit the section dimensions
+        this.containerTransformScale = 1;
       }
       else {
-        let scaleX = p.width / p.sectionWidth;
-        let scaleY = p.height / p.sectionHeight;
-        transformStr = 'translate(-50%, -50%) scale(' + scaleX + ', ' + scaleY + ') translate(50%, 50%)';
+        // To support all combinations of rectangles, the result is based on which dimension has a greater discrepancy
+        let widthProportion = p.width / p.sectionWidth;
+        let heightProportion = p.height / p.sectionHeight;
+        this.containerTransformScale = widthProportion < heightProportion ? widthProportion : heightProportion;
+      }
+    }
+    return this.containerTransformScale;
+  }
+
+  getContainerTransform(): SafeStyle {
+    if (this.containerTransform == null) {
+      let transformStr = 'none';
+      let scale = this.getTransformScale();
+      if (scale < 1) {
+        transformStr = 'translate(-50%, -50%) scale(' + scale + ', ' + scale + ') translate(50%, 50%)';
       }
       this.containerTransform = this.sanitizer.bypassSecurityTrustStyle(transformStr);
     }
