@@ -22,6 +22,10 @@ import {ThumbnailProperties} from "./thumbnails.component";
     .preview-container {
       margin-bottom: 20px;
     }
+    #backBtn {
+      padding-left: 8px;
+      padding-right: 10px;
+    }
   `],
   template: `
     <div class="sprites-view-container" *ngIf="active">
@@ -29,16 +33,19 @@ import {ThumbnailProperties} from "./thumbnails.component";
         <app-thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
       </div>
       <div *ngIf="selectedSprite">
-        <div class="preview-container">
-          <app-image-frame [properties]="selectedSpriteFrameProperties"></app-image-frame>
-        </div>
-        <app-properties [object]="selectedSprite"></app-properties>
-        <div class="controls-bottom">
+        <div class="controls-top">
+          <button id="backBtn" class="btn btn-default" (click)="clearSelection()">&#8678; Back to directory</button>
           <button class="btn btn-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete this sprite?"
                   (confirm)="deleteSprite()">Delete this sprite
           </button>
+        </div>
+        <div class="preview-container">
+          <app-image-frame [properties]="selectedSpriteFrameProperties"></app-image-frame>
+        </div>
+        <app-properties [object]="selectedSprite"></app-properties>
+        <div class="controls-bottom">
         </div>
       </div>
     </div>
@@ -92,15 +99,20 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteSprite() {
-    this.alertService.warn('Not implemented yet!');
+  clearSelection() {
+    this.selectedSprite = null;
+    this.selectedSpriteFrameProperties = null;
   }
 
-  private clear() {
+  clear() {
     this.sprites.length = 0;
     this.thumbnails.length = 0;
     this.selectedSprite = null;
     this.selectedSpriteFrameProperties = null;
+  }
+
+  deleteSprite() {
+    this.alertService.warn('Not implemented yet!');
   }
 
   private reloadContent() {

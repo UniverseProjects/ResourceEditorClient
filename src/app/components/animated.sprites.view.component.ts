@@ -26,6 +26,10 @@ import {ThumbnailProperties} from './thumbnails.component';
       max-width: 400px;
       max-height: 400px;
     }
+    #backBtn {
+      padding-left: 8px;
+      padding-right: 10px;
+    }
   `],
   template: `
     <div class="animated-sprites-view-container" *ngIf="active">
@@ -33,6 +37,9 @@ import {ThumbnailProperties} from './thumbnails.component';
         <app-thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
       </div>
       <div *ngIf="selectedAnimatedSprite">
+        <div class="controls-top">
+          <button id="backBtn" class="btn btn-default" (click)="clearSelection()">&#8678; Back to directory</button>
+        </div>
         <div class="preview-container">
           <img class="preview" src="{{selectedAnimatedSprite.frames[0].spriteType.image.gcsUrl}}"/>
         </div>
@@ -84,14 +91,18 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
     this.selectedAnimatedSprite = this.animatedSprites[selectedIndex];
   }
 
-  deleteAnimatedSprite() {
-    this.alertService.warn('Deletion not implemented yet');
+  clearSelection() {
+    this.selectedAnimatedSprite = null;
   }
 
-  private clear() {
+  clear() {
     this.selectedAnimatedSprite = null;
     this.animatedSprites.length = 0;
     this.thumbnails.length = 0;
+  }
+
+  deleteAnimatedSprite() {
+    this.alertService.warn('Deletion not implemented yet');
   }
 
   private reloadContent() {

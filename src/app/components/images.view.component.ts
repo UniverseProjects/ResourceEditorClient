@@ -24,6 +24,10 @@ import {ThumbnailProperties} from './thumbnails.component';
     .preview-container {
       margin-bottom: 20px;
     }
+    #backBtn {
+      padding-left: 8px;
+      padding-right: 10px;
+    }
     #uploadFileName {
       width: 200px;
     }
@@ -53,16 +57,19 @@ import {ThumbnailProperties} from './thumbnails.component';
         </div>
       </div>
       <div *ngIf="selectedImage">
-        <div class="preview-container">
-          <app-image-frame [properties]="selectedImageFrameProperties"></app-image-frame>
-        </div>
-        <app-properties [object]="selectedImage"></app-properties>
-        <div class="controls-bottom">
+        <div class="controls-top">
+          <button id="backBtn" class="btn btn-default" (click)="clearSelection()">&#8678; Back to directory</button>
           <button class="btn btn-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete this image?"
                   (confirm)="deleteImage()">Delete this image
           </button>
+        </div>
+        <div class="preview-container">
+          <app-image-frame [properties]="selectedImageFrameProperties"></app-image-frame>
+        </div>
+        <app-properties [object]="selectedImage"></app-properties>
+        <div class="controls-bottom">
         </div>
       </div>
     </div>
@@ -113,6 +120,19 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
       fitFrame: true,
       imageBorder: true,
     }
+  }
+
+  clearSelection() {
+    this.selectedImage = null;
+    this.selectedImageFrameProperties = null;
+  }
+
+  clear() {
+    this.fileToUpload = null;
+    this.images.length = 0;
+    this.thumbnails.length = 0;
+    this.selectedImage = null;
+    this.selectedImageFrameProperties = null;
   }
 
   onFileSelectionUpdate(event) {
@@ -197,14 +217,6 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
           operation.stop();
           this.alertService.error('Image deletion failed (reason: ' + rejectReason + ')');
         });
-  }
-
-  private clear() {
-    this.fileToUpload = null;
-    this.images.length = 0;
-    this.thumbnails.length = 0;
-    this.selectedImage = null;
-    this.selectedImageFrameProperties = null;
   }
 
   private reloadContent() {
