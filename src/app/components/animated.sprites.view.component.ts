@@ -64,7 +64,7 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
     private animatedSpriteTypeApi: AnimatedSpriteTypeApi,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.ANIMATED_SPRITES) {
         this.reloadContent();
@@ -76,11 +76,11 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  onThumbnailSelected(selectedIndex: number): void {
+  onThumbnailSelected(selectedIndex: number) {
     this.selectedAnimatedSprite = this.animatedSprites[selectedIndex];
   }
 
@@ -88,7 +88,7 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
     this.alertService.warn('Deletion not implemented yet');
   }
 
-  private clear(): void {
+  private clear() {
     this.selectedAnimatedSprite = null;
     this.animatedSprites.length = 0;
     this.thumbnails.length = 0;

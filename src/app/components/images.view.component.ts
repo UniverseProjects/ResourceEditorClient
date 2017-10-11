@@ -87,7 +87,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
     private http: Http,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.IMAGES) {
         this.reloadContent();
@@ -99,11 +99,11 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  onThumbnailSelected(selectedIndex: number): void {
+  onThumbnailSelected(selectedIndex: number) {
     let image = this.images[selectedIndex];
     this.selectedImage = image;
     this.selectedImageFrameProperties = {

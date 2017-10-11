@@ -61,7 +61,7 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
     private spriteTypeApi: SpriteTypeApi,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.SPRITES) {
         this.reloadContent();
@@ -73,11 +73,11 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
-  onThumbnailSelected(selectedIndex: number): void {
+  onThumbnailSelected(selectedIndex: number) {
     let sprite = this.sprites[selectedIndex];
     this.selectedSprite = sprite;
     this.selectedSpriteFrameProperties = {
