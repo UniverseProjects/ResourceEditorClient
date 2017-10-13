@@ -28,10 +28,10 @@ import {AlertService} from '../services/alert.service';
     }
   `],
   template: `
-    <div class="alerts-container" *ngIf="alerts.length > 0">
+    <div class="alerts-container" *ngIf="alerts.length > 0" (window:keyup.esc)="dismissAll()">
       <div class="alerts-dismiss-all">
-        <button type="button" class="close" *ngIf="alerts.length > 1" (click)="dismissAll()">
-          <span>&#9660; dismiss all alerts</span>
+        <button type="button" class="close" (click)="dismissAll()">
+          <span>&#9660; dismiss all (Esc)</span>
         </button>
       </div>
       <div *ngFor="let alert of alerts" class="alert {{cssClass(alert)}} alert-dismissable">
