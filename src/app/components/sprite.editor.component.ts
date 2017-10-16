@@ -55,12 +55,13 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
           </div>
           <div class="form-row" style="padding-top: 10px;">
             <div class="form-group col-md-12">
-              <button class="btn btn-outline-success"
-                      mwlConfirmationPopover placement="right" title="Are you sure?"
-                      message="Proceed with sprite creation?"
+              <button type="button" class="btn btn-outline-success"
+                      mwlConfirmationPopover placement="right" 
+                      title="Are you sure?" message="Proceed with sprite creation?"
+                      [disabled]="spriteForm.invalid"
                       (confirm)="createSprite()">Create sprite
               </button>
-              <button class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
+              <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
             </div>
           </div>
       </form>
