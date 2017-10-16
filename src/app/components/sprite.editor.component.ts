@@ -1,6 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {PathUtil} from '../common/path.util';
-import {Image} from '../swagger/model/Image';
 import {SpriteType} from '../swagger/model/SpriteType';
 import {ApiHelper} from '../common/api.helper';
 import {LoaderService} from '../services/loader.service';
@@ -75,13 +74,6 @@ export class SpriteEditorComponent implements OnInit {
 
   spriteForm: FormGroup;
 
-  name: string;
-  imagePath: string;
-  areaX: number;
-  areaY: number;
-  areaWidth: number;
-  areaHeight: number;
-
   constructor(
     private fb: FormBuilder,
     private loaderService: LoaderService,
@@ -92,8 +84,6 @@ export class SpriteEditorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.clear();
-
     this.spriteForm = this.fb.group({
       name: [null, [Validators.required]],
       imagePath: [null, [Validators.required]],
@@ -105,11 +95,7 @@ export class SpriteEditorComponent implements OnInit {
   }
 
   clear() {
-    this.imagePath = null;
-    this.areaX = null;
-    this.areaY = null;
-    this.areaWidth = null;
-    this.areaHeight = null;
+    this.spriteForm.reset();
   }
 
   invalidName() {
@@ -147,24 +133,27 @@ export class SpriteEditorComponent implements OnInit {
   }
 
   createSprite() {
+    if (this.spriteForm.invalid) {
+      this.alertService.warn('Please fix validation errors');
+      return;
+    }
+
     let libraryId = this.explorerService.getSelectedLibraryId();
     let directoryPath = this.directoryService.getCurrentDirectoryPath();
-    let spriteName = this.name;
+    let spriteName = this.spriteForm.value.name;
     let treePath = PathUtil.combine(directoryPath, spriteName);
-
-    let image: Image = null;
 
     let newSprite: SpriteType = {
       name: spriteName,
       treePath: treePath,
       parent: directoryPath,
       tags: null,
-      imagePath: image.treePath,
-      image: image,
-      areaX: this.areaX,
-      areaY: this.areaY,
-      areaWidth: this.areaWidth,
-      areaHeight: this.areaHeight,
+      imagePath: this.spriteForm.value.treePath,
+      image: null,
+      areaX: this.spriteForm.value.areaX,
+      areaY: this.spriteForm.value.areaY,
+      areaWidth: this.spriteForm.value.areaWidth,
+      areaHeight: this.spriteForm.value.areaHeight,
       markers: null,
     };
 
@@ -179,7 +168,6 @@ export class SpriteEditorComponent implements OnInit {
         operation.stop();
         this.alertService.error('Failed to create sprite (' + rejectReason + ')');
       });
-
   }
 
 }
