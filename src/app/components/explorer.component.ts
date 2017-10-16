@@ -28,23 +28,33 @@ import {Subscription} from 'rxjs/Subscription';
     }
   `],
   template: `
-    <app-directory-tree></app-directory-tree>
-    <div class="directory-content">
-      <div class="btn-group">
-        <label class="btn btn-lg btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="DIRECTORY">Directory</label>
-        <label class="btn btn-lg btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="IMAGES">Images</label>
-        <label class="btn btn-lg btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="SPRITES">Sprites</label>
-        <label class="btn btn-lg btn-primary" [(ngModel)]="contentTypeStr" (click)="onClickContentType()" btnRadio="ANIMATED_SPRITES">Animated Sprites</label>
-      </div>
-      <div class="current-dir">
-        <span class="current-dir-label">Current directory: </span>
-        <span class="current-dir-value">{{currentDirectory || '...'}}</span>
-      </div>
-      <div class="items-container">
-        <app-directory-view></app-directory-view>
-        <app-images-view></app-images-view>
-        <app-sprites-view></app-sprites-view>
-        <app-animated-sprites-view></app-animated-sprites-view>
+    <div class="explorer-container container-fluid">
+      <app-directory-tree></app-directory-tree>
+      <div class="directory-content">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link" href="#" (click)="onClickContentType('DIRECTORY'); false;" [class.active]="contentTypeStr==='DIRECTORY'">Directory</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" (click)="onClickContentType('IMAGES'); false;" [class.active]="contentTypeStr==='IMAGES'">Images</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" (click)="onClickContentType('SPRITES'); false;" [class.active]="contentTypeStr==='SPRITES'">Sprites</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" (click)="onClickContentType('ANIMATED_SPRITES'); false;" [class.active]="contentTypeStr==='ANIMATED_SPRITES'">Animated Sprites</a>
+          </li>
+        </ul>
+        <div class="current-dir">
+          <span class="current-dir-label">Current directory: </span>
+          <span class="current-dir-value">{{currentDirectory || '...'}}</span>
+        </div>
+        <div class="items-container">
+          <app-directory-view></app-directory-view>
+          <app-images-view></app-images-view>
+          <app-sprites-view></app-sprites-view>
+          <app-animated-sprites-view></app-animated-sprites-view>
+        </div>
       </div>
     </div>
   `,
@@ -63,7 +73,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     private directoryService: DirectoryService,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     const lastContentTypeStr = localStorage.getItem(this.LS_CONTENT_TYPE);
     if (lastContentTypeStr) {
       this.contentTypeStr = lastContentTypeStr;
@@ -74,16 +84,17 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     // always clean-up subscriptions when a component is destroyed
     this.subscription.unsubscribe();
   }
 
-  onClickContentType(): void {
+  onClickContentType(contentTypeStr: string) {
+    this.contentTypeStr = contentTypeStr;
     this.reloadContent();
   }
 
-  private reloadContent(): void {
+  private reloadContent() {
     const contentType = ContentType[this.contentTypeStr];
 
     if (contentType === undefined || contentType === null) {
