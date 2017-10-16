@@ -29,12 +29,15 @@ import {ThumbnailProperties} from "./thumbnails.component";
   `],
   template: `
     <div class="sprites-view-container" *ngIf="active">
-      <div [hidden]="selectedSprite">
+      <div *ngIf="displayThumbnails">
         <app-thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+        <div class="controls-bottom">
+          <button class="btn btn-outline-success" (click)="showNewSpriteDialog();">Create new sprite</button>
+        </div>
       </div>
-      <div *ngIf="selectedSprite">
+      <div *ngIf="displaySelectedSprite">
         <div class="controls-top">
-          <button id="backBtn" class="btn btn-default" (click)="clearSelection()">&#8678; Back to directory</button>
+          <button id="backBtn" class="btn btn-info" (click)="clearSelectedSprite(); showThumbnails();">&#8678; Back to directory</button>
           <button class="btn btn-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete this sprite?"
@@ -48,15 +51,24 @@ import {ThumbnailProperties} from "./thumbnails.component";
         <div class="controls-bottom">
         </div>
       </div>
+      <div *ngIf="displayNewSpriteDialog">
+        <app-sprite-editor (onCancel)="showThumbnails()" (onSpriteCreated)="reloadContent()"></app-sprite-editor>
+      </div>
     </div>
   `,
 })
 export class SpritesViewComponent implements OnInit, OnDestroy {
   active = false;
   sprites: SpriteType[] = [];
+
+  displayThumbnails = false;
   thumbnails: ThumbnailProperties[] = [];
+
+  displaySelectedSprite = false;
   selectedSprite: SpriteType;
   selectedSpriteFrameProperties: ImageFrameProperties;
+
+  displayNewSpriteDialog = false;
 
   private subscription: Subscription;
 
@@ -74,7 +86,8 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
         this.reloadContent();
         this.active = true;
       } else {
-        this.clear();
+        this.clearAll();
+        this.showThumbnails();
         this.active = false;
       }
     });
@@ -85,6 +98,8 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
   }
 
   onThumbnailSelected(selectedIndex: number) {
+    this.clearSelectedSprite();
+
     let sprite = this.sprites[selectedIndex];
     this.selectedSprite = sprite;
     this.selectedSpriteFrameProperties = {
@@ -96,23 +111,59 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
       sectionHeight: sprite.areaHeight,
       sectionX: sprite.areaX,
       sectionY: sprite.areaY,
-    }
+    };
+
+    this.showSelectedSprite();
   }
 
-  clearSelection() {
-    this.selectedSprite = null;
-    this.selectedSpriteFrameProperties = null;
+  clearAll() {
+    this.clearThumbnails();
+    this.clearSelectedSprite();
   }
 
-  clear() {
+  clearThumbnails() {
     this.sprites.length = 0;
     this.thumbnails.length = 0;
+  }
+
+  clearSelectedSprite() {
     this.selectedSprite = null;
     this.selectedSpriteFrameProperties = null;
+  }
+
+  showThumbnails() {
+    this.displayNewSpriteDialog = false;
+    this.displaySelectedSprite = false;
+    this.displayThumbnails = true;
+  }
+
+  showSelectedSprite() {
+    this.displayThumbnails = false;
+    this.displaySelectedSprite = true;
+    this.displayNewSpriteDialog = false;
+  }
+
+  showNewSpriteDialog() {
+    this.displayThumbnails = false;
+    this.displaySelectedSprite = false;
+    this.displayNewSpriteDialog = true;
   }
 
   deleteSprite() {
-    this.alertService.warn('Not implemented yet!');
+    let libraryId = this.explorerService.getSelectedLibraryId();
+    let treePath = this.selectedSprite.treePath;
+
+    const operation = this.loaderService.startOperation('Deleting sprite');
+    this.spriteTypeApi.deleteSpriteType(libraryId, ApiHelper.path(treePath))
+      .toPromise()
+      .then(() => {
+        operation.stop();
+        this.alertService.success('Sprite deleted successfully');
+        this.reloadContent();
+      }, rejectReason => {
+        operation.stop();
+        this.alertService.error('Failed to delete sprite (' + rejectReason + ')');
+      });
   }
 
   private reloadContent() {
@@ -124,13 +175,15 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
       .toPromise()
       .then(response => {
         operation.stop();
-        this.clear();
+        this.clearAll();
         this.sprites = response.values;
         this.thumbnails = this.sprites.map(sprite => SpritesViewComponent.toThumbnail(sprite));
+        this.showThumbnails();
       }, rejectReason => {
         operation.stop();
-        this.clear();
         this.alertService.error('Failed to load sprites (' + rejectReason + ')');
+        this.clearAll();
+        this.showThumbnails();
       });
   }
 

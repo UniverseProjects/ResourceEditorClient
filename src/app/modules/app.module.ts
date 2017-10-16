@@ -2,7 +2,7 @@ import 'rxjs/add/operator/toPromise';
 
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {TreeModule} from 'angular-tree-component';
 import {AlertModule, ButtonsModule} from 'ngx-bootstrap';
@@ -32,11 +32,13 @@ import {ImageApi} from '../swagger/api/ImageApi';
 import {SpriteTypeApi} from '../swagger/api/SpriteTypeApi';
 import {AnimatedSpriteTypeApi} from '../swagger/api/AnimatedSpriteTypeApi';
 import {ImageFrameComponent} from '../components/image.frame.component';
+import {SpriteEditorComponent} from '../components/sprite.editor.component';
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
+        ReactiveFormsModule,
         HttpModule,
         AppRoutingModule,
         TreeModule,
@@ -58,6 +60,7 @@ import {ImageFrameComponent} from '../components/image.frame.component';
         PropertiesComponent,
         ImagesViewComponent,
         SpritesViewComponent,
+        SpriteEditorComponent,
         AnimatedSpritesViewComponent,
         DirectoryViewComponent,
         ExplorerComponent,
