@@ -23,7 +23,7 @@
     "@angular/router": "^4.4.4",
     "angular-confirmation-popover": "^3.2.0",
     "angular-tree-component": "^4.1.0",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^4.0.0-beta",
     "core-js": "^2.5.1",
     "ngx-bootstrap": "^1.9.3",
     "ngx-loading": "^1.0.7",
