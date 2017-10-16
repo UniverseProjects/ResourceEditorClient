@@ -44,7 +44,8 @@ import {ImageFrameComponent} from '../components/image.frame.component';
         ButtonsModule.forRoot(),
         LoadingModule,
         ConfirmationPopoverModule.forRoot({
-          confirmButtonType: 'danger' // set defaults here
+          confirmButtonType: 'danger',
+          cancelButtonType: 'secondary',
         }),
     ],
     declarations: [
