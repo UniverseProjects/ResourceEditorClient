@@ -12,30 +12,29 @@ import {Directory} from '../swagger/model/Directory';
 @Component({
   selector: 'app-directory-view',
   styles: [`
-    .dir-control {
+    .row {
       padding-bottom: 10px;
-    }
-    .new-dir-name {
-      width: 300px;
     }
   `],
   template: `
     <div class="directory-view-container" *ngIf="active">
-      <div class="dir-control">
-        <div class="input-group new-dir-name ">
-          <input class="form-control" type="text" placeholder="New directory name..." [(ngModel)]="newDirectoryName"
+      <div class="row">
+        <div class="input-group col-lg-8">
+          <input class="form-control" type="text" placeholder="New child directory name..." [(ngModel)]="newDirectoryName"
                  (keyup.enter)="createDirectory()"/>
           <div class="input-group-btn">
-            <button class="btn btn-default" (click)="createDirectory()">Create here</button>
+            <button class="btn btn-outline-success" (click)="createDirectory()">Create</button>
           </div>
-        </div>
+        </div>  
       </div>
-      <div class="dir-control">
-        <button class="btn btn-danger"
-                mwlConfirmationPopover placement="right" title="Are you sure?"
-                message="Do you really want to delete the current directory?"
-                (confirm)="deleteCurrentDirectory()">Delete this directory
-        </button>
+      <div class="row">
+        <div class="input-group col-lg-8">
+          <button class="btn btn-danger"
+                  mwlConfirmationPopover placement="right" title="Are you sure?"
+                  message="Do you really want to delete the current directory?"
+                  (confirm)="deleteCurrentDirectory()">Delete this directory
+          </button>
+        </div>
       </div>
     </div>
   `,

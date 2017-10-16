@@ -40,7 +40,7 @@ import {ImageFrameComponent} from '../components/image.frame.component';
         HttpModule,
         AppRoutingModule,
         TreeModule,
-        AlertModule.forRoot(),
+        AlertModule.forRoot(), // Bootstrap
         ButtonsModule.forRoot(),
         LoadingModule,
         ConfirmationPopoverModule.forRoot({

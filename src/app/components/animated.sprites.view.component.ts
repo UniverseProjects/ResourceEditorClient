@@ -38,7 +38,7 @@ import {ThumbnailProperties} from './thumbnails.component';
       </div>
       <div *ngIf="selectedAnimatedSprite">
         <div class="controls-top">
-          <button id="backBtn" class="btn btn-default" (click)="clearSelection()">&#8678; Back to directory</button>
+          <button id="backBtn" class="btn btn-secondary" (click)="clearSelection()">&#8678; Back to directory</button>
         </div>
         <div class="preview-container">
           <img class="preview" src="{{selectedAnimatedSprite.frames[0].spriteType.image.gcsUrl}}"/>

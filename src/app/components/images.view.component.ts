@@ -24,41 +24,28 @@ import {ThumbnailProperties} from './thumbnails.component';
     .preview-container {
       margin-bottom: 20px;
     }
-    #backBtn {
+    .btn-with-icon {
       padding-left: 8px;
       padding-right: 10px;
     }
-    #uploadFileName {
-      width: 200px;
-    }
-    #uploadImageBtn {
-      margin-left: 10px;
-      padding-left: 8px;
-      padding-right: 10px;
-    }
-
   `],
   template: `
     <div class="images-view-container" *ngIf="active">
       <div [hidden]="selectedImage">
         <app-thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
-        <div class="controls-bottom">
-          <div class="input-group">
-            <label class="input-group-btn">
-              <span class="btn btn-default">
-                  Browse&hellip; <input #fileUploadInput type="file" accept=".png, .jpg" style="display: none;"
-                                        (change)="onFileSelectionUpdate($event); fileUploadInput.value = '';">
-              </span>
-            </label>
-            <input id="uploadFileName" type="text" class="form-control" readonly placeholder="Select image to upload"
-                   value="{{fileToUpload ? fileToUpload.name : null}}">
-            <button id="uploadImageBtn" class="btn btn-default" (click)="uploadImage()">&#8679; UPLOAD</button>
+        <div class="controls-bottom row no-gutters">
+          <div class="input-group col-xs-12 col-lg-8">
+            <input #fileUploadInput type="file" accept=".png, .jpg" style="opacity: 0; width: 0px;" (change)="onFileSelectionUpdate($event); fileUploadInput.value = '';">
+            <input id="uploadFileName" class="form-control"  type="text" readonly value="{{fileToUpload ? fileToUpload.name : null}}" placeholder="Select image to upload" (click)="fileUploadInput.click();">
+            <div class="input-group-btn">
+              <button id="uploadImageBtn" class="btn btn-outline-success btn-with-icon" (click)="uploadImage()">&#8679; UPLOAD</button>
+            </div>
           </div>
         </div>
       </div>
       <div *ngIf="selectedImage">
         <div class="controls-top">
-          <button id="backBtn" class="btn btn-default" (click)="clearSelection()">&#8678; Back to directory</button>
+          <button id="backBtn" class="btn btn-secondary btn-with-icon" (click)="clearSelection()">&#8678; Back to directory</button>
           <button class="btn btn-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete this image?"
