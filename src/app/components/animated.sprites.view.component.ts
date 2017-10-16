@@ -39,17 +39,18 @@ import {ThumbnailProperties} from './thumbnails.component';
       <div *ngIf="selectedAnimatedSprite">
         <div class="controls-top">
           <button id="backBtn" class="btn btn-info" (click)="clearSelection()">&#8678; Back to directory</button>
+          <button class="btn btn-danger"
+                  mwlConfirmationPopover placement="right" title="Are you sure?"
+                  message="Do you really want to delete this animated sprite?"
+                  (confirm)="deleteAnimatedSprite()">Delete this animated sprite
+          </button>
         </div>
         <div class="preview-container">
           <img class="preview" src="{{selectedAnimatedSprite.frames[0].spriteType.image.gcsUrl}}"/>
         </div>
         <app-properties [object]="selectedAnimatedSprite"></app-properties>
         <div class="controls-bottom">
-          <button class="btn btn-danger"
-                  mwlConfirmationPopover placement="right" title="Are you sure?"
-                  message="Do you really want to delete this animated sprite?"
-                  (confirm)="deleteAnimatedSprite()">Delete this animated sprite
-          </button>
+          
         </div>
       </div>
     </div>
