@@ -28,7 +28,7 @@ import {Subscription} from 'rxjs/Subscription';
     }
   `],
   template: `
-    <div class="explorer-container container-fluid">
+    <div class="explorer-container">
       <app-directory-tree></app-directory-tree>
       <div class="directory-content">
         <ul class="nav nav-tabs">

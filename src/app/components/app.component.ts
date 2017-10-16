@@ -31,19 +31,21 @@ import {Component} from '@angular/core';
     }
   `],
   template: `
-    <div class="app-header">
-      <div class="app-logo">
-        <span class="app-logo-part1">universe projects</span>
-        <span class="app-logo-part2">resource editor</span>
+    <div class="container-fluid">
+      <div class="app-header">
+        <div class="app-logo">
+          <span class="app-logo-part1">universe projects</span>
+          <span class="app-logo-part2">resource editor</span>
+        </div>
       </div>
+      <!--<nav>-->
+        <!--<a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>-->
+        <!--<a routerLink="/explorer" routerLinkActive="active">Explorer</a>-->
+      <!--</nav>-->
+      <app-loader></app-loader>
+      <app-alert></app-alert>
+      <router-outlet></router-outlet>
     </div>
-    <!--<nav>-->
-      <!--<a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>-->
-      <!--<a routerLink="/explorer" routerLinkActive="active">Explorer</a>-->
-    <!--</nav>-->
-    <app-loader></app-loader>
-    <app-alert></app-alert>
-    <router-outlet></router-outlet>
   `,
 })
 export class AppComponent {
