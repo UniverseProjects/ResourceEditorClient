@@ -7,7 +7,8 @@ import {ExplorerService} from '../services/explorer.service';
 import {DirectoryService} from '../services/directory.service';
 import {SpriteTypeApi} from '../swagger/api/SpriteTypeApi';
 import {AlertService} from '../services/alert.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {C} from '../common/common';
 
 @Component({
   selector: 'app-sprite-editor',
@@ -19,51 +20,61 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
   template: `
     <div class="sprite-editor-container">
       <form novalidate [formGroup]="spriteForm">
-          <div class="form-row">
-            <div class="form-group col-lg-12">
-              <label for="name" class="field-label">Sprite name</label>
-              <input id="name" name="name" formControlName="name" class="form-control" [class.is-invalid]="invalidName()" type="text" placeholder="Enter a unique name for this sprite"/>
-              <div class="invalid-feedback" *ngIf="invalidName()">Please enter a valid name</div>
-            </div>
+        <div class="form-row">
+          <div class="form-group col-lg-12">
+            <label for="name" class="field-label">Sprite name</label>
+            <input id="name" name="name" formControlName="name" class="form-control" type="text"
+                   [class.is-invalid]="isInvalid('name')" placeholder="Enter a unique name for this sprite"/>
+            <div class="invalid-feedback" *ngIf="isInvalid('name')">{{getErrorMessage('name')}}</div>
           </div>
-          <div class="form-row">
-            <div class="form-group col-lg-12">
-              <label for="imagePath" class="field-label">Image path</label>
-              <input id="imagePath" name="imagePath" formControlName="imagePath" class="form-control" [class.is-invalid]="invalidImagePath()" type="text" placeholder="Enter the image path"/>
-              <div class="invalid-feedback" *ngIf="invalidImagePath()">Please enter a valid image path</div>
-            </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-lg-12">
+            <label for="imagePath" class="field-label">Image path</label>
+            <input id="imagePath" name="imagePath" formControlName="imagePath" class="form-control" type="text"
+                   [class.is-invalid]="isInvalid('imagePath')" placeholder="Enter the image path"/>
+            <div class="invalid-feedback" *ngIf="isInvalid('imagePath')">{{getErrorMessage('imagePath')}}</div>
           </div>
-          <div class="form-row">
-            <div class="form-group col-xs-12 col-sm-6 col-md-3">
-              <label for="areaX" class="field-label">Area x-coordinate</label>
-              <input id="areaX" name="areaX" formControlName="areaX" class="form-control" [class.is-invalid]="invalidAreaX()" type="number" placeholder="X-coordinate"/>
-            </div>
-            <div class="form-group col-xs-12 col-sm-6 col-md-3">
-              <label for="areaY" class="field-label">Area y-coordinate</label>
-              <input id="areaY" name="areaY" formControlName="areaY" class="form-control" [class.is-invalid]="invalidAreaY()" type="number" placeholder="Y-coordinate"/>
-            </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-xs-12 col-sm-6 col-md-3">
+            <label for="areaX" class="field-label">Area x-coordinate</label>
+            <input id="areaX" name="areaX" formControlName="areaX" class="form-control" type="number"
+                   [class.is-invalid]="isInvalid('areaX')" placeholder="X-coordinate"/>
+            <div class="invalid-feedback" *ngIf="isInvalid('areaX')">{{getErrorMessage('areaX')}}</div>
           </div>
-          <div class="form-row">
-            <div class="form-group col-xs-12 col-sm-6 col-md-3">
-              <label for="areaWidth" class="field-label">Area width</label>
-              <input id="areaWidth" name="areaWidth" formControlName="areaWidth" class="form-control" [class.is-invalid]="invalidAreaWidth()" type="number" placeholder="Width"/>
-            </div>
-            <div class="form-group col-xs-12 col-sm-6 col-md-3">
-              <label for="areaHeight" class="field-label">Area height</label>
-              <input id="areaHeight" name="areaHeight" formControlName="areaHeight" class="form-control" [class.is-invalid]="invalidAreaHeight()" type="number" placeholder="Height"/>
-            </div>
+          <div class="form-group col-xs-12 col-sm-6 col-md-3">
+            <label for="areaY" class="field-label">Area y-coordinate</label>
+            <input id="areaY" name="areaY" formControlName="areaY" class="form-control" type="number"
+                   [class.is-invalid]="isInvalid('areaY')" placeholder="Y-coordinate"/>
+            <div class="invalid-feedback" *ngIf="isInvalid('areaY')">{{getErrorMessage('areaY')}}</div>
           </div>
-          <div class="form-row" style="padding-top: 10px;">
-            <div class="form-group col-md-12">
-              <button type="button" class="btn btn-outline-success"
-                      mwlConfirmationPopover placement="right" 
-                      title="Are you sure?" message="Proceed with sprite creation?"
-                      [disabled]="spriteForm.invalid"
-                      (confirm)="createSprite()">Create sprite
-              </button>
-              <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
-            </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-xs-12 col-sm-6 col-md-3">
+            <label for="areaWidth" class="field-label">Area width</label>
+            <input id="areaWidth" name="areaWidth" formControlName="areaWidth" class="form-control" type="number"
+                   [class.is-invalid]="isInvalid('areaWidth')" placeholder="Width"/>
+            <div class="invalid-feedback" *ngIf="isInvalid('areaWidth')">{{getErrorMessage('areaWidth')}}</div>
           </div>
+          <div class="form-group col-xs-12 col-sm-6 col-md-3">
+            <label for="areaHeight" class="field-label">Area height</label>
+            <input id="areaHeight" name="areaHeight" formControlName="areaHeight" class="form-control" type="number"
+                   [class.is-invalid]="isInvalid('areaHeight')" placeholder="Height"/>
+            <div class="invalid-feedback" *ngIf="isInvalid('areaHeight')">{{getErrorMessage('areaHeight')}}</div>
+          </div>
+        </div>
+        <div class="form-row" style="padding-top: 10px;">
+          <div class="form-group col-md-12">
+            <button type="button" class="btn btn-outline-success"
+                    mwlConfirmationPopover placement="right"
+                    title="Are you sure?" message="Proceed with sprite creation?"
+                    [disabled]="spriteForm.invalid"
+                    (confirm)="createSprite()">Create sprite
+            </button>
+            <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
+          </div>
+        </div>
       </form>
     </div>
   `,
@@ -85,13 +96,16 @@ export class SpriteEditorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    // TODO: default values temporarily hard-coded for a particular image
+    const W = 241; const H = 209;
+
     this.spriteForm = this.fb.group({
-      name: [null, [Validators.required]],
-      imagePath: [null, [Validators.required]],
-      areaX: [0, [Validators.required, Validators.min(0), Validators.max(1000)]],
-      areaY: [0, [Validators.required, Validators.min(0), Validators.max(1000)]],
-      areaWidth: [null, [Validators.required, Validators.min(0), Validators.max(1000)]],
-      areaHeight: [null, [Validators.required, Validators.min(0), Validators.max(1000)]],
+      name: ['foo', SpriteEditorComponent.validateName],
+      imagePath: ['/sandbox/foo.png', SpriteEditorComponent.validateImagePath],
+      areaX: [0, SpriteEditorComponent.validateRange(0, W)],
+      areaY: [0, SpriteEditorComponent.validateRange(0, H)],
+      areaWidth: [W, SpriteEditorComponent.validateRange(0, W)],
+      areaHeight: [H, SpriteEditorComponent.validateRange(0, H)],
     });
   }
 
@@ -99,34 +113,62 @@ export class SpriteEditorComponent implements OnInit {
     this.spriteForm.reset();
   }
 
-  invalidName() {
-    let name = this.spriteForm.get('name');
-    return name.touched && name.hasError('required');
+  private static validateName(control: AbstractControl): ValidationErrors {
+    let val = control.value;
+    if (C.emptyStr(val)) {
+      return SpriteEditorComponent.createErrorObject('Sprite name is required');
+    }
+    return null;
   }
 
-  invalidImagePath() {
-    let imagePath = this.spriteForm.get('imagePath');
-    return imagePath.touched && imagePath.hasError('required');
+  private static validateImagePath(control: AbstractControl): ValidationErrors {
+    let val = control.value;
+    if (C.emptyStr(val)) {
+      return SpriteEditorComponent.createErrorObject('Image path is required');
+    }
+    if (!PathUtil.isValid(val)) {
+      return SpriteEditorComponent.createErrorObject('Invalid image path');
+    }
+    return null;
   }
 
-  invalidAreaX() {
-    let areaX = this.spriteForm.get('areaX');
-    return areaX.touched && (areaX.hasError('required') || areaX.hasError('min') || areaX.hasError('max'));
+  private static validateRange(min: number, max: number): ValidatorFn {
+    if (!C.defined(min) || !C.defined(max) || min > max) {
+      throw new Error('Invalid range bounds: ' + min + ', ' + max);
+    }
+    return (control: AbstractControl): ValidationErrors => {
+      let val = control.value;
+      if (!C.defined(val)) {
+        return SpriteEditorComponent.createErrorObject('Value is required');
+      }
+      if (val < min || val > max) {
+        return SpriteEditorComponent.createErrorObject('Value must be in the ['+min+'..'+max+'] range');
+      }
+      return null;
+    }
   }
 
-  invalidAreaY() {
-    let areaY = this.spriteForm.get('areaY');
-    return areaY.touched && (areaY.hasError('required') || areaY.hasError('min') || areaY.hasError('max'));
+  private static createErrorObject(errorMessage: string): ValidationErrors {
+    return {"customValidator": {errorMessage: errorMessage}};
   }
 
-  invalidAreaWidth() {
-    let areaWidth = this.spriteForm.get('areaWidth');
-    return areaWidth.touched && (areaWidth.hasError('required') || areaWidth.hasError('min') || areaWidth.hasError('max'));
+  getErrorMessage(controlSelector: string): string {
+    let control = this.getControl(controlSelector);
+    let error = control.getError('customValidator');
+    return error ? error.errorMessage : (control.invalid ? 'Invalid value' : null);
   }
 
-  invalidAreaHeight() {
-    let areaHeight = this.spriteForm.get('areaHeight');
-    return areaHeight.touched && (areaHeight.hasError('required') || areaHeight.hasError('min') || areaHeight.hasError('max'));
+  getControl(controlSelector: string): AbstractControl {
+    let control = this.spriteForm.get(controlSelector);
+    if (!control) {
+      throw new Error('Form control not found for selector: ' + controlSelector);
+    }
+    return control;
+  }
+
+  isInvalid(controlSelector: string): boolean {
+    let control = this.getControl(controlSelector);
+    return control.invalid && !control.pristine;
   }
 
   cancel() {
