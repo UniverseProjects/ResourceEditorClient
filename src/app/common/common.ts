@@ -10,4 +10,8 @@ export class C {
     return (a && !b) || (!a && b);
   }
 
+  static emptyStr(s: string): boolean {
+    return !C.defined(s) || s.trim().length === 0;
+  }
+
 }
