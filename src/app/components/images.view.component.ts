@@ -38,18 +38,14 @@ import {ThumbnailProperties} from './thumbnails.component';
             <input #fileUploadInput type="file" accept=".png, .jpg" style="opacity: 0; width: 0px;" (change)="onFileSelectionUpdate($event); fileUploadInput.value = '';">
             <input id="uploadFileName" class="form-control" type="text" readonly value="{{fileToUpload ? fileToUpload.name : null}}" placeholder="Select image to upload" (click)="fileUploadInput.click();">
             <div class="input-group-btn">
-              <button id="uploadImageBtn" class="btn btn-outline-success btn-with-icon" (click)="uploadImage()">&#8679;
-                UPLOAD
-              </button>
+              <button id="uploadImageBtn" class="btn btn-outline-success btn-with-icon" (click)="uploadImage()">&#8679; UPLOAD</button>
             </div>
           </div>
         </div>
       </div>
       <div *ngIf="selected">
         <div class="controls-top">
-          <button type="button" class="btn btn-info btn-with-icon" (click)="clearSelection()">&#8678; Back to
-            directory
-          </button>
+          <button type="button" class="btn btn-info btn-with-icon" (click)="clearSelection()">&#8678; Back to directory</button>
           <button type="button" class="btn btn-outline-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete this image?"

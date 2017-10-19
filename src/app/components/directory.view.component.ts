@@ -20,8 +20,7 @@ import {Directory} from '../swagger/model/Directory';
     <div class="directory-view-container" *ngIf="active">
       <div class="row">
         <div class="input-group col-lg-8">
-          <input class="form-control" type="text" placeholder="New child directory name..." [(ngModel)]="newDirectoryName"
-                 (keyup.enter)="createDirectory()"/>
+          <input class="form-control" type="text" placeholder="New child directory name..." [(ngModel)]="newDirectoryName" (keyup.enter)="createDirectory()"/>
           <div class="input-group-btn">
             <button class="btn btn-outline-success" (click)="createDirectory()">Create</button>
           </div>

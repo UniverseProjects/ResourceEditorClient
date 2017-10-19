@@ -37,9 +37,7 @@ import {ThumbnailProperties} from "./thumbnails.component";
       </div>
       <div *ngIf="displaySelected">
         <div class="controls-top">
-          <button id="backBtn" class="btn btn-info" (click)="clearSelected(); showThumbnails();">&#8678; Back
-            to directory
-          </button>
+          <button id="backBtn" class="btn btn-info" (click)="clearSelected(); showThumbnails();">&#8678; Back to directory</button>
           <button class="btn btn-outline-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete this sprite type?"
