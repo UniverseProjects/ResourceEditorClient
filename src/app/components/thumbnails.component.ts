@@ -5,18 +5,21 @@ import {ImageFrameProperties} from './image.frame.component';
 @Component({
   selector: 'thumbnails',
   styles: [`
-    .thumbnail-container {
-      margin: 0 5px 5px 0;
+    .thumbnail-wrapper {
       display: inline-block;
       vertical-align: top;
+      box-sizing: content-box;
+      border: 3px solid #fff;
     }
-    .thumbnail-container:hover {
+
+    .thumbnail-wrapper:hover {
       background-color: #ade4ff;
+      border: 3px solid #ade4ff;
     }
   `],
   template: `
     <div class="thumbnails-container">
-      <div class="thumbnail-container" *ngFor="let th of thumbnails; let i = index" (click)="onSelect(i)">
+      <div class="thumbnail-wrapper" *ngFor="let th of thumbnails; let i = index" (click)="onSelect(i)">
         <image-frame [properties]="toFrameProperties(th)"></image-frame>
       </div>
     </div>
