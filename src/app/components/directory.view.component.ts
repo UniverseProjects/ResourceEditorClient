@@ -29,7 +29,7 @@ import {Directory} from '../swagger/model/Directory';
       </div>
       <div class="row">
         <div class="input-group col-lg-8">
-          <button class="btn btn-danger"
+          <button class="btn btn-outline-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete the current directory?"
                   (confirm)="deleteCurrentDirectory()">Delete this directory
