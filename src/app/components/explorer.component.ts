@@ -23,7 +23,7 @@ import {Subscription} from 'rxjs/Subscription';
       font-weight: bold;
       font-family: "Courier New", Courier, monospace;
     }
-    .items-container {
+    .explorer-views {
       margin-top: 20px;
     }
   `],
@@ -53,7 +53,7 @@ import {Subscription} from 'rxjs/Subscription';
           <span class="current-dir-label">Current directory: </span>
           <span class="current-dir-value">{{currentDirectory || '...'}}</span>
         </div>
-        <div class="items-container">
+        <div class="explorer-views">
           <directory-view></directory-view>
           <images-view></images-view>
           <sprite-types-view></sprite-types-view>
