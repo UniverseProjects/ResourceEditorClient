@@ -17,10 +17,11 @@ import {AlertService} from '../services/alert.service';
     }
     .alert-message {
       display: inline-block;
-      width: 275px;
+      width: 250px;
       overflow-wrap: break-word;
+      vertical-align: middle;
     }
-    .alerts-container button {
+    .alert button {
       vertical-align: middle;  
     }
     .alerts-dismiss-all {
@@ -28,17 +29,16 @@ import {AlertService} from '../services/alert.service';
     }
   `],
   template: `
+    <!--<div class="alerts-temp">-->
+      <!--<button type="button" class="btn btn-info" (click)="randomAlert()">Random alert</button>-->
+    <!--</div>-->
     <div class="alerts-container" *ngIf="alerts.length > 0" (window:keyup.esc)="dismissAll()">
       <div class="alerts-dismiss-all">
-        <button type="button" class="close" (click)="dismissAll()">
-          <span>&#9660; dismiss all (Esc)</span>
-        </button>
+        <button type="button" class="close" (click)="dismissAll()">&#9660; dismiss all (Esc)</button>
       </div>
-      <div *ngFor="let alert of alerts" class="alert {{cssClass(alert)}} alert-dismissable">
+      <div *ngFor="let alert of alerts" class="alert {{cssClass(alert)}} alert-dismissible">
         <div class="alert-message">{{alert.message}}</div>
-        <button type="button" class="close" (click)="removeAlert(alert)">
-          <span>&times;</span>
-        </button>
+        <button type="button" class="close" (click)="removeAlert(alert)">&times;</button>
       </div>
     </div>
   `,
@@ -66,10 +66,15 @@ export class AlertComponent implements OnInit {
     this.alerts = this.alerts.filter(x => x !== alert);
   }
 
+  // randomAlert() {
+  //   this.alertService.info('Random alert ' + Date.now());
+  // }
+
   dismissAll() {
     this.alerts = [];
   }
 
+  // noinspection JSMethodCanBeStatic
   cssClass(alert: Alert) {
     if (!alert) {
       return;
