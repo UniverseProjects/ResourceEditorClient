@@ -39,11 +39,11 @@ import {Component} from '@angular/core';
         </div>
       </div>
       <!--<nav>-->
-        <!--<a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>-->
-        <!--<a routerLink="/explorer" routerLinkActive="active">Explorer</a>-->
+      <!--<a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>-->
+      <!--<a routerLink="/explorer" routerLinkActive="active">Explorer</a>-->
       <!--</nav>-->
-      <app-loader></app-loader>
-      <app-alert></app-alert>
+      <loader></loader>
+      <alerts></alerts>
       <router-outlet></router-outlet>
     </div>
   `,

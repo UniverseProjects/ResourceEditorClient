@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {DirectoryService} from '../services/directory.service';
 
 @Component({
-  selector: 'app-directory-tree',
+  selector: 'directory-tree',
   styles: [`
     .tree-container {
       background-color: #DDDDDD;

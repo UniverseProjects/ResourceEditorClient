@@ -3,7 +3,7 @@ import {C} from '../common/common';
 import {ImageFrameProperties} from './image.frame.component';
 
 @Component({
-  selector: 'app-thumbnails',
+  selector: 'thumbnails',
   styles: [`
     .thumbnail-container {
       margin: 0 5px 5px 0;
@@ -17,7 +17,7 @@ import {ImageFrameProperties} from './image.frame.component';
   template: `
     <div class="thumbnails-container">
       <div class="thumbnail-container" *ngFor="let th of thumbnails; let i = index" (click)="onSelect(i)">
-        <app-image-frame [properties]="toFrameProperties(th)"></app-image-frame>
+        <image-frame [properties]="toFrameProperties(th)"></image-frame>
       </div>
     </div>
   `,

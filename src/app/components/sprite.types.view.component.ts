@@ -11,7 +11,7 @@ import {ImageFrameProperties} from './image.frame.component';
 import {ThumbnailProperties} from "./thumbnails.component";
 
 @Component({
-  selector: 'app-sprite-types-view',
+  selector: 'sprite-types-view',
   styles: [`
     .controls-top {
       margin-bottom: 10px;
@@ -30,7 +30,7 @@ import {ThumbnailProperties} from "./thumbnails.component";
   template: `
     <div class="sprites-types-view-container" *ngIf="active">
       <div *ngIf="displayThumbnails">
-        <app-thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+        <thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></thumbnails>
         <div class="controls-bottom">
           <button class="btn btn-outline-success" (click)="showCreationDialog();">Create new sprite type</button>
         </div>
@@ -47,14 +47,14 @@ import {ThumbnailProperties} from "./thumbnails.component";
           </button>
         </div>
         <div class="preview-container">
-          <app-image-frame [properties]="selectedFrameProps"></app-image-frame>
+          <image-frame [properties]="selectedFrameProps"></image-frame>
         </div>
-        <app-properties [object]="selected"></app-properties>
+        <properties [object]="selected"></properties>
         <div class="controls-bottom">
         </div>
       </div>
       <div *ngIf="displayCreationDialog">
-        <app-sprite-type-editor (onCancel)="showThumbnails()" (onCreated)="reloadContent()"></app-sprite-type-editor>
+        <sprite-type-editor (onCancel)="showThumbnails()" (onCreated)="reloadContent()"></sprite-type-editor>
       </div>
     </div>
   `,

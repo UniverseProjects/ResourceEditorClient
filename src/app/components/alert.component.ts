@@ -4,8 +4,7 @@ import {Alert, AlertType} from '../models/alert';
 import {AlertService} from '../services/alert.service';
 
 @Component({
-  // moduleId: module.id,
-  selector: 'app-alert',
+  selector: 'alerts',
   styles: [`
     .alerts-container {
       position: fixed;

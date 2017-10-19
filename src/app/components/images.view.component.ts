@@ -13,7 +13,7 @@ import {ImageFrameProperties} from './image.frame.component';
 import {ThumbnailProperties} from './thumbnails.component';
 
 @Component({
-  selector: 'app-images-view',
+  selector: 'images-view',
   styles: [`
     .controls-top {
       margin-bottom: 10px;
@@ -32,7 +32,7 @@ import {ThumbnailProperties} from './thumbnails.component';
   template: `
     <div class="images-view-container" *ngIf="active">
       <div [hidden]="selected">
-        <app-thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+        <thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></thumbnails>
         <div class="controls-bottom row no-gutters">
           <div class="input-group col-xs-12 col-lg-8">
             <input #fileUploadInput type="file" accept=".png, .jpg" style="opacity: 0; width: 0px;" (change)="onFileSelectionUpdate($event); fileUploadInput.value = '';">
@@ -58,9 +58,9 @@ import {ThumbnailProperties} from './thumbnails.component';
           <button type="button" class="btn btn-outline-success" (click)="createSpriteType()">Create sprite type</button>
         </div>
         <div class="preview-container">
-          <app-image-frame [properties]="selectedFrameProps"></app-image-frame>
+          <image-frame [properties]="selectedFrameProps"></image-frame>
         </div>
-        <app-properties [object]="selected"></app-properties>
+        <properties [object]="selected"></properties>
         <div class="controls-bottom">
         </div>
       </div>

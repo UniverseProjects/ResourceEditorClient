@@ -11,7 +11,7 @@ import {SpriteTypesViewComponent} from './sprite.types.view.component';
 import {ThumbnailProperties} from './thumbnails.component';
 
 @Component({
-  selector: 'app-animated-sprite-types-view',
+  selector: 'animated-sprite-types-view',
   styles: [`
     .controls-top {
       margin-bottom: 10px;
@@ -34,7 +34,7 @@ import {ThumbnailProperties} from './thumbnails.component';
   template: `
     <div class="animated-sprites-types-view-container" *ngIf="active">
       <div [hidden]="selected">
-        <app-thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
+        <thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></thumbnails>
       </div>
       <div *ngIf="selected">
         <div class="controls-top">
@@ -48,7 +48,7 @@ import {ThumbnailProperties} from './thumbnails.component';
         <div class="preview-container">
           <img class="preview" src="{{selected.frames[0].spriteType.image.gcsUrl}}"/>
         </div>
-        <app-properties [object]="selected"></app-properties>
+        <properties [object]="selected"></properties>
         <div class="controls-bottom">
 
         </div>

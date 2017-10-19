@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, SimpleChange, SimpleChanges} from '@angular/core';
 
 @Component({
-  selector: 'app-properties',
+  selector: 'properties',
   styles: [`
     .property-name {
       font-weight: bold;

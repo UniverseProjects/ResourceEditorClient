@@ -10,7 +10,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {Directory} from '../swagger/model/Directory';
 
 @Component({
-  selector: 'app-directory-view',
+  selector: 'directory-view',
   styles: [`
     .row {
       padding-bottom: 10px;

@@ -11,7 +11,7 @@ import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn} 
 import {C} from '../common/common';
 
 @Component({
-  selector: 'app-sprite-type-editor',
+  selector: 'sprite-type-editor',
   styles: [`  
     .field-label {
       

@@ -3,7 +3,7 @@ import {LoaderService} from '../services/loader.service';
 import {Subscription} from 'rxjs/Subscription';
 
 @Component({
-  selector: 'app-loader',
+  selector: 'loader',
   template: `
     <div class="loader-container">
       <ngx-loading [show]="loading" [config]="LOADER_CONFIG"></ngx-loading>

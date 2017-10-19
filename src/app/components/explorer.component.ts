@@ -29,7 +29,7 @@ import {Subscription} from 'rxjs/Subscription';
   `],
   template: `
     <div class="explorer-container">
-      <app-directory-tree></app-directory-tree>
+      <directory-tree></directory-tree>
       <div class="directory-content">
         <ul class="nav nav-tabs">
           <li class="nav-item">
@@ -52,10 +52,10 @@ import {Subscription} from 'rxjs/Subscription';
           <span class="current-dir-value">{{currentDirectory || '...'}}</span>
         </div>
         <div class="items-container">
-          <app-directory-view></app-directory-view>
-          <app-images-view></app-images-view>
-          <app-sprite-types-view></app-sprite-types-view>
-          <app-animated-sprite-types-view></app-animated-sprite-types-view>
+          <directory-view></directory-view>
+          <images-view></images-view>
+          <sprite-types-view></sprite-types-view>
+          <animated-sprite-types-view></animated-sprite-types-view>
         </div>
       </div>
     </div>

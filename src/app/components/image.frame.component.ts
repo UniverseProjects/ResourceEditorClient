@@ -3,7 +3,7 @@ import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
 import {C} from '../common/common';
 
 @Component({
-  selector: 'app-image-frame',
+  selector: 'image-frame',
   styles:[`
     .frame-container {
       border: solid #888 1px;
