@@ -91,16 +91,13 @@ export class SpriteEditorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // TODO: default values temporarily hard-coded for a particular image
-    const W = 241; const H = 209;
-
     this.spriteForm = this.fb.group({
-      name: ['foo', SpriteEditorComponent.validateName],
-      imagePath: ['/sandbox/foo.png', SpriteEditorComponent.validateImagePath],
-      areaX: [0, SpriteEditorComponent.validateRange(0, W)],
-      areaY: [0, SpriteEditorComponent.validateRange(0, H)],
-      areaWidth: [W, SpriteEditorComponent.validateRange(0, W)],
-      areaHeight: [H, SpriteEditorComponent.validateRange(0, H)],
+      name: [null, SpriteEditorComponent.validateName],
+      imagePath: [null, SpriteEditorComponent.validateImagePath],
+      areaX: [0, SpriteEditorComponent.validateRange(0, 9999)],
+      areaY: [0, SpriteEditorComponent.validateRange(0, 9999)],
+      areaWidth: [null, SpriteEditorComponent.validateRange(0, 9999)],
+      areaHeight: [null, SpriteEditorComponent.validateRange(0, 9999)],
     });
   }
 
