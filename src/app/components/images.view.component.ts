@@ -51,6 +51,7 @@ import {ThumbnailProperties} from './thumbnails.component';
                   message="Do you really want to delete this image?"
                   (confirm)="deleteImage()">Delete this image
           </button>
+          <button type="button" class="btn btn-outline-success" (click)="createSprite()">Create sprite</button>
         </div>
         <div class="preview-container">
           <app-image-frame [properties]="selectedImageFrameProperties"></app-image-frame>
@@ -203,6 +204,14 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
           operation.stop();
           this.alertService.error('Image deletion failed (reason: ' + rejectReason + ')');
         });
+  }
+
+  createSprite() {
+    if (!this.selectedImage) {
+      this.alertService.warn('Please select an image to create a sprite');
+      return;
+    }
+    this.alertService.warn('Not implemented yet');
   }
 
   private reloadContent() {
