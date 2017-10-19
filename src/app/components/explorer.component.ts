@@ -70,7 +70,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   contentTypeStr = 'DIRECTORY';
   currentDirectory: string = null;
 
-  private subscription: Subscription;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private explorerService: ExplorerService,
@@ -82,15 +82,16 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     if (lastContentTypeStr) {
       this.contentTypeStr = lastContentTypeStr;
     }
-    this.subscription = this.directoryService.directoryChanged$.subscribe((directory) => {
+    this.subscriptions.push(this.directoryService.directoryChanged$.subscribe((directory) => {
       this.currentDirectory = directory.treePath;
       this.reloadContent();
-    });
+    }));
+
   }
 
   ngOnDestroy() {
     // always clean-up subscriptions when a component is destroyed
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   onClickContentType(contentTypeStr: string) {
