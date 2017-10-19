@@ -39,10 +39,12 @@ import {Subscription} from 'rxjs/Subscription';
             <a class="nav-link" href="#" (click)="onClickContentType('IMAGES'); false;" [class.active]="contentTypeStr==='IMAGES'">Images</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onClickContentType('SPRITES'); false;" [class.active]="contentTypeStr==='SPRITES'">Sprites</a>
+            <a class="nav-link" href="#" (click)="onClickContentType('SPRITE_TYPES'); false;" [class.active]="contentTypeStr==='SPRITE_TYPES'">Sprite
+              Types</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onClickContentType('ANIMATED_SPRITES'); false;" [class.active]="contentTypeStr==='ANIMATED_SPRITES'">Animated Sprites</a>
+            <a class="nav-link" href="#" (click)="onClickContentType('ANIMATED_SPRITE_TYPES'); false;" [class.active]="contentTypeStr==='ANIMATED_SPRITE_TYPES'">Animated
+              Sprite Types</a>
           </li>
         </ul>
         <div class="current-dir">
@@ -52,8 +54,8 @@ import {Subscription} from 'rxjs/Subscription';
         <div class="items-container">
           <app-directory-view></app-directory-view>
           <app-images-view></app-images-view>
-          <app-sprites-view></app-sprites-view>
-          <app-animated-sprites-view></app-animated-sprites-view>
+          <app-sprite-types-view></app-sprite-types-view>
+          <app-animated-sprite-types-view></app-animated-sprite-types-view>
         </div>
       </div>
     </div>
@@ -103,10 +105,10 @@ export class ExplorerComponent implements OnInit, OnDestroy {
       this.explorerService.reloadDirectory();
     } else if (contentType === ContentType.IMAGES) {
       this.explorerService.reloadImages();
-    } else if (contentType === ContentType.SPRITES) {
-      this.explorerService.reloadSprites();
-    } else if (contentType === ContentType.ANIMATED_SPRITES) {
-      this.explorerService.reloadAnimatedSprites();
+    } else if (contentType === ContentType.SPRITE_TYPES) {
+      this.explorerService.reloadSpriteTypes();
+    } else if (contentType === ContentType.ANIMATED_SPRITE_TYPES) {
+      this.explorerService.reloadAnimatedSpriteTypes();
     } else {
       throw new Error('Unhandled case: ' + this.contentTypeStr);
     }

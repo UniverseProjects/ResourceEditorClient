@@ -21,8 +21,8 @@ import {AlertComponent} from '../components/alert.component';
 import {LoaderComponent} from '../components/loader.component';
 import {DirectoryTreeComponent} from '../components/directory.tree.component';
 import {ThumbnailsComponent} from '../components/thumbnails.component';
-import {SpritesViewComponent} from '../components/sprites.view.component';
-import {AnimatedSpritesViewComponent} from '../components/animated.sprites.view.component';
+import {SpriteTypesViewComponent} from '../components/sprites.view.component';
+import {AnimatedSpriteTypesViewComponent} from '../components/animated.sprites.view.component';
 import {PropertiesComponent} from '../components/properties.component';
 import {DirectoryViewComponent} from '../components/directory.view.component';
 import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
@@ -32,7 +32,7 @@ import {ImageApi} from '../swagger/api/ImageApi';
 import {SpriteTypeApi} from '../swagger/api/SpriteTypeApi';
 import {AnimatedSpriteTypeApi} from '../swagger/api/AnimatedSpriteTypeApi';
 import {ImageFrameComponent} from '../components/image.frame.component';
-import {SpriteEditorComponent} from '../components/sprite.editor.component';
+import {SpriteTypeEditorComponent} from '../components/sprite.editor.component';
 
 @NgModule({
     imports: [
@@ -59,9 +59,9 @@ import {SpriteEditorComponent} from '../components/sprite.editor.component';
         ImageFrameComponent,
         PropertiesComponent,
         ImagesViewComponent,
-        SpritesViewComponent,
-        SpriteEditorComponent,
-        AnimatedSpritesViewComponent,
+        SpriteTypesViewComponent,
+        SpriteTypeEditorComponent,
+        AnimatedSpriteTypesViewComponent,
         DirectoryViewComponent,
         ExplorerComponent,
     ],

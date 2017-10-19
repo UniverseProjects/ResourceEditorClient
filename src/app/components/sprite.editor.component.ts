@@ -11,20 +11,20 @@ import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn} 
 import {C} from '../common/common';
 
 @Component({
-  selector: 'app-sprite-editor',
+  selector: 'app-sprite-type-editor',
   styles: [`  
     .field-label {
       
     }
   `],
   template: `
-    <div class="sprite-editor-container">
-      <form novalidate [formGroup]="spriteForm">
+    <div class="sprite-type-editor-container">
+      <form novalidate [formGroup]="form">
         <div class="form-row">
           <div class="form-group col-lg-12">
-            <label for="name" class="field-label">Sprite name</label>
+            <label for="name" class="field-label">Sprite type name</label>
             <input id="name" name="name" formControlName="name" class="form-control" type="text"
-                   [class.is-invalid]="isInvalid('name')" placeholder="Enter a unique name for this sprite"/>
+                   [class.is-invalid]="isInvalid('name')" placeholder="Enter a unique name for this sprite type"/>
             <div class="invalid-feedback" *ngIf="isInvalid('name')">{{getErrorMessage('name')}}</div>
           </div>
         </div>
@@ -66,7 +66,9 @@ import {C} from '../common/common';
         </div>
         <div class="form-row" style="padding-top: 10px;">
           <div class="form-group col-md-12">
-            <button type="button" class="btn btn-outline-success" [disabled]="spriteForm.invalid" (click)="createSprite()">Create sprite</button>
+            <button type="button" class="btn btn-outline-success" [disabled]="form.invalid" (click)="create()">
+              Create sprite type
+            </button>
             <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
           </div>
         </div>
@@ -74,12 +76,12 @@ import {C} from '../common/common';
     </div>
   `,
 })
-export class SpriteEditorComponent implements OnInit {
+export class SpriteTypeEditorComponent implements OnInit {
 
-  @Output() onSpriteCreated = new EventEmitter();
+  @Output() onCreated = new EventEmitter();
   @Output() onCancel = new EventEmitter();
 
-  spriteForm: FormGroup;
+  form: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -91,24 +93,24 @@ export class SpriteEditorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.spriteForm = this.fb.group({
-      name: [null, SpriteEditorComponent.validateName],
-      imagePath: [null, SpriteEditorComponent.validateImagePath],
-      areaX: [0, SpriteEditorComponent.validateRange(0, 9999)],
-      areaY: [0, SpriteEditorComponent.validateRange(0, 9999)],
-      areaWidth: [null, SpriteEditorComponent.validateRange(0, 9999)],
-      areaHeight: [null, SpriteEditorComponent.validateRange(0, 9999)],
+    this.form = this.fb.group({
+      name: [null, SpriteTypeEditorComponent.validateName],
+      imagePath: [null, SpriteTypeEditorComponent.validateImagePath],
+      areaX: [0, SpriteTypeEditorComponent.validateRange(0, 9999)],
+      areaY: [0, SpriteTypeEditorComponent.validateRange(0, 9999)],
+      areaWidth: [null, SpriteTypeEditorComponent.validateRange(0, 9999)],
+      areaHeight: [null, SpriteTypeEditorComponent.validateRange(0, 9999)],
     });
   }
 
   clear() {
-    this.spriteForm.reset();
+    this.form.reset();
   }
 
   private static validateName(control: AbstractControl): ValidationErrors {
     let val = control.value;
     if (C.emptyStr(val)) {
-      return SpriteEditorComponent.createErrorObject('Sprite name is required');
+      return SpriteTypeEditorComponent.createErrorObject('Sprite name is required');
     }
     return null;
   }
@@ -116,10 +118,10 @@ export class SpriteEditorComponent implements OnInit {
   private static validateImagePath(control: AbstractControl): ValidationErrors {
     let val = control.value;
     if (C.emptyStr(val)) {
-      return SpriteEditorComponent.createErrorObject('Image path is required');
+      return SpriteTypeEditorComponent.createErrorObject('Image path is required');
     }
     if (!PathUtil.isValid(val)) {
-      return SpriteEditorComponent.createErrorObject('Invalid image path');
+      return SpriteTypeEditorComponent.createErrorObject('Invalid image path');
     }
     return null;
   }
@@ -131,10 +133,10 @@ export class SpriteEditorComponent implements OnInit {
     return (control: AbstractControl): ValidationErrors => {
       let val = control.value;
       if (!C.defined(val)) {
-        return SpriteEditorComponent.createErrorObject('Value is required');
+        return SpriteTypeEditorComponent.createErrorObject('Value is required');
       }
       if (val < min || val > max) {
-        return SpriteEditorComponent.createErrorObject('Value must be in the ['+min+'..'+max+'] range');
+        return SpriteTypeEditorComponent.createErrorObject('Value must be in the ['+min+'..'+max+'] range');
       }
       return null;
     }
@@ -151,7 +153,7 @@ export class SpriteEditorComponent implements OnInit {
   }
 
   getControl(controlSelector: string): AbstractControl {
-    let control = this.spriteForm.get(controlSelector);
+    let control = this.form.get(controlSelector);
     if (!control) {
       throw new Error('Form control not found for selector: ' + controlSelector);
     }
@@ -167,38 +169,38 @@ export class SpriteEditorComponent implements OnInit {
     this.onCancel.emit();
   }
 
-  createSprite() {
-    if (this.spriteForm.invalid) {
+  create() {
+    if (this.form.invalid) {
       this.alertService.warn('Please fix validation errors');
       return;
     }
 
     let libraryId = this.explorerService.getSelectedLibraryId();
     let directoryPath = this.directoryService.getCurrentDirectoryPath();
-    let spriteName = this.spriteForm.value.name;
-    let treePath = PathUtil.combine(directoryPath, spriteName);
+    let name = this.form.get('name').value;
+    let treePath = PathUtil.combine(directoryPath, name);
 
-    let newSprite: SpriteType = {
-      name: spriteName,
+    let newSpriteType: SpriteType = {
+      name: name,
       treePath: treePath,
       parent: directoryPath,
-      imagePath: this.spriteForm.get('imagePath').value,
-      areaX: this.spriteForm.get('areaX').value,
-      areaY: this.spriteForm.get('areaY').value,
-      areaWidth: this.spriteForm.get('areaWidth').value,
-      areaHeight: this.spriteForm.get('areaHeight').value,
+      imagePath: this.form.get('imagePath').value,
+      areaX: this.form.get('areaX').value,
+      areaY: this.form.get('areaY').value,
+      areaWidth: this.form.get('areaWidth').value,
+      areaHeight: this.form.get('areaHeight').value,
     };
 
-    const operation = this.loaderService.startOperation('Creating sprite');
-    this.spriteTypeApi.createSpriteType(libraryId, ApiHelper.path(treePath), newSprite)
+    const operation = this.loaderService.startOperation('Creating sprite type');
+    this.spriteTypeApi.createSpriteType(libraryId, ApiHelper.path(treePath), newSpriteType)
       .toPromise()
       .then(() => {
         operation.stop();
-        this.alertService.success('Sprite created successfully');
-        this.onSpriteCreated.emit();
+        this.alertService.success('Sprite type created successfully');
+        this.onCreated.emit();
       }, rejectReason => {
         operation.stop();
-        this.alertService.error('Failed to create sprite (' + rejectReason + ')');
+        this.alertService.error('Failed to create sprite type (' + rejectReason + ')');
       });
   }
 

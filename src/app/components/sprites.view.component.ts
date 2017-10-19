@@ -11,7 +11,7 @@ import {ImageFrameProperties} from './image.frame.component';
 import {ThumbnailProperties} from "./thumbnails.component";
 
 @Component({
-  selector: 'app-sprites-view',
+  selector: 'app-sprite-types-view',
   styles: [`
     .controls-top {
       margin-bottom: 10px;
@@ -28,47 +28,47 @@ import {ThumbnailProperties} from "./thumbnails.component";
     }
   `],
   template: `
-    <div class="sprites-view-container" *ngIf="active">
+    <div class="sprites-types-view-container" *ngIf="active">
       <div *ngIf="displayThumbnails">
         <app-thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
         <div class="controls-bottom">
-          <button class="btn btn-outline-success" (click)="showNewSpriteDialog();">Create new sprite</button>
+          <button class="btn btn-outline-success" (click)="showCreationDialog();">Create new sprite type</button>
         </div>
       </div>
-      <div *ngIf="displaySelectedSprite">
+      <div *ngIf="displaySelected">
         <div class="controls-top">
-          <button id="backBtn" class="btn btn-info" (click)="clearSelectedSprite(); showThumbnails();">&#8678; Back to directory</button>
-          <button class="btn btn-danger"
+          <button id="backBtn" class="btn btn-info" (click)="clearSelected(); showThumbnails();">&#8678; Back
+            to directory
+          </button>
+          <button class="btn btn-outline-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
-                  message="Do you really want to delete this sprite?"
-                  (confirm)="deleteSprite()">Delete this sprite
+                  message="Do you really want to delete this sprite type?"
+                  (confirm)="deleteSpriteType()">Delete this sprite type
           </button>
         </div>
         <div class="preview-container">
-          <app-image-frame [properties]="selectedSpriteFrameProperties"></app-image-frame>
+          <app-image-frame [properties]="selectedFrameProps"></app-image-frame>
         </div>
-        <app-properties [object]="selectedSprite"></app-properties>
+        <app-properties [object]="selected"></app-properties>
         <div class="controls-bottom">
         </div>
       </div>
-      <div *ngIf="displayNewSpriteDialog">
-        <app-sprite-editor (onCancel)="showThumbnails()" (onSpriteCreated)="reloadContent()"></app-sprite-editor>
+      <div *ngIf="displayCreationDialog">
+        <app-sprite-type-editor (onCancel)="showThumbnails()" (onCreated)="reloadContent()"></app-sprite-type-editor>
       </div>
     </div>
   `,
 })
-export class SpritesViewComponent implements OnInit, OnDestroy {
+export class SpriteTypesViewComponent implements OnInit, OnDestroy {
   active = false;
-  sprites: SpriteType[] = [];
+  spriteTypes: SpriteType[] = [];
+  thumbnails: ThumbnailProperties[] = [];
+  selected: SpriteType;
+  selectedFrameProps: ImageFrameProperties;
 
   displayThumbnails = false;
-  thumbnails: ThumbnailProperties[] = [];
-
-  displaySelectedSprite = false;
-  selectedSprite: SpriteType;
-  selectedSpriteFrameProperties: ImageFrameProperties;
-
-  displayNewSpriteDialog = false;
+  displaySelected = false;
+  displayCreationDialog = false;
 
   private subscription: Subscription;
 
@@ -82,7 +82,7 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
-      if (contentType === ContentType.SPRITES) {
+      if (contentType === ContentType.SPRITE_TYPES) {
         this.reloadContent();
         this.active = true;
       } else {
@@ -98,71 +98,71 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
   }
 
   onThumbnailSelected(selectedIndex: number) {
-    this.clearSelectedSprite();
+    this.clearSelected();
 
-    let sprite = this.sprites[selectedIndex];
-    this.selectedSprite = sprite;
-    this.selectedSpriteFrameProperties = {
-      width: sprite.areaWidth,
-      height: sprite.areaHeight,
-      imageUrl: sprite.image.gcsUrl,
+    let st = this.spriteTypes[selectedIndex];
+    this.selected = st;
+    this.selectedFrameProps = {
+      width: st.areaWidth,
+      height: st.areaHeight,
+      imageUrl: st.image.gcsUrl,
       imageBorder: false,
-      sectionWidth: sprite.areaWidth,
-      sectionHeight: sprite.areaHeight,
-      sectionX: sprite.areaX,
-      sectionY: sprite.areaY,
+      sectionWidth: st.areaWidth,
+      sectionHeight: st.areaHeight,
+      sectionX: st.areaX,
+      sectionY: st.areaY,
     };
 
-    this.showSelectedSprite();
+    this.showSelected();
   }
 
   clearAll() {
     this.clearThumbnails();
-    this.clearSelectedSprite();
+    this.clearSelected();
   }
 
   clearThumbnails() {
-    this.sprites.length = 0;
+    this.spriteTypes.length = 0;
     this.thumbnails.length = 0;
   }
 
-  clearSelectedSprite() {
-    this.selectedSprite = null;
-    this.selectedSpriteFrameProperties = null;
+  clearSelected() {
+    this.selected = null;
+    this.selectedFrameProps = null;
   }
 
   showThumbnails() {
-    this.displayNewSpriteDialog = false;
-    this.displaySelectedSprite = false;
+    this.displayCreationDialog = false;
+    this.displaySelected = false;
     this.displayThumbnails = true;
   }
 
-  showSelectedSprite() {
+  showSelected() {
     this.displayThumbnails = false;
-    this.displaySelectedSprite = true;
-    this.displayNewSpriteDialog = false;
+    this.displaySelected = true;
+    this.displayCreationDialog = false;
   }
 
-  showNewSpriteDialog() {
+  showCreationDialog() {
     this.displayThumbnails = false;
-    this.displaySelectedSprite = false;
-    this.displayNewSpriteDialog = true;
+    this.displaySelected = false;
+    this.displayCreationDialog = true;
   }
 
-  deleteSprite() {
+  deleteSpriteType() {
     let libraryId = this.explorerService.getSelectedLibraryId();
-    let treePath = this.selectedSprite.treePath;
+    let treePath = this.selected.treePath;
 
-    const operation = this.loaderService.startOperation('Deleting sprite');
+    const operation = this.loaderService.startOperation('Deleting sprite type');
     this.spriteTypeApi.deleteSpriteType(libraryId, ApiHelper.path(treePath))
       .toPromise()
       .then(() => {
         operation.stop();
-        this.alertService.success('Sprite deleted successfully');
+        this.alertService.success('Sprite type deleted successfully');
         this.reloadContent();
       }, rejectReason => {
         operation.stop();
-        this.alertService.error('Failed to delete sprite (' + rejectReason + ')');
+        this.alertService.error('Failed to delete sprite type (' + rejectReason + ')');
       });
   }
 
@@ -170,30 +170,30 @@ export class SpritesViewComponent implements OnInit, OnDestroy {
     let libraryId = this.explorerService.getSelectedLibraryId();
     let currentDir = this.directoryService.getCurrentDirectoryPath();
 
-    const operation = this.loaderService.startOperation('Loading sprites');
+    const operation = this.loaderService.startOperation('Loading sprite types');
     this.spriteTypeApi.findSpriteType(libraryId, ApiHelper.path(currentDir))
       .toPromise()
       .then(response => {
         operation.stop();
         this.clearAll();
-        this.sprites = response.values;
-        this.thumbnails = this.sprites.map(sprite => SpritesViewComponent.toThumbnail(sprite));
+        this.spriteTypes = response.values;
+        this.thumbnails = this.spriteTypes.map(st => SpriteTypesViewComponent.toThumbnail(st));
         this.showThumbnails();
       }, rejectReason => {
         operation.stop();
-        this.alertService.error('Failed to load sprites (' + rejectReason + ')');
+        this.alertService.error('Failed to load sprite types (' + rejectReason + ')');
         this.clearAll();
         this.showThumbnails();
       });
   }
 
-  static toThumbnail(sprite: SpriteType): ThumbnailProperties {
+  static toThumbnail(spriteType: SpriteType): ThumbnailProperties {
     return {
-      imageUrl: sprite.image.gcsUrl,
-      sectionWidth: sprite.areaWidth,
-      sectionHeight: sprite.areaHeight,
-      sectionX: sprite.areaX,
-      sectionY: sprite.areaY,
+      imageUrl: spriteType.image.gcsUrl,
+      sectionWidth: spriteType.areaWidth,
+      sectionHeight: spriteType.areaHeight,
+      sectionX: spriteType.areaX,
+      sectionY: spriteType.areaY,
     };
   }
 

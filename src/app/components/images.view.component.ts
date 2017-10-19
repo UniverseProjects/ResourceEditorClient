@@ -31,32 +31,36 @@ import {ThumbnailProperties} from './thumbnails.component';
   `],
   template: `
     <div class="images-view-container" *ngIf="active">
-      <div [hidden]="selectedImage">
+      <div [hidden]="selected">
         <app-thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
         <div class="controls-bottom row no-gutters">
           <div class="input-group col-xs-12 col-lg-8">
             <input #fileUploadInput type="file" accept=".png, .jpg" style="opacity: 0; width: 0px;" (change)="onFileSelectionUpdate($event); fileUploadInput.value = '';">
-            <input id="uploadFileName" class="form-control"  type="text" readonly value="{{fileToUpload ? fileToUpload.name : null}}" placeholder="Select image to upload" (click)="fileUploadInput.click();">
+            <input id="uploadFileName" class="form-control" type="text" readonly value="{{fileToUpload ? fileToUpload.name : null}}" placeholder="Select image to upload" (click)="fileUploadInput.click();">
             <div class="input-group-btn">
-              <button id="uploadImageBtn" class="btn btn-outline-success btn-with-icon" (click)="uploadImage()">&#8679; UPLOAD</button>
+              <button id="uploadImageBtn" class="btn btn-outline-success btn-with-icon" (click)="uploadImage()">&#8679;
+                UPLOAD
+              </button>
             </div>
           </div>
         </div>
       </div>
-      <div *ngIf="selectedImage">
+      <div *ngIf="selected">
         <div class="controls-top">
-          <button type="button" class="btn btn-info btn-with-icon" (click)="clearSelection()">&#8678; Back to directory</button>
+          <button type="button" class="btn btn-info btn-with-icon" (click)="clearSelection()">&#8678; Back to
+            directory
+          </button>
           <button type="button" class="btn btn-outline-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete this image?"
                   (confirm)="deleteImage()">Delete this image
           </button>
-          <button type="button" class="btn btn-outline-success" (click)="createSprite()">Create sprite</button>
+          <button type="button" class="btn btn-outline-success" (click)="createSpriteType()">Create sprite type</button>
         </div>
         <div class="preview-container">
-          <app-image-frame [properties]="selectedImageFrameProperties"></app-image-frame>
+          <app-image-frame [properties]="selectedFrameProps"></app-image-frame>
         </div>
-        <app-properties [object]="selectedImage"></app-properties>
+        <app-properties [object]="selected"></app-properties>
         <div class="controls-bottom">
         </div>
       </div>
@@ -68,8 +72,8 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
   images: Image[] = [];
   thumbnails: ThumbnailProperties[] = [];
   fileToUpload: File;
-  selectedImage: Image;
-  selectedImageFrameProperties: ImageFrameProperties;
+  selected: Image;
+  selectedFrameProps: ImageFrameProperties;
 
   private subscription: Subscription;
 
@@ -100,8 +104,8 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
 
   onThumbnailSelected(selectedIndex: number) {
     let image = this.images[selectedIndex];
-    this.selectedImage = image;
-    this.selectedImageFrameProperties = {
+    this.selected = image;
+    this.selectedFrameProps = {
       width: 400,
       height: 400,
       imageUrl: image.gcsUrl,
@@ -110,16 +114,16 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
   }
 
   clearSelection() {
-    this.selectedImage = null;
-    this.selectedImageFrameProperties = null;
+    this.selected = null;
+    this.selectedFrameProps = null;
   }
 
   clear() {
     this.fileToUpload = null;
     this.images.length = 0;
     this.thumbnails.length = 0;
-    this.selectedImage = null;
-    this.selectedImageFrameProperties = null;
+    this.selected = null;
+    this.selectedFrameProps = null;
   }
 
   onFileSelectionUpdate(event) {
@@ -184,13 +188,13 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
   }
 
   deleteImage() {
-    if (!this.selectedImage) {
+    if (!this.selected) {
       this.alertService.warn('Please select an image to delete');
       return;
     }
 
     let libraryId = this.explorerService.getSelectedLibraryId();
-    let treePath = this.selectedImage.treePath;
+    let treePath = this.selected.treePath;
 
     let operation = this.loaderService.startOperation('Deleting image');
     this.imageApi.deleteImage(libraryId, ApiHelper.path(treePath))
@@ -206,9 +210,9 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
         });
   }
 
-  createSprite() {
-    if (!this.selectedImage) {
-      this.alertService.warn('Please select an image to create a sprite');
+  createSpriteType() {
+    if (!this.selected) {
+      this.alertService.warn('Please select an image to create a sprite type');
       return;
     }
     this.alertService.warn('Not implemented yet');
@@ -225,7 +229,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
         operation.stop();
         this.clear();
         this.images = response.values;
-        this.thumbnails = this.images.map(image => ImagesViewComponent.toThumbnail(image));
+        this.thumbnails = this.images.map(img => ImagesViewComponent.toThumbnail(img));
       },rejectReason => {
         operation.stop();
         this.clear();

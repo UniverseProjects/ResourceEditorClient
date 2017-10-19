@@ -7,11 +7,11 @@ import {AnimatedSpriteType} from '../swagger/model/AnimatedSpriteType';
 import {ApiHelper} from '../common/api.helper';
 import {DirectoryService} from '../services/directory.service';
 import {Subscription} from 'rxjs/Subscription';
-import {SpritesViewComponent} from './sprites.view.component';
+import {SpriteTypesViewComponent} from './sprites.view.component';
 import {ThumbnailProperties} from './thumbnails.component';
 
 @Component({
-  selector: 'app-animated-sprites-view',
+  selector: 'app-animated-sprite-types-view',
   styles: [`
     .controls-top {
       margin-bottom: 10px;
@@ -32,35 +32,35 @@ import {ThumbnailProperties} from './thumbnails.component';
     }
   `],
   template: `
-    <div class="animated-sprites-view-container" *ngIf="active">
-      <div [hidden]="selectedAnimatedSprite">
+    <div class="animated-sprites-types-view-container" *ngIf="active">
+      <div [hidden]="selected">
         <app-thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></app-thumbnails>
       </div>
-      <div *ngIf="selectedAnimatedSprite">
+      <div *ngIf="selected">
         <div class="controls-top">
           <button id="backBtn" class="btn btn-info" (click)="clearSelection()">&#8678; Back to directory</button>
-          <button class="btn btn-danger"
+          <button class="btn btn-outline-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
-                  message="Do you really want to delete this animated sprite?"
-                  (confirm)="deleteAnimatedSprite()">Delete this animated sprite
+                  message="Do you really want to delete this animated sprite type?"
+                  (confirm)="deleteAnimatedSpriteType()">Delete this animated sprite type
           </button>
         </div>
         <div class="preview-container">
-          <img class="preview" src="{{selectedAnimatedSprite.frames[0].spriteType.image.gcsUrl}}"/>
+          <img class="preview" src="{{selected.frames[0].spriteType.image.gcsUrl}}"/>
         </div>
-        <app-properties [object]="selectedAnimatedSprite"></app-properties>
+        <app-properties [object]="selected"></app-properties>
         <div class="controls-bottom">
-          
+
         </div>
       </div>
     </div>
   `,
 })
-export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
+export class AnimatedSpriteTypesViewComponent implements OnInit, OnDestroy {
   active = false;
-  animatedSprites: AnimatedSpriteType[] = [];
+  animatedSpriteTypes: AnimatedSpriteType[] = [];
   thumbnails: ThumbnailProperties[] = [];
-  selectedAnimatedSprite: AnimatedSpriteType;
+  selected: AnimatedSpriteType;
 
   private subscription: Subscription;
 
@@ -74,7 +74,7 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
-      if (contentType === ContentType.ANIMATED_SPRITES) {
+      if (contentType === ContentType.ANIMATED_SPRITE_TYPES) {
         this.reloadContent();
         this.active = true;
       } else {
@@ -89,20 +89,20 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
   }
 
   onThumbnailSelected(selectedIndex: number) {
-    this.selectedAnimatedSprite = this.animatedSprites[selectedIndex];
+    this.selected = this.animatedSpriteTypes[selectedIndex];
   }
 
   clearSelection() {
-    this.selectedAnimatedSprite = null;
+    this.selected = null;
   }
 
   clear() {
-    this.selectedAnimatedSprite = null;
-    this.animatedSprites.length = 0;
+    this.selected = null;
+    this.animatedSpriteTypes.length = 0;
     this.thumbnails.length = 0;
   }
 
-  deleteAnimatedSprite() {
+  deleteAnimatedSpriteType() {
     this.alertService.warn('Deletion not implemented yet');
   }
 
@@ -110,18 +110,18 @@ export class AnimatedSpritesViewComponent implements OnInit, OnDestroy {
     let libraryId = this.explorerService.getSelectedLibraryId();
     let currentDir = this.directoryService.getCurrentDirectoryPath();
 
-    const operation = this.loaderService.startOperation('Loading animated sprites');
+    const operation = this.loaderService.startOperation('Loading animated sprite types');
     this.animatedSpriteTypeApi.findAnimatedSpriteType(libraryId, ApiHelper.path(currentDir))
       .toPromise()
       .then(response => {
         operation.stop();
         this.clear();
-        this.animatedSprites = response.values;
-        this.thumbnails = this.animatedSprites.map(sprite => SpritesViewComponent.toThumbnail(sprite.frames[0].spriteType));
+        this.animatedSpriteTypes = response.values;
+        this.thumbnails = this.animatedSpriteTypes.map(ast => SpriteTypesViewComponent.toThumbnail(ast.frames[0].spriteType));
       }, (rejectReason) => {
         operation.stop();
         this.clear();
-        this.alertService.error('Failed to load animated sprites (' + rejectReason + ')');
+        this.alertService.error('Failed to load animated sprite types (' + rejectReason + ')');
       });
   }
 

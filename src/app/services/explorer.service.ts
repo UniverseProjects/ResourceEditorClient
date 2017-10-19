@@ -4,8 +4,8 @@ import {Subject} from 'rxjs/Subject';
 export enum ContentType {
   DIRECTORY,
   IMAGES,
-  SPRITES,
-  ANIMATED_SPRITES,
+  SPRITE_TYPES,
+  ANIMATED_SPRITE_TYPES,
 }
 
 @Injectable()
@@ -28,12 +28,12 @@ export class ExplorerService {
     this.reloadContent_.next(ContentType.IMAGES);
   }
 
-  reloadSprites(): void {
-    this.reloadContent_.next(ContentType.SPRITES);
+  reloadSpriteTypes(): void {
+    this.reloadContent_.next(ContentType.SPRITE_TYPES);
   }
 
-  reloadAnimatedSprites(): void {
-    this.reloadContent_.next(ContentType.ANIMATED_SPRITES);
+  reloadAnimatedSpriteTypes(): void {
+    this.reloadContent_.next(ContentType.ANIMATED_SPRITE_TYPES);
   }
 
 }
