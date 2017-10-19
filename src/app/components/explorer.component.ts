@@ -33,18 +33,20 @@ import {Subscription} from 'rxjs/Subscription';
       <div class="directory-content">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onClickContentType('DIRECTORY'); false;" [class.active]="contentTypeStr==='DIRECTORY'">Directory</a>
+            <a class="nav-link" href="#" (click)="onClickContentType('DIRECTORY'); false;" 
+               [class.active]="contentTypeStr==='DIRECTORY'">Directory</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onClickContentType('IMAGES'); false;" [class.active]="contentTypeStr==='IMAGES'">Images</a>
+            <a class="nav-link" href="#" (click)="onClickContentType('IMAGES'); false;" 
+               [class.active]="contentTypeStr==='IMAGES'">Images</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onClickContentType('SPRITE_TYPES'); false;" [class.active]="contentTypeStr==='SPRITE_TYPES'">Sprite
-              Types</a>
+            <a class="nav-link" href="#" (click)="onClickContentType('SPRITE_TYPES'); false;" 
+               [class.active]="contentTypeStr==='SPRITE_TYPES'">Sprite Types</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onClickContentType('ANIMATED_SPRITE_TYPES'); false;" [class.active]="contentTypeStr==='ANIMATED_SPRITE_TYPES'">Animated
-              Sprite Types</a>
+            <a class="nav-link" href="#" (click)="onClickContentType('ANIMATED_SPRITE_TYPES'); false;" 
+               [class.active]="contentTypeStr==='ANIMATED_SPRITE_TYPES'">Animated Sprite Types</a>
           </li>
         </ul>
         <div class="current-dir">
