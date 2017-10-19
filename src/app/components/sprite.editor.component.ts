@@ -190,14 +190,14 @@ export class SpriteEditorComponent implements OnInit {
       name: spriteName,
       treePath: treePath,
       parent: directoryPath,
-      tags: null,
-      imagePath: this.spriteForm.value.treePath,
-      image: null,
-      areaX: this.spriteForm.value.areaX,
-      areaY: this.spriteForm.value.areaY,
-      areaWidth: this.spriteForm.value.areaWidth,
-      areaHeight: this.spriteForm.value.areaHeight,
-      markers: null,
+      // tags: null,
+      imagePath: this.spriteForm.get('imagePath').value,
+      // image: null,
+      areaX: this.spriteForm.get('areaX').value,
+      areaY: this.spriteForm.get('areaY').value,
+      areaWidth: this.spriteForm.get('areaWidth').value,
+      areaHeight: this.spriteForm.get('areaHeight').value,
+      // markers: null,
     };
 
     const operation = this.loaderService.startOperation('Creating sprite');
