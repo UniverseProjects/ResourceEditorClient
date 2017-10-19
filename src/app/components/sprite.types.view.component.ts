@@ -12,19 +12,9 @@ import {ThumbnailProperties} from "./thumbnails.component";
 
 @Component({
   selector: 'sprite-types-view',
-  styles: [`
-    .controls-top {
-      margin-bottom: 10px;
-    }
-    .controls-bottom {
-      margin-top: 10px;
-    }
+  styles: [`    
     .preview-container {
       margin-bottom: 20px;
-    }
-    #backBtn {
-      padding-left: 8px;
-      padding-right: 10px;
     }
   `],
   template: `
@@ -37,7 +27,7 @@ import {ThumbnailProperties} from "./thumbnails.component";
       </div>
       <div *ngIf="displaySelected">
         <div class="controls-top">
-          <button id="backBtn" class="btn btn-info" (click)="clearSelected(); showThumbnails();">&#8678; Back to directory</button>
+          <button class="btn btn-info btn-with-icon" (click)="clearSelected(); showThumbnails();">&#8678; Back to directory</button>
           <button class="btn btn-outline-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete this sprite type?"

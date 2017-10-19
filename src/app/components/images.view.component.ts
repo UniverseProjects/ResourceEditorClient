@@ -14,19 +14,9 @@ import {ThumbnailProperties} from './thumbnails.component';
 
 @Component({
   selector: 'images-view',
-  styles: [`
-    .controls-top {
-      margin-bottom: 10px;
-    }
-    .controls-bottom {
-      margin-top: 10px;
-    }
+  styles: [`    
     .preview-container {
       margin-bottom: 20px;
-    }
-    .btn-with-icon {
-      padding-left: 8px;
-      padding-right: 10px;
     }
   `],
   template: `

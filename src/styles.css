@@ -20,4 +20,19 @@ h3 {
   color: #444;
 }
 
+.controls-top {
+  margin-bottom: 10px;
+}
+
+.controls-bottom {
+  margin-top: 10px;
+}
+
+.btn-with-icon {
+  padding-left: 8px;
+  padding-right: 10px;
+}
+
+
+
 

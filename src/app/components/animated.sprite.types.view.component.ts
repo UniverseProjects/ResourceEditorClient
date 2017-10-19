@@ -12,23 +12,13 @@ import {ThumbnailProperties} from './thumbnails.component';
 
 @Component({
   selector: 'animated-sprite-types-view',
-  styles: [`
-    .controls-top {
-      margin-bottom: 10px;
-    }
-    .controls-bottom {
-      margin-top: 10px;
-    }
+  styles: [`    
     .preview-container {
       margin-bottom: 20px;
     }
     .preview {
       max-width: 400px;
       max-height: 400px;
-    }
-    #backBtn {
-      padding-left: 8px;
-      padding-right: 10px;
     }
   `],
   template: `
@@ -38,7 +28,7 @@ import {ThumbnailProperties} from './thumbnails.component';
       </div>
       <div *ngIf="selected">
         <div class="controls-top">
-          <button id="backBtn" class="btn btn-info" (click)="clearSelection()">&#8678; Back to directory</button>
+          <button class="btn btn-info btn-with-icon" (click)="clearSelection()">&#8678; Back to directory</button>
           <button class="btn btn-outline-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete this animated sprite type?"
