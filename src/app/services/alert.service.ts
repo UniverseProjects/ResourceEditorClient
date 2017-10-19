@@ -14,7 +14,7 @@ export class AlertService implements OnInit {
   constructor(private router: Router) {
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     // clear alert messages on route change unless 'keepAfterRouteChange' flag is true
     this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {

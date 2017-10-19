@@ -67,7 +67,7 @@ export class DirectoryService {
     return false;
   }
 
-  reloadDirectoryTree(): void {
+  reloadDirectoryTree() {
     const operation = this.loaderService.startOperation('Loading directory tree');
     this.treeApi.getTree(this.explorerService.getSelectedLibraryId())
       .toPromise()

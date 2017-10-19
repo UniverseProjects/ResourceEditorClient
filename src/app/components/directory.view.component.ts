@@ -53,7 +53,7 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
     private treeApi: TreeApi,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
       if (contentType === ContentType.DIRECTORY) {
         this.reloadContent();
@@ -65,7 +65,7 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 

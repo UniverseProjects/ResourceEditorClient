@@ -20,19 +20,19 @@ export class ExplorerService {
     return this.selectedLibraryId;
   }
 
-  reloadDirectory(): void {
+  reloadDirectory() {
     this.reloadContent_.next(ContentType.DIRECTORY);
   }
 
-  reloadImages(): void {
+  reloadImages() {
     this.reloadContent_.next(ContentType.IMAGES);
   }
 
-  reloadSpriteTypes(): void {
+  reloadSpriteTypes() {
     this.reloadContent_.next(ContentType.SPRITE_TYPES);
   }
 
-  reloadAnimatedSpriteTypes(): void {
+  reloadAnimatedSpriteTypes() {
     this.reloadContent_.next(ContentType.ANIMATED_SPRITE_TYPES);
   }
 

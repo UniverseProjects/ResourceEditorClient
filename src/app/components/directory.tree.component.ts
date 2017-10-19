@@ -41,7 +41,7 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
     private directoryService: DirectoryService,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.treeModel = this.treeComponent.treeModel;
 
     this.subscriptions.push(this.directoryService.directoryTreeReloaded$.subscribe((rootDirectory) => {
@@ -60,13 +60,13 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
     this.directoryService.reloadDirectoryTree();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     // always clean-up subscriptions when a component is destroyed
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.subscriptions.length = 0;
   }
 
-  onActivateNode(): void {
+  onActivateNode() {
     if (Date.now() - this.lastActivateEventTime < 25) {
       return; // the event sometimes fires more than once... ignore the duplicate
     }
@@ -81,7 +81,7 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
     this.directoryService.changeDirectory(treePath);
   }
 
-  onDeactivateNode(): void {
+  onDeactivateNode() {
     if (!this.treeModel.getActiveNode()) {
       // If there's no active node at this point, it means that the user clicked on the active node causing it to deactivate;
       // In this case, do a content-refresh on that node by re-activating it.
@@ -117,7 +117,7 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
     this.treeModel.setActiveNode(node, true);
   }
 
-  private expandPath(source: TreeNode, dest: TreeNode): void {
+  private expandPath(source: TreeNode, dest: TreeNode) {
     if (source === dest) {
       return; // we're done
     }
