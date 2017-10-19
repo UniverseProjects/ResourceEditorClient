@@ -66,12 +66,7 @@ import {C} from '../common/common';
         </div>
         <div class="form-row" style="padding-top: 10px;">
           <div class="form-group col-md-12">
-            <button type="button" class="btn btn-outline-success"
-                    mwlConfirmationPopover placement="right"
-                    title="Are you sure?" message="Proceed with sprite creation?"
-                    [disabled]="spriteForm.invalid"
-                    (confirm)="createSprite()">Create sprite
-            </button>
+            <button type="button" class="btn btn-outline-success" [disabled]="spriteForm.invalid" (confirm)="createSprite()">Create sprite</button>
             <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
           </div>
         </div>
