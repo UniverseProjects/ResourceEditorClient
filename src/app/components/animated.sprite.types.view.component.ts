@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
-import {ContentType, ExplorerService} from '../services/explorer.service';
+import {ExplorerView, ExplorerService} from '../services/explorer.service';
 import {AnimatedSpriteTypeApi} from '../swagger/api/AnimatedSpriteTypeApi';
 import {AnimatedSpriteType} from '../swagger/model/AnimatedSpriteType';
 import {ApiHelper} from '../common/api.helper';
@@ -63,8 +63,8 @@ export class AnimatedSpriteTypesViewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
-      if (contentType === ContentType.ANIMATED_SPRITE_TYPES) {
+    this.subscription = this.explorerService.openAndReloadView$.subscribe((view) => {
+      if (view === ExplorerView.ANIMATED_SPRITE_TYPES) {
         this.reloadContent();
         this.active = true;
       } else {

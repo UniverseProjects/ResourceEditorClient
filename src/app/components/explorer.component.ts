@@ -1,7 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ContentType, ExplorerService} from '../services/explorer.service';
+import {ExplorerView, ExplorerService} from '../services/explorer.service';
 import {DirectoryService} from "../services/directory.service";
 import {Subscription} from 'rxjs/Subscription';
+import {C} from '../common/common';
 
 @Component({
   selector: 'app-explorer',
@@ -33,20 +34,20 @@ import {Subscription} from 'rxjs/Subscription';
       <div class="directory-content">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onClickContentType('DIRECTORY'); false;"
-               [class.active]="contentTypeStr==='DIRECTORY'">Directory</a>
+            <a class="nav-link" href="#" (click)="updateView('DIRECTORY'); false;" 
+               [class.active]="viewStr==='DIRECTORY'">Directory</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onClickContentType('IMAGES'); false;"
-               [class.active]="contentTypeStr==='IMAGES'">Images</a>
+            <a class="nav-link" href="#" (click)="updateView('IMAGES'); false;"
+               [class.active]="viewStr==='IMAGES'">Images</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onClickContentType('SPRITE_TYPES'); false;"
-               [class.active]="contentTypeStr==='SPRITE_TYPES'">Sprite Types</a>
+            <a class="nav-link" href="#" (click)="updateView('SPRITE_TYPES'); false;"
+               [class.active]="viewStr==='SPRITE_TYPES'">Sprite Types</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onClickContentType('ANIMATED_SPRITE_TYPES'); false;"
-               [class.active]="contentTypeStr==='ANIMATED_SPRITE_TYPES'">Animated Sprite Types</a>
+            <a class="nav-link" href="#" (click)="updateView('ANIMATED_SPRITE_TYPES'); false;"
+               [class.active]="viewStr==='ANIMATED_SPRITE_TYPES'">Animated Sprite Types</a>
           </li>
         </ul>
         <div class="current-dir">
@@ -65,9 +66,9 @@ import {Subscription} from 'rxjs/Subscription';
 })
 export class ExplorerComponent implements OnInit, OnDestroy {
 
-  private readonly LS_CONTENT_TYPE = 'active.content.type';
+  private readonly LS_ACTIVE_VIEW = 'active.view';
 
-  contentTypeStr = 'DIRECTORY';
+  viewStr = 'DIRECTORY';
   currentDirectory: string = null;
 
   private subscriptions: Subscription[] = [];
@@ -78,13 +79,13 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const lastContentTypeStr = localStorage.getItem(this.LS_CONTENT_TYPE);
+    const lastContentTypeStr = localStorage.getItem(this.LS_ACTIVE_VIEW);
     if (lastContentTypeStr) {
-      this.contentTypeStr = lastContentTypeStr;
+      this.viewStr = lastContentTypeStr;
     }
     this.subscriptions.push(this.directoryService.directoryChanged$.subscribe((directory) => {
       this.currentDirectory = directory.treePath;
-      this.reloadContent();
+      this.updateView(this.viewStr);
     }));
 
   }
@@ -94,17 +95,13 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  onClickContentType(contentTypeStr: string) {
-    this.contentTypeStr = contentTypeStr;
-    this.reloadContent();
-  }
-
-  private reloadContent() {
-    const contentType = ContentType[this.contentTypeStr];
-    if (contentType === undefined || contentType === null) {
-      throw new Error('Invalid enum string value: ' + this.contentTypeStr);
+  updateView(viewStr: string) {
+    const view = ExplorerView[viewStr];
+    if (!C.defined(view)) {
+      throw new Error('String does not translate to enum: ' + viewStr);
     }
-    this.explorerService.reloadContent(contentType);
-    localStorage.setItem(this.LS_CONTENT_TYPE, this.contentTypeStr);
+    this.viewStr = viewStr;
+    localStorage.setItem(this.LS_ACTIVE_VIEW, viewStr);
+    this.explorerService.openAndReloadView(view);
   }
 }

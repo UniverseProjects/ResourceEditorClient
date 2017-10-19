@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
-import {ContentType, ExplorerService} from '../services/explorer.service';
+import {ExplorerView, ExplorerService} from '../services/explorer.service';
 import {ImageApi} from '../swagger/api/ImageApi';
 import {Image} from '../swagger/model/Image';
 import {ApiHelper} from '../common/api.helper';
@@ -73,8 +73,8 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
-      if (contentType === ContentType.IMAGES) {
+    this.subscription = this.explorerService.openAndReloadView$.subscribe((view) => {
+      if (view === ExplorerView.IMAGES) {
         this.reloadContent();
         this.active = true;
       } else {

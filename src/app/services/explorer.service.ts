@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {C} from '../common/common';
 
-export enum ContentType {
+export enum ExplorerView {
   DIRECTORY,
   IMAGES,
   SPRITE_TYPES,
@@ -12,20 +12,21 @@ export enum ContentType {
 @Injectable()
 export class ExplorerService {
 
-  private selectedLibraryId = 5764201201008640;
+  // TODO: implement library-selection by the user
+  private readonly selectedLibraryId = 5764201201008640;
 
-  private reloadContent_ = new Subject<ContentType>();
-  readonly reloadContent$ = this.reloadContent_.asObservable();
+  private openAndReloadView_ = new Subject<ExplorerView>();
+  readonly openAndReloadView$ = this.openAndReloadView_.asObservable();
 
   getSelectedLibraryId(): number {
     return this.selectedLibraryId;
   }
 
-  reloadContent(contentType: ContentType) {
-    if (!C.defined(contentType)) {
-      throw new Error('Content-type must be provided');
+  openAndReloadView(view: ExplorerView) {
+    if (!C.defined(view)) {
+      throw new Error('View must be specified');
     }
-    this.reloadContent_.next(contentType);
+    this.openAndReloadView_.next(view);
   }
 
 }

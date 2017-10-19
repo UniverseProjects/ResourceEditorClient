@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TreeApi} from '../swagger/api/TreeApi';
 import {AlertService} from '../services/alert.service';
 import {LoaderService} from '../services/loader.service';
-import {ContentType, ExplorerService} from '../services/explorer.service';
+import {ExplorerView, ExplorerService} from '../services/explorer.service';
 import {ApiHelper} from '../common/api.helper';
 import {PathUtil} from '../common/path.util';
 import {DirectoryService} from '../services/directory.service';
@@ -54,8 +54,8 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subscription = this.explorerService.reloadContent$.subscribe((contentType) => {
-      if (contentType === ContentType.DIRECTORY) {
+    this.subscription = this.explorerService.openAndReloadView$.subscribe((view) => {
+      if (view === ExplorerView.DIRECTORY) {
         this.reloadContent();
         this.active = true;
       } else {
