@@ -58,7 +58,7 @@ export class SpriteTypesViewComponent implements OnInit, OnDestroy {
   displaySelected = false;
   displayCreationDialog = false;
 
-  private subscription: Subscription;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private alertService: AlertService,
@@ -69,20 +69,26 @@ export class SpriteTypesViewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subscription = this.explorerService.openAndReloadView$.subscribe((view) => {
+    this.subscriptions.push(this.explorerService.openView$.subscribe((view) => {
       if (view === ExplorerView.SPRITE_TYPES) {
-        this.reloadContent();
         this.active = true;
-      } else {
+      }
+      else {
         this.clearAll();
-        this.showThumbnails();
         this.active = false;
       }
-    });
+    }));
+
+    this.subscriptions.push(this.explorerService.reloadView$.subscribe( (view) => {
+      if (view === ExplorerView.SPRITE_TYPES && this.active) {
+        this.reloadContent();
+      }
+    }));
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.length = 0;
   }
 
   onThumbnailSelected(selectedIndex: number) {

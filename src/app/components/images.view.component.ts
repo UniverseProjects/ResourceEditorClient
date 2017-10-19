@@ -61,7 +61,7 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
   selected: Image;
   selectedFrameProps: ImageFrameProperties;
 
-  private subscription: Subscription;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private alertService: AlertService,
@@ -73,19 +73,25 @@ export class ImagesViewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.subscription = this.explorerService.openAndReloadView$.subscribe((view) => {
+    this.subscriptions.push(this.explorerService.openView$.subscribe((view) => {
       if (view === ExplorerView.IMAGES) {
-        this.reloadContent();
         this.active = true;
       } else {
         this.clear();
         this.active = false;
       }
-    });
+    }));
+
+    this.subscriptions.push(this.explorerService.reloadView$.subscribe((view) => {
+      if (view === ExplorerView.IMAGES && this.active) {
+        this.reloadContent();
+      }
+    }));
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.length = 0;
   }
 
   onThumbnailSelected(selectedIndex: number) {
