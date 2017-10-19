@@ -62,7 +62,7 @@ export class DirectoryTreeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     // always clean-up subscriptions when a component is destroyed
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
     this.subscriptions.length = 0;
   }
 
