@@ -45,8 +45,8 @@ import {ThumbnailProperties} from './thumbnails.component';
       </div>
       <div *ngIf="selectedImage">
         <div class="controls-top">
-          <button id="backBtn" class="btn btn-info btn-with-icon" (click)="clearSelection()">&#8678; Back to directory</button>
-          <button class="btn btn-danger"
+          <button type="button" class="btn btn-info btn-with-icon" (click)="clearSelection()">&#8678; Back to directory</button>
+          <button type="button" class="btn btn-outline-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete this image?"
                   (confirm)="deleteImage()">Delete this image
