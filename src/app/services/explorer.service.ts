@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
+import {C} from '../common/common';
 
 export enum ContentType {
   DIRECTORY,
@@ -20,20 +21,11 @@ export class ExplorerService {
     return this.selectedLibraryId;
   }
 
-  reloadDirectory() {
-    this.reloadContent_.next(ContentType.DIRECTORY);
-  }
-
-  reloadImages() {
-    this.reloadContent_.next(ContentType.IMAGES);
-  }
-
-  reloadSpriteTypes() {
-    this.reloadContent_.next(ContentType.SPRITE_TYPES);
-  }
-
-  reloadAnimatedSpriteTypes() {
-    this.reloadContent_.next(ContentType.ANIMATED_SPRITE_TYPES);
+  reloadContent(contentType: ContentType) {
+    if (!C.defined(contentType)) {
+      throw new Error('Content-type must be provided');
+    }
+    this.reloadContent_.next(contentType);
   }
 
 }

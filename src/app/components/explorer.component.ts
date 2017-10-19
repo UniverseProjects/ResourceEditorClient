@@ -101,21 +101,10 @@ export class ExplorerComponent implements OnInit, OnDestroy {
 
   private reloadContent() {
     const contentType = ContentType[this.contentTypeStr];
-
     if (contentType === undefined || contentType === null) {
       throw new Error('Invalid enum string value: ' + this.contentTypeStr);
-    } else if (contentType === ContentType.DIRECTORY) {
-      this.explorerService.reloadDirectory();
-    } else if (contentType === ContentType.IMAGES) {
-      this.explorerService.reloadImages();
-    } else if (contentType === ContentType.SPRITE_TYPES) {
-      this.explorerService.reloadSpriteTypes();
-    } else if (contentType === ContentType.ANIMATED_SPRITE_TYPES) {
-      this.explorerService.reloadAnimatedSpriteTypes();
-    } else {
-      throw new Error('Unhandled case: ' + this.contentTypeStr);
     }
-
+    this.explorerService.reloadContent(contentType);
     localStorage.setItem(this.LS_CONTENT_TYPE, this.contentTypeStr);
   }
 }
