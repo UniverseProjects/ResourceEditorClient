@@ -42,7 +42,7 @@ import {AlertService} from '../services/alert.service';
     </div>
   `,
 })
-export class AlertComponent implements OnInit {
+export class AlertsComponent implements OnInit {
   alerts: Alert[] = [];
 
   constructor(

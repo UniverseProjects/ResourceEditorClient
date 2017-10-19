@@ -17,7 +17,7 @@ import {ExplorerService} from '../services/explorer.service';
 import {AppComponent} from '../components/app.component';
 import {ExplorerComponent} from '../components/explorer.component';
 import {ImagesViewComponent} from '../components/images.view.component';
-import {AlertComponent} from '../components/alert.component';
+import {AlertsComponent} from '../components/alerts.component';
 import {LoaderComponent} from '../components/loader.component';
 import {DirectoryTreeComponent} from '../components/directory.tree.component';
 import {ThumbnailsComponent} from '../components/thumbnails.component';
@@ -54,7 +54,7 @@ import {SpriteTypeEditorComponent} from '../components/sprite.type.editor.compon
         AppComponent,
         DirectoryTreeComponent,
         ThumbnailsComponent,
-        AlertComponent,
+        AlertsComponent,
         LoaderComponent,
         ImageFrameComponent,
         PropertiesComponent,
