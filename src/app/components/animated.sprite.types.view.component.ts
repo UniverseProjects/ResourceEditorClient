@@ -7,7 +7,7 @@ import {AnimatedSpriteType} from '../swagger/model/AnimatedSpriteType';
 import {ApiHelper} from '../common/api.helper';
 import {DirectoryService} from '../services/directory.service';
 import {Subscription} from 'rxjs/Subscription';
-import {SpriteTypesViewComponent} from './sprites.view.component';
+import {SpriteTypesViewComponent} from './sprite.types.view.component';
 import {ThumbnailProperties} from './thumbnails.component';
 
 @Component({
