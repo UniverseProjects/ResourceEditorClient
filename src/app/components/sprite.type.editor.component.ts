@@ -1,24 +1,24 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PathUtil} from '../common/path.util';
 import {SpriteType} from '../swagger/model/SpriteType';
 import {ApiHelper} from '../common/api.helper';
 import {LoaderService} from '../services/loader.service';
-import {ExplorerService} from '../services/explorer.service';
+import {ExplorerService, ExplorerView} from '../services/explorer.service';
 import {DirectoryService} from '../services/directory.service';
 import {SpriteTypeApi} from '../swagger/api/SpriteTypeApi';
 import {AlertService} from '../services/alert.service';
 import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn} from '@angular/forms';
 import {C} from '../common/common';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'sprite-type-editor',
   styles: [`  
     .field-label {
-      
     }
   `],
   template: `
-    <div class="sprite-type-editor-container">
+    <div class="sprite-type-editor-container" *ngIf="active">
       <form novalidate [formGroup]="form">
         <div class="form-row">
           <div class="form-group col-lg-12">
@@ -66,7 +66,7 @@ import {C} from '../common/common';
         </div>
         <div class="form-row" style="padding-top: 10px;">
           <div class="form-group col-md-12">
-            <button type="button" class="btn btn-outline-success" [disabled]="form.invalid" (click)="create()">
+            <button type="button" class="btn btn-outline-success" [disabled]="form.invalid" (click)="createSpriteType()">
               Create sprite type
             </button>
             <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
@@ -76,12 +76,11 @@ import {C} from '../common/common';
     </div>
   `,
 })
-export class SpriteTypeEditorComponent implements OnInit {
-
-  @Output() onCreated = new EventEmitter();
-  @Output() onCancel = new EventEmitter();
-
+export class SpriteTypeEditorComponent implements OnInit, OnDestroy {
+  active = false;
   form: FormGroup;
+
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -93,18 +92,50 @@ export class SpriteTypeEditorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.form = this.fb.group({
-      name: [null, SpriteTypeEditorComponent.validateName],
-      imagePath: [null, SpriteTypeEditorComponent.validateImagePath],
-      areaX: [0, SpriteTypeEditorComponent.validateRange(0, 9999)],
-      areaY: [0, SpriteTypeEditorComponent.validateRange(0, 9999)],
-      areaWidth: [null, SpriteTypeEditorComponent.validateRange(0, 9999)],
-      areaHeight: [null, SpriteTypeEditorComponent.validateRange(0, 9999)],
-    });
+    this.subscriptions.push(this.explorerService.openView$.subscribe((view) => {
+      this.active = view === ExplorerView.SPRITE_TYPE_EDIT;
+    }));
+    this.subscriptions.push(this.explorerService.reloadView$.subscribe((view) => {
+      if (this.active && view === ExplorerView.SPRITE_TYPE_EDIT) {
+        this.reloadContent();
+      }
+    }));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.length = 0;
   }
 
   clear() {
     this.form.reset();
+  }
+
+  reloadContent() {
+    let name = null;
+    let imagePath = null;
+    let areaX = 0;
+    let areaY = 0;
+    let areaWidth = null;
+    let areaHeight = null;
+    let maxW = 9999;
+    let maxH = 9999;
+
+    const selectedImage = this.explorerService.getSelectedImage();
+    if (selectedImage) {
+        name = selectedImage.name;
+        imagePath = selectedImage.treePath;
+        // TODO: populate other values based on image-dimensions
+    }
+
+    this.form = this.fb.group({
+      name: [name, SpriteTypeEditorComponent.validateName],
+      imagePath: [imagePath, SpriteTypeEditorComponent.validateImagePath],
+      areaX: [areaX, SpriteTypeEditorComponent.validateRange(0, maxW)],
+      areaY: [areaY, SpriteTypeEditorComponent.validateRange(0, maxH)],
+      areaWidth: [areaWidth, SpriteTypeEditorComponent.validateRange(0, maxW)],
+      areaHeight: [areaHeight, SpriteTypeEditorComponent.validateRange(0, maxH)],
+    });
   }
 
   private static validateName(control: AbstractControl): ValidationErrors {
@@ -166,10 +197,11 @@ export class SpriteTypeEditorComponent implements OnInit {
   }
 
   cancel() {
-    this.onCancel.emit();
+    this.clear();
+    this.explorerService.openLastView();
   }
 
-  create() {
+  createSpriteType() {
     if (this.form.invalid) {
       this.alertService.warn('Please fix validation errors');
       return;
@@ -197,7 +229,8 @@ export class SpriteTypeEditorComponent implements OnInit {
       .then(() => {
         operation.stop();
         this.alertService.success('Sprite type created successfully');
-        this.onCreated.emit();
+        this.clear();
+        this.explorerService.openAndReloadLastView();
       }, rejectReason => {
         operation.stop();
         this.alertService.error('Failed to create sprite type (' + rejectReason + ')');

@@ -7,7 +7,7 @@ import {AnimatedSpriteType} from '../swagger/model/AnimatedSpriteType';
 import {ApiHelper} from '../common/api.helper';
 import {DirectoryService} from '../services/directory.service';
 import {Subscription} from 'rxjs/Subscription';
-import {SpriteTypesViewComponent} from './sprite.types.view.component';
+import {SpriteTypeListComponent} from './sprite.type.list.component';
 import {ThumbnailProperties} from './thumbnails.component';
 
 @Component({
@@ -113,7 +113,7 @@ export class AnimatedSpriteTypesViewComponent implements OnInit, OnDestroy {
         operation.stop();
         this.clear();
         this.animatedSpriteTypes = response.values;
-        this.thumbnails = this.animatedSpriteTypes.map(ast => SpriteTypesViewComponent.toThumbnail(ast.frames[0].spriteType));
+        this.thumbnails = this.animatedSpriteTypes.map(ast => SpriteTypeListComponent.toThumbnail(ast.frames[0].spriteType));
       }, (rejectReason) => {
         operation.stop();
         this.clear();

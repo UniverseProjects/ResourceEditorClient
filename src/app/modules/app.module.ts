@@ -21,7 +21,7 @@ import {AlertsComponent} from '../components/alerts.component';
 import {LoaderComponent} from '../components/loader.component';
 import {DirectoryTreeComponent} from '../components/directory.tree.component';
 import {ThumbnailsComponent} from '../components/thumbnails.component';
-import {SpriteTypesViewComponent} from '../components/sprite.types.view.component';
+import {SpriteTypeListComponent} from '../components/sprite.type.list.component';
 import {AnimatedSpriteTypesViewComponent} from '../components/animated.sprite.types.view.component';
 import {PropertiesComponent} from '../components/properties.component';
 import {DirectoryViewComponent} from '../components/directory.view.component';
@@ -34,6 +34,7 @@ import {AnimatedSpriteTypeApi} from '../swagger/api/AnimatedSpriteTypeApi';
 import {ImageFrameComponent} from '../components/image.frame.component';
 import {SpriteTypeEditorComponent} from '../components/sprite.type.editor.component';
 import {ImagePreviewComponent} from '../components/image.preview.component';
+import {SpriteTypePreviewComponent} from '../components/sprite.type.preview.component';
 
 @NgModule({
     imports: [
@@ -61,7 +62,8 @@ import {ImagePreviewComponent} from '../components/image.preview.component';
         PropertiesComponent,
         ImageListComponent,
         ImagePreviewComponent,
-        SpriteTypesViewComponent,
+        SpriteTypeListComponent,
+        SpriteTypePreviewComponent,
         SpriteTypeEditorComponent,
         AnimatedSpriteTypesViewComponent,
         DirectoryViewComponent,

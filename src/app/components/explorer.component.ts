@@ -42,8 +42,8 @@ import {C} from '../common/common';
                [class.active]="viewStr==='IMAGE_LIST'">Images</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onTabClicked('SPRITE_TYPES'); false;"
-               [class.active]="viewStr==='SPRITE_TYPES'">Sprite Types</a>
+            <a class="nav-link" href="#" (click)="onTabClicked('SPRITE_TYPE_LIST'); false;"
+               [class.active]="viewStr==='SPRITE_TYPE_LIST'">Sprite Types</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" (click)="onTabClicked('ANIMATED_SPRITE_TYPES'); false;"
@@ -58,7 +58,9 @@ import {C} from '../common/common';
           <directory-view></directory-view>
           <image-list></image-list>
           <image-preview></image-preview>
-          <sprite-types-view></sprite-types-view>
+          <sprite-type-list></sprite-type-list>
+          <sprite-type-preview></sprite-type-preview>
+          <sprite-type-editor></sprite-type-editor>
           <animated-sprite-types-view></animated-sprite-types-view>
         </div>
       </div>
