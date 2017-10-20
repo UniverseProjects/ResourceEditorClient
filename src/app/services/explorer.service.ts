@@ -1,4 +1,4 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
 import {C} from '../common/common';
 import {Image} from '../swagger/model/Image';
