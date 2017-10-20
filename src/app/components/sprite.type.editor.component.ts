@@ -114,18 +114,25 @@ export class SpriteTypeEditorComponent implements OnInit, OnDestroy {
   reloadContent() {
     let name = null;
     let imagePath = null;
-    let areaX = 0;
-    let areaY = 0;
+    const areaX = 0;
+    const areaY = 0;
     let areaWidth = null;
     let areaHeight = null;
     let maxW = 9999;
     let maxH = 9999;
 
-    const selectedImage = this.explorerService.getSelectedImage();
-    if (selectedImage) {
-        name = PathUtil.trimExtension(selectedImage.name);
-        imagePath = selectedImage.treePath;
-        // TODO: populate other values based on image-dimensions
+    const img = this.explorerService.getSelectedImage();
+    if (img) {
+      name = PathUtil.trimExtension(img.name);
+      imagePath = img.treePath;
+    }
+
+    const info = this.explorerService.getSelectedImageInfo();
+    if (info) {
+      maxW = info.naturalWidth;
+      maxH = info.naturalHeight;
+      areaWidth = maxW;
+      areaHeight = maxH;
     }
 
     this.form = this.fb.group({

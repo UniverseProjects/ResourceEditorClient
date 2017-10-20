@@ -4,7 +4,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {LoaderService} from '../services/loader.service';
 import {AlertService} from '../services/alert.service';
 import {ImageApi} from '../swagger/api/ImageApi';
-import {ImageFrameProperties} from './image.frame.component';
+import {ImageFrameProperties, ImageInfo} from './image.frame.component';
 import {Image} from '../swagger/model/Image';
 import {ApiHelper} from '../common/api.helper';
 
@@ -24,10 +24,10 @@ import {ApiHelper} from '../common/api.helper';
                 message="Do you really want to delete this image?"
                 (confirm)="deleteImage()" focusButton="confirm">Delete this image
         </button>
-        <button class="btn btn-outline-success" (click)="createSpriteType()">Create sprite type</button>
+        <button class="btn btn-outline-success" [disabled]="!imageInfo" (click)="createSpriteType()" >Create sprite type</button>
       </div>
       <div class="preview-container">
-        <image-frame [properties]="frameProperties"></image-frame>
+        <image-frame [properties]="frameProperties" (imageLoaded)="onImageLoaded($event)"></image-frame>
       </div>
       <properties [object]="image"></properties>
       <div class="controls-bottom">
@@ -38,6 +38,7 @@ import {ApiHelper} from '../common/api.helper';
 export class ImagePreviewComponent implements OnInit, OnDestroy {
   active = false;
   image: Image;
+  imageInfo: ImageInfo;
   frameProperties: ImageFrameProperties;
 
   private subscriptions: Subscription[] = [];
@@ -72,6 +73,7 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
     }
 
     this.image = img;
+    this.imageInfo = null;
     this.frameProperties = {
       imageUrl: img.gcsUrl,
       width: 400,
@@ -83,7 +85,13 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
   clear() {
     this.explorerService.clearSelectedImage();
     this.image = null;
+    this.imageInfo = null;
     this.frameProperties = null;
+  }
+
+  onImageLoaded(imageInfo: ImageInfo) {
+    this.imageInfo = imageInfo;
+    this.explorerService.setSelectedImageInfo(imageInfo);
   }
 
   returnToList() {
