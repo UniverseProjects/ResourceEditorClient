@@ -123,7 +123,7 @@ export class SpriteTypeEditorComponent implements OnInit, OnDestroy {
 
     const selectedImage = this.explorerService.getSelectedImage();
     if (selectedImage) {
-        name = selectedImage.name;
+        name = PathUtil.trimExtension(selectedImage.name);
         imagePath = selectedImage.treePath;
         // TODO: populate other values based on image-dimensions
     }

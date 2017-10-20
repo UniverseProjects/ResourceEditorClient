@@ -20,4 +20,9 @@ export class PathUtil {
     }
   }
 
+  static trimExtension(filename: string): string {
+    const extIdx = filename.lastIndexOf('.');
+    return extIdx > 0 ? filename.substring(0, extIdx) : filename;
+  }
+
 }
