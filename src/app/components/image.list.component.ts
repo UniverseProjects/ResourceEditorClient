@@ -96,7 +96,7 @@ export class ImageListComponent implements OnInit, OnDestroy {
   }
 
   onThumbnailSelected(selectedIndex: number) {
-    let image = this.images[selectedIndex];
+    const image = this.images[selectedIndex];
     this.explorerService.setSelectedImage(image);
     this.explorerService.openAndReloadView(ExplorerView.IMAGE_PREVIEW);
   }
