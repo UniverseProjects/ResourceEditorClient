@@ -88,6 +88,11 @@ export class ExplorerComponent implements OnInit, OnDestroy {
       this.currentDirectory = directory.treePath;
       this.updateView(this.viewStr);
     }));
+    this.subscriptions.push(this.explorerService.openView$.subscribe((view) => {
+      // the local string is set only once the service reports a view change
+      this.viewStr = ExplorerView[view];
+      localStorage.setItem(this.LS_ACTIVE_VIEW, this.viewStr);
+    }));
   }
 
   ngOnDestroy() {
@@ -106,11 +111,9 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   updateView(viewStr: string) {
     let view = ExplorerView[viewStr];
     if (!C.defined(view)) {
+      // this is where we fallback to a default view, if an incorrect value is supplied
       view = ExplorerView.DIRECTORY;
     }
-    this.viewStr = ExplorerView[view];
-    localStorage.setItem(this.LS_ACTIVE_VIEW, this.viewStr);
-
     this.explorerService.openAndReloadView(view);
   }
 
