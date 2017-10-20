@@ -52,21 +52,14 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
     private loaderService: LoaderService,
     private alertService: AlertService,
     private imageApi: ImageApi,
-  ) {
-
-  }
+  ) {}
 
   ngOnInit(): void {
     this.subscriptions.push(this.explorerService.openView$.subscribe((view) => {
-      if (view === ExplorerView.IMAGE_PREVIEW) {
-        this.active = true;
-      } else {
-        this.clear();
-        this.active = false;
-      }
+      this.active = view === ExplorerView.IMAGE_PREVIEW;
     }));
     this.subscriptions.push(this.explorerService.reloadView$.subscribe((view) => {
-      if (view === ExplorerView.IMAGE_PREVIEW && this.active) {
+      if (this.active && view === ExplorerView.IMAGE_PREVIEW) {
         this.reloadContent();
       }
     }));
