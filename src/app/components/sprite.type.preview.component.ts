@@ -18,11 +18,11 @@ import {ApiHelper} from '../common/api.helper';
   template: `
     <div class="sprite-type-preview-container" *ngIf="active">
       <div class="controls-top">
-        <button class="btn btn-info btn-with-icon" (click)="backToDirectory();">&#8678; Back to directory</button>
+        <button class="btn btn-info btn-with-icon" (click)="returnToList();">&#8678; Return</button>
         <button class="btn btn-outline-danger"
                 mwlConfirmationPopover placement="right" title="Are you sure?"
                 message="Do you really want to delete this sprite type?"
-                (confirm)="deleteSpriteType()">Delete this sprite type
+                (confirm)="deleteSpriteType()" focusButton="confirm">Delete this sprite type
         </button>
       </div>
       <div class="preview-container">
@@ -88,7 +88,7 @@ export class SpriteTypePreviewComponent implements OnInit, OnDestroy {
     };
   }
 
-  backToDirectory() {
+  returnToList() {
     this.explorerService.openView(ExplorerView.SPRITE_TYPE_LIST);
   }
 

@@ -18,7 +18,7 @@ import {ApiHelper} from '../common/api.helper';
   template: `
     <div class="image-preview-container" *ngIf="active">
       <div class="controls-top">
-        <button class="btn btn-info btn-with-icon" (click)="backToDirectory()">&#8678; Back to directory</button>
+        <button class="btn btn-info btn-with-icon" (click)="returnToList()">&#8678; Return</button>
         <button class="btn btn-outline-danger"
                 mwlConfirmationPopover placement="right" title="Are you sure?"
                 message="Do you really want to delete this image?"
@@ -85,7 +85,7 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
     this.frameProperties = null;
   }
 
-  backToDirectory() {
+  returnToList() {
     this.explorerService.openView(ExplorerView.IMAGE_LIST);
   }
 

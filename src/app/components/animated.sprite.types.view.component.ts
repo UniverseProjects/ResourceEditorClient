@@ -28,7 +28,7 @@ import {ThumbnailProperties} from './thumbnails.component';
       </div>
       <div *ngIf="selected">
         <div class="controls-top">
-          <button class="btn btn-info btn-with-icon" (click)="clearSelection()">&#8678; Back to directory</button>
+          <button class="btn btn-info btn-with-icon" (click)="returnToList()">&#8678; Return</button>
           <button class="btn btn-outline-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete this animated sprite type?"
@@ -88,7 +88,7 @@ export class AnimatedSpriteTypesViewComponent implements OnInit, OnDestroy {
     this.selected = this.animatedSpriteTypes[selectedIndex];
   }
 
-  clearSelection() {
+  returnToList() {
     this.selected = null;
   }
 
