@@ -66,9 +66,14 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
   }
 
   reloadContent() {
-    this.image = this.explorerService.getSelectedImage();
+    let img = this.explorerService.getSelectedImage();
+    if (!img) {
+      throw new Error('An image must be selected to use this component');
+    }
+
+    this.image = img;
     this.frameProperties = {
-      imageUrl: this.image.gcsUrl,
+      imageUrl: img.gcsUrl,
       width: 400,
       height: 400,
       imageBorder: true,
@@ -85,11 +90,6 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
   }
 
   deleteImage() {
-    if (!this.image) {
-      this.alertService.warn('Please select an image to delete');
-      return;
-    }
-
     let libraryId = this.explorerService.getSelectedLibraryId();
     let treePath = this.image.treePath;
 
@@ -109,10 +109,6 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
   }
 
   createSpriteType() {
-    if (!this.image) {
-      this.alertService.warn('Please select an image to create a sprite type');
-      return;
-    }
     this.alertService.warn('Not implemented yet');
   }
 

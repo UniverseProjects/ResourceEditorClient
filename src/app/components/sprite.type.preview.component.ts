@@ -71,6 +71,10 @@ export class SpriteTypePreviewComponent implements OnInit, OnDestroy {
 
   reloadContent() {
     const st = this.explorerService.getSelectedSpriteType();
+    if (!st) {
+      throw new Error('A sprite-type must be selected to use this component');
+    }
+
     this.spriteType = st;
     this.frameProperties = {
       width: st.areaWidth,
