@@ -65,6 +65,7 @@ export class ImageListComponent implements OnInit, OnDestroy {
   }
 
   clear() {
+    this.explorerService.setSelectedImage(null);
     this.fileToUpload = null;
     this.images.length = 0;
     this.thumbnails.length = 0;
