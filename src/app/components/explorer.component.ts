@@ -116,6 +116,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     if (!C.defined(ExplorerView[viewStr])) {
       throw new Error('Tab specifies an invalid view: ' + viewStr);
     }
+    this.explorerService.clearSelections();
     this.updateView(viewStr);
   }
 
