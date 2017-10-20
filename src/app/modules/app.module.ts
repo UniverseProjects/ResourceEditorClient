@@ -16,7 +16,7 @@ import {ExplorerService} from '../services/explorer.service';
 
 import {AppComponent} from '../components/app.component';
 import {ExplorerComponent} from '../components/explorer.component';
-import {ImagesViewComponent} from '../components/images.view.component';
+import {ImageListComponent} from '../components/image.list.component';
 import {AlertsComponent} from '../components/alerts.component';
 import {LoaderComponent} from '../components/loader.component';
 import {DirectoryTreeComponent} from '../components/directory.tree.component';
@@ -33,6 +33,7 @@ import {SpriteTypeApi} from '../swagger/api/SpriteTypeApi';
 import {AnimatedSpriteTypeApi} from '../swagger/api/AnimatedSpriteTypeApi';
 import {ImageFrameComponent} from '../components/image.frame.component';
 import {SpriteTypeEditorComponent} from '../components/sprite.type.editor.component';
+import {ImagePreviewComponent} from '../components/image.preview.component';
 
 @NgModule({
     imports: [
@@ -58,7 +59,8 @@ import {SpriteTypeEditorComponent} from '../components/sprite.type.editor.compon
         LoaderComponent,
         ImageFrameComponent,
         PropertiesComponent,
-        ImagesViewComponent,
+        ImageListComponent,
+        ImagePreviewComponent,
         SpriteTypesViewComponent,
         SpriteTypeEditorComponent,
         AnimatedSpriteTypesViewComponent,

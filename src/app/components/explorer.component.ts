@@ -34,12 +34,12 @@ import {C} from '../common/common';
       <div class="directory-content">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onTabClicked('DIRECTORY'); false;" 
+            <a class="nav-link" href="#" (click)="onTabClicked('DIRECTORY'); false;"
                [class.active]="viewStr==='DIRECTORY'">Directory</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onTabClicked('IMAGES'); false;"
-               [class.active]="viewStr==='IMAGES'">Images</a>
+            <a class="nav-link" href="#" (click)="onTabClicked('IMAGE_LIST'); false;"
+               [class.active]="viewStr==='IMAGE_LIST'">Images</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" (click)="onTabClicked('SPRITE_TYPES'); false;"
@@ -56,7 +56,8 @@ import {C} from '../common/common';
         </div>
         <div class="explorer-views">
           <directory-view></directory-view>
-          <images-view></images-view>
+          <image-list></image-list>
+          <image-preview></image-preview>
           <sprite-types-view></sprite-types-view>
           <animated-sprite-types-view></animated-sprite-types-view>
         </div>
