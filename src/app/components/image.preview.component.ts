@@ -54,7 +54,7 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
     private imageApi: ImageApi,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.subscriptions.push(this.explorerService.openView$.subscribe((view) => {
       this.active = view === ExplorerView.IMAGE_PREVIEW;
     }));
@@ -65,7 +65,7 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
     }));
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
     this.subscriptions.length = 0;
   }
