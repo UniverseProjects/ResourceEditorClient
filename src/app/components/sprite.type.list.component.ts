@@ -55,7 +55,7 @@ export class SpriteTypeListComponent implements OnInit, OnDestroy {
   }
 
   clear() {
-    this.explorerService.setSelectedSpriteType(null);
+    this.explorerService.clearSelectedSpriteType();
     this.spriteTypes.length = 0;
     this.thumbnails.length = 0;
   }

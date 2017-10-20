@@ -53,7 +53,7 @@ export class AnimatedSpriteTypeListComponent implements OnInit, OnDestroy {
   }
 
   clear() {
-    this.explorerService.setSelectedAnimatedSpriteType(null);
+    this.explorerService.clearSelectedAnimatedSpriteType();
     this.animatedSpriteTypes.length = 0;
     this.thumbnails.length = 0;
   }

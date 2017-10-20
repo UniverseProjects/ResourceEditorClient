@@ -65,7 +65,7 @@ export class AnimatedSpriteTypePreviewComponent implements OnInit, OnDestroy {
   }
 
   clear() {
-    this.explorerService.setSelectedAnimatedSpriteType(null);
+    this.explorerService.clearSelectedAnimatedSpriteType();
     this.animatedSpriteType = null;
     this.previewImageUrl = null;
   }

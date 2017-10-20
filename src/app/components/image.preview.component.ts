@@ -81,7 +81,7 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
   }
 
   clear() {
-    this.explorerService.setSelectedImage(null);
+    this.explorerService.clearSelectedImage();
     this.image = null;
     this.frameProperties = null;
   }

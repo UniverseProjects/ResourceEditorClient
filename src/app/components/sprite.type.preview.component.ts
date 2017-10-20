@@ -65,7 +65,7 @@ export class SpriteTypePreviewComponent implements OnInit, OnDestroy {
   }
 
   clear() {
-    this.explorerService.setSelectedSpriteType(null);
+    this.explorerService.clearSelectedSpriteType();
     this.spriteType = null;
     this.frameProperties = null;
   }

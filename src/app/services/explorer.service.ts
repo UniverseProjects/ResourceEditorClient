@@ -76,10 +76,10 @@ export class ExplorerService {
     return this.openViewSeq.length > 1 ? this.openViewSeq.shift() : null;
   }
 
-  clearSelections() {
-    this.setSelectedImage(null);
-    this.setSelectedSpriteType(null);
-    this.setSelectedAnimatedSpriteType(null);
+  clearSelectedItems() {
+    this.clearSelectedImage();
+    this.clearSelectedSpriteType();
+    this.clearSelectedAnimatedSpriteType();
   }
 
   setSelectedLibraryId(libraryId: number) {
