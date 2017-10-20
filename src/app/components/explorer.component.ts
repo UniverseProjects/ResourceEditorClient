@@ -35,19 +35,19 @@ import {C} from '../common/common';
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <a class="nav-link" href="#" (click)="onTabClicked('DIRECTORY'); false;"
-               [class.active]="viewStr==='DIRECTORY'">Directory</a>
+               [class.active]="currentViewStr==='DIRECTORY'">Directory</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" (click)="onTabClicked('IMAGE_LIST'); false;"
-               [class.active]="viewStr==='IMAGE_LIST'">Images</a>
+               [class.active]="currentViewStr==='IMAGE_LIST'">Images</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" (click)="onTabClicked('SPRITE_TYPE_LIST'); false;"
-               [class.active]="viewStr==='SPRITE_TYPE_LIST'">Sprite Types</a>
+               [class.active]="currentViewStr==='SPRITE_TYPE_LIST'">Sprite Types</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" (click)="onTabClicked('ANIMATED_SPRITE_TYPES'); false;"
-               [class.active]="viewStr==='ANIMATED_SPRITE_TYPES'">Animated Sprite Types</a>
+               [class.active]="currentViewStr==='ANIMATED_SPRITE_TYPES'">Animated Sprite Types</a>
           </li>
         </ul>
         <div class="current-dir">
@@ -69,9 +69,15 @@ import {C} from '../common/common';
 })
 export class ExplorerComponent implements OnInit, OnDestroy {
 
-  private readonly LS_ACTIVE_VIEW = 'active.view';
+  private readonly LS_ACTIVE_TAB = 'active.tab';
+  private readonly VIEWS_WITH_TABS: ExplorerView[] = [
+    ExplorerView.DIRECTORY,
+    ExplorerView.IMAGE_LIST,
+    ExplorerView.SPRITE_TYPE_LIST,
+    ExplorerView.ANIMATED_SPRITE_TYPES,
+  ];
 
-  viewStr: string = null;
+  currentViewStr: string = null;
   currentDirectory: string = null;
 
   private subscriptions: Subscription[] = [];
@@ -82,16 +88,20 @@ export class ExplorerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.viewStr = localStorage.getItem(this.LS_ACTIVE_VIEW);
+    this.currentViewStr = localStorage.getItem(this.LS_ACTIVE_TAB);
 
     this.subscriptions.push(this.directoryService.directoryChanged$.subscribe((directory) => {
       this.currentDirectory = directory.treePath;
-      this.updateView(this.viewStr);
+      this.updateView(this.currentViewStr);
     }));
+
     this.subscriptions.push(this.explorerService.openView$.subscribe((view) => {
-      // the local string is set only once the service reports a view change
-      this.viewStr = ExplorerView[view];
-      localStorage.setItem(this.LS_ACTIVE_VIEW, this.viewStr);
+      // write the 'current view' value when the service reports a change, because view-changes can be requested by other components
+      this.currentViewStr = ExplorerView[view];
+      if (this.VIEWS_WITH_TABS.indexOf(view) > -1) {
+        // only update the 'active tab' value if the view has a corresponding tab here
+        localStorage.setItem(this.LS_ACTIVE_TAB, this.currentViewStr);
+      }
     }));
   }
 
