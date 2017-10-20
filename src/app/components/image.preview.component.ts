@@ -18,13 +18,13 @@ import {ApiHelper} from '../common/api.helper';
   template: `
     <div class="image-preview-container" *ngIf="active">
       <div class="controls-top">
-        <button type="button" class="btn btn-info btn-with-icon" (click)="backToDirectory()">&#8678; Back to directory</button>
-        <button type="button" class="btn btn-outline-danger"
+        <button class="btn btn-info btn-with-icon" (click)="backToDirectory()">&#8678; Back to directory</button>
+        <button class="btn btn-outline-danger"
                 mwlConfirmationPopover placement="right" title="Are you sure?"
                 message="Do you really want to delete this image?"
                 (confirm)="deleteImage()">Delete this image
         </button>
-        <button type="button" class="btn btn-outline-success" (click)="createSpriteType()">Create sprite type</button>
+        <button class="btn btn-outline-success" (click)="createSpriteType()">Create sprite type</button>
       </div>
       <div class="preview-container">
         <image-frame [properties]="frameProperties"></image-frame>
