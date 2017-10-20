@@ -11,15 +11,16 @@ import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn} 
 import {C} from '../common/common';
 import {Subscription} from 'rxjs/Subscription';
 
+
 @Component({
   selector: 'sprite-type-editor',
-  styles: [`  
+  styles: [`
     .field-label {
     }
   `],
   template: `
     <div class="sprite-type-editor-container" *ngIf="active">
-      <form novalidate [formGroup]="form">
+      <form novalidate [formGroup]="form" (submit)="submit()">
         <div class="form-row">
           <div class="form-group col-lg-12">
             <label for="name" class="field-label">Sprite type name</label>
@@ -39,13 +40,13 @@ import {Subscription} from 'rxjs/Subscription';
         <div class="form-row">
           <div class="form-group col-xs-12 col-sm-6 col-md-3">
             <label for="areaX" class="field-label">Area x-coordinate</label>
-            <input id="areaX" name="areaX" formControlName="areaX" class="form-control" type="number"
+            <input id="areaX" name="areaX" formControlName="areaX" class="form-control" type="number" (change)="forceValidation('areaWidth')"
                    [class.is-invalid]="isInvalid('areaX')" placeholder="X-coordinate"/>
             <div class="invalid-feedback" *ngIf="isInvalid('areaX')">{{getErrorMessage('areaX')}}</div>
           </div>
           <div class="form-group col-xs-12 col-sm-6 col-md-3">
             <label for="areaY" class="field-label">Area y-coordinate</label>
-            <input id="areaY" name="areaY" formControlName="areaY" class="form-control" type="number"
+            <input id="areaY" name="areaY" formControlName="areaY" class="form-control" type="number" (change)="forceValidation('areaHeight')"
                    [class.is-invalid]="isInvalid('areaY')" placeholder="Y-coordinate"/>
             <div class="invalid-feedback" *ngIf="isInvalid('areaY')">{{getErrorMessage('areaY')}}</div>
           </div>
@@ -66,7 +67,7 @@ import {Subscription} from 'rxjs/Subscription';
         </div>
         <div class="form-row" style="padding-top: 10px;">
           <div class="form-group col-md-12">
-            <button type="button" class="btn btn-outline-success" [disabled]="form.invalid" (click)="createSpriteType()">
+            <button type="submit" class="btn btn-outline-success">
               Create sprite type
             </button>
             <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
@@ -114,8 +115,6 @@ export class SpriteTypeEditorComponent implements OnInit, OnDestroy {
   reloadContent() {
     let name = null;
     let imagePath = null;
-    const areaX = 0;
-    const areaY = 0;
     let areaWidth = null;
     let areaHeight = null;
     let maxW = 9999;
@@ -138,11 +137,22 @@ export class SpriteTypeEditorComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       name: [name, SpriteTypeEditorComponent.validateName],
       imagePath: [imagePath, SpriteTypeEditorComponent.validateImagePath],
-      areaX: [areaX, SpriteTypeEditorComponent.validateRange(0, maxW)],
-      areaY: [areaY, SpriteTypeEditorComponent.validateRange(0, maxH)],
-      areaWidth: [areaWidth, SpriteTypeEditorComponent.validateRange(0, maxW)],
-      areaHeight: [areaHeight, SpriteTypeEditorComponent.validateRange(0, maxH)],
+      areaX: [0, SpriteTypeEditorComponent.validateRange(()=>{return 0}, ()=>{return maxW})],
+      areaY: [0, SpriteTypeEditorComponent.validateRange(()=>{return 0}, ()=>{return maxH})],
+      areaWidth: [areaWidth, SpriteTypeEditorComponent.validateRange(()=>{return 0}, ()=>{return this.diff(maxW, 'areaX')})],
+      areaHeight: [areaHeight, SpriteTypeEditorComponent.validateRange(()=>{return 0}, ()=>{return this.diff(maxH, 'areaY')})],
     });
+  }
+
+  private diff(ceiling: number, floorInputName: string): number {
+    let floor: number = 0;
+    if (this.form) {
+      let value = this.form.get(floorInputName).value;
+      if (C.defined(value)) {
+        floor = value;
+      }
+    }
+    return Math.max(0, ceiling - floor);
   }
 
   private static validateName(control: AbstractControl): ValidationErrors {
@@ -164,15 +174,14 @@ export class SpriteTypeEditorComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  private static validateRange(min: number, max: number): ValidatorFn {
-    if (!C.defined(min) || !C.defined(max) || min > max) {
-      throw new Error('Invalid range bounds: ' + min + ', ' + max);
-    }
+  private static validateRange(minF: () => number, maxF: () => number): ValidatorFn {
     return (control: AbstractControl): ValidationErrors => {
-      let val = control.value;
+      const val = control.value;
       if (!C.defined(val)) {
         return SpriteTypeEditorComponent.createErrorObject('Value is required');
       }
+      const min = minF();
+      const max = maxF();
       if (val < min || val > max) {
         return SpriteTypeEditorComponent.createErrorObject('Value must be in the ['+min+'..'+max+'] range');
       }
@@ -203,17 +212,29 @@ export class SpriteTypeEditorComponent implements OnInit, OnDestroy {
     return control.invalid && !control.pristine;
   }
 
+  forceValidation(controlSelector: string) {
+    let control = this.form.get(controlSelector);
+    control.markAsTouched();
+    control.markAsDirty();
+    control.updateValueAndValidity({
+      emitEvent: true,
+    });
+  }
+
   cancel() {
     this.clear();
     this.explorerService.openLastView();
   }
 
-  createSpriteType() {
+  submit() {
     if (this.form.invalid) {
       this.alertService.warn('Please fix validation errors');
       return;
     }
+    this.createSpriteType();
+  }
 
+  createSpriteType() {
     let libraryId = this.explorerService.getSelectedLibraryId();
     let directoryPath = this.directoryService.getCurrentDirectoryPath();
     let name = this.form.get('name').value;
@@ -245,3 +266,4 @@ export class SpriteTypeEditorComponent implements OnInit, OnDestroy {
   }
 
 }
+
