@@ -86,6 +86,7 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
   }
 
   returnToList() {
+    this.clear();
     this.explorerService.openView(ExplorerView.IMAGE_LIST);
   }
 

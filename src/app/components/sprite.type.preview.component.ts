@@ -89,6 +89,7 @@ export class SpriteTypePreviewComponent implements OnInit, OnDestroy {
   }
 
   returnToList() {
+    this.clear();
     this.explorerService.openView(ExplorerView.SPRITE_TYPE_LIST);
   }
 
