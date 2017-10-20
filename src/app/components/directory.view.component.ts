@@ -31,7 +31,7 @@ import {Directory} from '../swagger/model/Directory';
           <button class="btn btn-outline-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete the current directory?"
-                  (confirm)="deleteCurrentDirectory()">Delete this directory
+                  (confirm)="deleteCurrentDirectory()" focusButton="confirm">Delete this directory
           </button>
         </div>
       </div>

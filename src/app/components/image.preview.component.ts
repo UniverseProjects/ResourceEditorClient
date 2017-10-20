@@ -22,7 +22,7 @@ import {ApiHelper} from '../common/api.helper';
         <button class="btn btn-outline-danger"
                 mwlConfirmationPopover placement="right" title="Are you sure?"
                 message="Do you really want to delete this image?"
-                (confirm)="deleteImage()">Delete this image
+                (confirm)="deleteImage()" focusButton="confirm">Delete this image
         </button>
         <button class="btn btn-outline-success" (click)="createSpriteType()">Create sprite type</button>
       </div>

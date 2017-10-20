@@ -32,7 +32,7 @@ import {ThumbnailProperties} from './thumbnails.component';
           <button class="btn btn-outline-danger"
                   mwlConfirmationPopover placement="right" title="Are you sure?"
                   message="Do you really want to delete this animated sprite type?"
-                  (confirm)="deleteAnimatedSpriteType()">Delete this animated sprite type
+                  (confirm)="deleteAnimatedSpriteType()" focusButton="confirm">Delete this animated sprite type
           </button>
         </div>
         <div class="preview-container">
