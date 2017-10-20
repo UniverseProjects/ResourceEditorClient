@@ -1,6 +1,13 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {DomSanitizer, SafeStyle} from '@angular/platform-browser';
 import {C} from '../common/common';
+
+export interface ImageInfo {
+  naturalWidth: number;
+  naturalHeight: number;
+  displayWidth: number;
+  displayHeight: number;
+}
 
 @Component({
   selector: 'image-frame',
@@ -45,11 +52,11 @@ import {C} from '../common/common';
            [style.height.px]="getContainerHeight()"
            [style.left.px]="getContainerOffsetX()"
            [style.top.px]="getContainerOffsetY()"
-           [style.transform]="getContainerTransform()" 
-           [style.msTransform]="getContainerTransform()" 
+           [style.transform]="getContainerTransform()"
+           [style.msTransform]="getContainerTransform()"
            [style.webkitTransform]="getContainerTransform()">
 
-        <img class="image" [src]="properties.imageUrl"
+        <img class="image" [src]="properties.imageUrl" (load)="onImageLoaded($event)"
              [class.image-border]="properties.imageBorder"
              [class.image-fit-frame]="imageFitFrame"
              [style.left.px]="getImageOffsetX()"
@@ -58,9 +65,10 @@ import {C} from '../common/common';
     </div>
   `
 })
-export class ImageFrameComponent implements OnInit, OnDestroy {
+export class ImageFrameComponent implements OnInit {
 
   @Input() properties: ImageFrameProperties;
+  @Output() imageLoaded: EventEmitter<ImageInfo> = new EventEmitter();
 
   imageFitFrame: boolean;
   sectionDefined: boolean;
@@ -101,9 +109,6 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
     }
 
     this.imageFitFrame = !this.sectionDefined;
-  }
-
-  ngOnDestroy() {
   }
 
   getWidth(): number {
@@ -184,6 +189,16 @@ export class ImageFrameComponent implements OnInit, OnDestroy {
   getImageOffsetY(): number {
     let p = this.properties;
     return this.sectionDefined ? -p.sectionY : p.height/2;
+  }
+
+  onImageLoaded(event) {
+    let img = event.target;
+    this.imageLoaded.emit({
+      naturalWidth: img.naturalWidth,
+      naturalHeight: img.naturalHeight,
+      displayWidth: img.width,
+      displayHeight: img.height,
+    });
   }
 
 }
