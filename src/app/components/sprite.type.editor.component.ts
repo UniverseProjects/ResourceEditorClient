@@ -230,7 +230,7 @@ export class SpriteTypeEditorComponent implements OnInit, OnDestroy {
         operation.stop();
         this.alertService.success('Sprite type created successfully');
         this.clear();
-        this.explorerService.openAndReloadLastView();
+        this.explorerService.openAndReloadView(ExplorerView.SPRITE_TYPE_LIST);
       }, rejectReason => {
         operation.stop();
         this.alertService.error('Failed to create sprite type (' + rejectReason + ')');
