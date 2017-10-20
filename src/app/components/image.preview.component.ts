@@ -38,12 +38,7 @@ import {ApiHelper} from '../common/api.helper';
 export class ImagePreviewComponent implements OnInit, OnDestroy {
   active = false;
   image: Image;
-  frameProperties: ImageFrameProperties = {
-    imageUrl: null,
-    width: 400,
-    height: 400,
-    imageBorder: true,
-  };
+  frameProperties: ImageFrameProperties;
 
   private subscriptions: Subscription[] = [];
 
@@ -72,12 +67,17 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
 
   reloadContent() {
     this.image = this.explorerService.getSelectedImage();
-    this.frameProperties.imageUrl = this.image.gcsUrl;
+    this.frameProperties = {
+      imageUrl: this.image.gcsUrl,
+      width: 400,
+      height: 400,
+      imageBorder: true,
+    };
   }
 
   clear() {
     this.image = null;
-    this.frameProperties.imageUrl = null;
+    this.frameProperties = null;
   }
 
   backToDirectory() {
