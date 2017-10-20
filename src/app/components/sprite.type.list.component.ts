@@ -89,8 +89,8 @@ export class SpriteTypeListComponent implements OnInit, OnDestroy {
   }
 
   onThumbnailSelected(selectedIndex: number) {
-    const spriteType = this.spriteTypes[selectedIndex];
-    this.explorerService.setSelectedSpriteType(spriteType);
+    const st = this.spriteTypes[selectedIndex];
+    this.explorerService.setSelectedSpriteType(st);
     this.explorerService.openAndReloadView(ExplorerView.SPRITE_TYPE_PREVIEW);
   }
 

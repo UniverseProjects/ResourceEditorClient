@@ -80,15 +80,15 @@ export class ExplorerService {
     return this.selectedLibraryId;
   }
 
-  setSelectedImage(image: Image) {
-    this.selectedImage = image;
+  setSelectedImage(img: Image) {
+    this.selectedImage = img;
   }
   getSelectedImage(): Image {
     return this.selectedImage;
   }
 
-  setSelectedSpriteType(value: SpriteType) {
-    this.selectedSpriteType = value;
+  setSelectedSpriteType(st: SpriteType) {
+    this.selectedSpriteType = st;
   }
   getSelectedSpriteType(): SpriteType {
     return this.selectedSpriteType;
