@@ -4,6 +4,7 @@ import {C} from '../common/common';
 import {Image} from '../swagger/model/Image';
 import {SpriteType} from '../swagger/model/SpriteType';
 import {AnimatedSpriteType} from '../swagger/model/AnimatedSpriteType';
+import {ImageInfo} from '../components/image.frame.component';
 
 export enum ExplorerView {
   DIRECTORY,
@@ -29,6 +30,7 @@ export class ExplorerService {
 
   private selectedLibraryId = 5764201201008640; // hard-coded for now
   private selectedImage: Image;
+  private selectedImageInfo: ImageInfo;
   private selectedSpriteType: SpriteType;
   private selectedAnimatedSpriteType: AnimatedSpriteType;
 
@@ -89,25 +91,42 @@ export class ExplorerService {
     return this.selectedLibraryId;
   }
 
-  setSelectedImage(img: Image) {
-    this.selectedImage = img;
-  }
   getSelectedImage(): Image {
     return this.selectedImage;
   }
-
-  setSelectedSpriteType(st: SpriteType) {
-    this.selectedSpriteType = st;
+  setSelectedImage(img: Image) {
+    this.selectedImage = img;
   }
+  clearSelectedImage() {
+    this.selectedImage = null;
+    this.selectedImageInfo = null;
+  }
+
+  getSelectedImageInfo(): ImageInfo {
+    return this.selectedImageInfo;
+  }
+  setSelectedImageInfo(info: ImageInfo) {
+    this.selectedImageInfo = info;
+  }
+
   getSelectedSpriteType(): SpriteType {
     return this.selectedSpriteType;
   }
+  setSelectedSpriteType(st: SpriteType) {
+    this.selectedSpriteType = st;
+  }
+  clearSelectedSpriteType() {
+    this.selectedSpriteType = null;
+  }
 
+  getSelectedAnimatedSpriteType(): AnimatedSpriteType {
+    return this.selectedAnimatedSpriteType;
+  }
   setSelectedAnimatedSpriteType(ast: AnimatedSpriteType) {
     this.selectedAnimatedSpriteType = ast;
   }
-  getSelectedAnimatedSpriteType(): AnimatedSpriteType {
-    return this.selectedAnimatedSpriteType;
+  clearSelectedAnimatedSpriteType() {
+    this.selectedAnimatedSpriteType = null;
   }
 
 }
