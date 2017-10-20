@@ -22,7 +22,7 @@ import {LoaderComponent} from '../components/loader.component';
 import {DirectoryTreeComponent} from '../components/directory.tree.component';
 import {ThumbnailsComponent} from '../components/thumbnails.component';
 import {SpriteTypeListComponent} from '../components/sprite.type.list.component';
-import {AnimatedSpriteTypesViewComponent} from '../components/animated.sprite.types.view.component';
+import {AnimatedSpriteTypeListComponent} from '../components/animated.sprite.type.list.component';
 import {PropertiesComponent} from '../components/properties.component';
 import {DirectoryViewComponent} from '../components/directory.view.component';
 import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
@@ -35,6 +35,7 @@ import {ImageFrameComponent} from '../components/image.frame.component';
 import {SpriteTypeEditorComponent} from '../components/sprite.type.editor.component';
 import {ImagePreviewComponent} from '../components/image.preview.component';
 import {SpriteTypePreviewComponent} from '../components/sprite.type.preview.component';
+import {AnimatedSpriteTypePreviewComponent} from '../components/animated.sprite.type.preview.component';
 
 @NgModule({
     imports: [
@@ -65,7 +66,8 @@ import {SpriteTypePreviewComponent} from '../components/sprite.type.preview.comp
         SpriteTypeListComponent,
         SpriteTypePreviewComponent,
         SpriteTypeEditorComponent,
-        AnimatedSpriteTypesViewComponent,
+        AnimatedSpriteTypeListComponent,
+        AnimatedSpriteTypePreviewComponent,
         DirectoryViewComponent,
         ExplorerComponent,
     ],

@@ -46,8 +46,8 @@ import {C} from '../common/common';
                [class.active]="currentViewStr==='SPRITE_TYPE_LIST'">Sprite Types</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onTabClicked('ANIMATED_SPRITE_TYPES'); false;"
-               [class.active]="currentViewStr==='ANIMATED_SPRITE_TYPES'">Animated Sprite Types</a>
+            <a class="nav-link" href="#" (click)="onTabClicked('ANIMATED_SPRITE_TYPE_LIST'); false;"
+               [class.active]="currentViewStr==='ANIMATED_SPRITE_TYPE_LIST'">Animated Sprite Types</a>
           </li>
         </ul>
         <div class="current-dir">
@@ -61,7 +61,8 @@ import {C} from '../common/common';
           <sprite-type-list></sprite-type-list>
           <sprite-type-preview></sprite-type-preview>
           <sprite-type-editor></sprite-type-editor>
-          <animated-sprite-types-view></animated-sprite-types-view>
+          <animated-sprite-type-list></animated-sprite-type-list>
+          <animated-sprite-type-preview></animated-sprite-type-preview>
         </div>
       </div>
     </div>
@@ -74,7 +75,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     ExplorerView.DIRECTORY,
     ExplorerView.IMAGE_LIST,
     ExplorerView.SPRITE_TYPE_LIST,
-    ExplorerView.ANIMATED_SPRITE_TYPES,
+    ExplorerView.ANIMATED_SPRITE_TYPE_LIST,
   ];
 
   currentViewStr: string = null;

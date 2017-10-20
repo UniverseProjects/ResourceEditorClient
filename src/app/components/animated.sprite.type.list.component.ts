@@ -11,46 +11,19 @@ import {SpriteTypeListComponent} from './sprite.type.list.component';
 import {ThumbnailProperties} from './thumbnails.component';
 
 @Component({
-  selector: 'animated-sprite-types-view',
+  selector: 'animated-sprite-type-list',
   styles: [`    
-    .preview-container {
-      margin-bottom: 20px;
-    }
-    .preview {
-      max-width: 400px;
-      max-height: 400px;
-    }
   `],
   template: `
-    <div class="animated-sprites-types-view-container" *ngIf="active">
-      <div [hidden]="selected">
-        <thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></thumbnails>
-      </div>
-      <div *ngIf="selected">
-        <div class="controls-top">
-          <button class="btn btn-info btn-with-icon" (click)="returnToList()">&#8678; Return</button>
-          <button class="btn btn-outline-danger"
-                  mwlConfirmationPopover placement="right" title="Are you sure?"
-                  message="Do you really want to delete this animated sprite type?"
-                  (confirm)="deleteAnimatedSpriteType()" focusButton="confirm">Delete this animated sprite type
-          </button>
-        </div>
-        <div class="preview-container">
-          <img class="preview" src="{{selected.frames[0].spriteType.image.gcsUrl}}"/>
-        </div>
-        <properties [object]="selected"></properties>
-        <div class="controls-bottom">
-
-        </div>
-      </div>
+    <div class="animated-sprites-type-list-container" *ngIf="active">
+      <thumbnails [thumbnails]="thumbnails" (onSelected)="onThumbnailSelected($event)"></thumbnails>
     </div>
   `,
 })
-export class AnimatedSpriteTypesViewComponent implements OnInit, OnDestroy {
+export class AnimatedSpriteTypeListComponent implements OnInit, OnDestroy {
   active = false;
   animatedSpriteTypes: AnimatedSpriteType[] = [];
   thumbnails: ThumbnailProperties[] = [];
-  selected: AnimatedSpriteType;
 
   private subscriptions: Subscription[] = [];
 
@@ -64,16 +37,11 @@ export class AnimatedSpriteTypesViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(this.explorerService.openView$.subscribe((view) => {
-      if (view === ExplorerView.ANIMATED_SPRITE_TYPES) {
-        this.active = true;
-      } else {
-        this.clear();
-        this.active = false;
-      }
+      this.active = view === ExplorerView.ANIMATED_SPRITE_TYPE_LIST;
     }));
 
     this.subscriptions.push(this.explorerService.reloadView$.subscribe((view) => {
-      if (view === ExplorerView.ANIMATED_SPRITE_TYPES && this.active) {
+      if (this.active && view === ExplorerView.ANIMATED_SPRITE_TYPE_LIST) {
         this.reloadContent();
       }
     }));
@@ -84,25 +52,12 @@ export class AnimatedSpriteTypesViewComponent implements OnInit, OnDestroy {
     this.subscriptions.length = 0;
   }
 
-  onThumbnailSelected(selectedIndex: number) {
-    this.selected = this.animatedSpriteTypes[selectedIndex];
-  }
-
-  returnToList() {
-    this.selected = null;
-  }
-
   clear() {
-    this.selected = null;
     this.animatedSpriteTypes.length = 0;
     this.thumbnails.length = 0;
   }
 
-  deleteAnimatedSpriteType() {
-    this.alertService.warn('Deletion not implemented yet');
-  }
-
-  private reloadContent() {
+  reloadContent() {
     let libraryId = this.explorerService.getSelectedLibraryId();
     let currentDir = this.directoryService.getCurrentDirectoryPath();
 
@@ -119,6 +74,12 @@ export class AnimatedSpriteTypesViewComponent implements OnInit, OnDestroy {
         this.clear();
         this.alertService.error('Failed to load animated sprite types (' + rejectReason + ')');
       });
+  }
+
+  onThumbnailSelected(selectedIndex: number) {
+    const ast = this.animatedSpriteTypes[selectedIndex];
+    this.explorerService.setSelectedAnimatedSpriteType(ast);
+    this.explorerService.openAndReloadView(ExplorerView.ANIMATED_SPRITE_TYPE_PREVIEW);
   }
 
 }

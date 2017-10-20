@@ -3,6 +3,7 @@ import {Subject} from 'rxjs/Subject';
 import {C} from '../common/common';
 import {Image} from '../swagger/model/Image';
 import {SpriteType} from '../swagger/model/SpriteType';
+import {AnimatedSpriteType} from '../swagger/model/AnimatedSpriteType';
 
 export enum ExplorerView {
   DIRECTORY,
@@ -11,7 +12,8 @@ export enum ExplorerView {
   SPRITE_TYPE_LIST,
   SPRITE_TYPE_PREVIEW,
   SPRITE_TYPE_EDIT,
-  ANIMATED_SPRITE_TYPES,
+  ANIMATED_SPRITE_TYPE_LIST,
+  ANIMATED_SPRITE_TYPE_PREVIEW,
 }
 
 @Injectable()
@@ -28,6 +30,7 @@ export class ExplorerService {
   private selectedLibraryId = 5764201201008640; // hard-coded for now
   private selectedImage: Image;
   private selectedSpriteType: SpriteType;
+  private selectedAnimatedSpriteType: AnimatedSpriteType;
 
   constructor() {}
 
@@ -92,6 +95,13 @@ export class ExplorerService {
   }
   getSelectedSpriteType(): SpriteType {
     return this.selectedSpriteType;
+  }
+
+  setSelectedAnimatedSpriteType(ast: AnimatedSpriteType) {
+    this.selectedAnimatedSpriteType = ast;
+  }
+  getSelectedAnimatedSpriteType(): AnimatedSpriteType {
+    return this.selectedAnimatedSpriteType;
   }
 
 }
