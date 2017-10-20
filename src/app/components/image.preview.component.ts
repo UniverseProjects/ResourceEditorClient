@@ -109,7 +109,7 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
   }
 
   createSpriteType() {
-    this.alertService.warn('Not implemented yet');
+    this.explorerService.openAndReloadView(ExplorerView.SPRITE_TYPE_EDIT);
   }
 
 }
