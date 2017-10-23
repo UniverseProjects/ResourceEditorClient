@@ -97,7 +97,7 @@ export class SpriteTypeEditorComponent implements OnInit, OnDestroy {
       this.active = view === ExplorerView.SPRITE_TYPE_EDIT;
     }));
     this.subscriptions.push(this.explorerService.reloadView$.subscribe((view) => {
-      if (this.active && view === ExplorerView.SPRITE_TYPE_EDIT) {
+      if (view === ExplorerView.SPRITE_TYPE_EDIT) {
         this.reloadContent();
       }
     }));

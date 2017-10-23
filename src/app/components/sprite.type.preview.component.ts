@@ -53,7 +53,7 @@ export class SpriteTypePreviewComponent implements OnInit, OnDestroy {
       this.active = view === ExplorerView.SPRITE_TYPE_PREVIEW;
     }));
     this.subscriptions.push(this.explorerService.reloadView$.subscribe((view) => {
-      if (this.active && view === ExplorerView.SPRITE_TYPE_PREVIEW) {
+      if (view === ExplorerView.SPRITE_TYPE_PREVIEW) {
         this.reloadContent();
       }
     }));

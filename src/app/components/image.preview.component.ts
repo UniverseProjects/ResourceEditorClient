@@ -55,7 +55,7 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
       this.active = view === ExplorerView.IMAGE_PREVIEW;
     }));
     this.subscriptions.push(this.explorerService.reloadView$.subscribe((view) => {
-      if (this.active && view === ExplorerView.IMAGE_PREVIEW) {
+      if (view === ExplorerView.IMAGE_PREVIEW) {
         this.reloadContent();
       }
     }));
