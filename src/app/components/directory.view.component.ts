@@ -59,7 +59,7 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
     }));
 
     this.subscriptions.push(this.explorerService.reloadView$.subscribe((view) => {
-      if (this.active && view === ExplorerView.DIRECTORY) {
+      if (view === ExplorerView.DIRECTORY) {
         this.reloadContent();
       }
     }));

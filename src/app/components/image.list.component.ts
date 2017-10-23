@@ -53,7 +53,7 @@ export class ImageListComponent implements OnInit, OnDestroy {
     }));
 
     this.subscriptions.push(this.explorerService.reloadView$.subscribe((view) => {
-      if (this.active && view === ExplorerView.IMAGE_LIST) {
+      if (view === ExplorerView.IMAGE_LIST) {
         this.reloadContent();
       }
     }));
