@@ -34,8 +34,8 @@ import {C} from '../common/common';
       <div class="directory-content">
         <ul class="nav nav-tabs">
           <li class="nav-item">
-            <a class="nav-link" href="#" (click)="onTabClicked('DIRECTORY'); false;"
-               [class.active]="currentViewStr==='DIRECTORY'">Directory</a>
+            <a class="nav-link" href="#" (click)="onTabClicked('DIRECTORY_EDIT'); false;"
+               [class.active]="currentViewStr==='DIRECTORY_EDIT'">Directory</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#" (click)="onTabClicked('IMAGE_LIST'); false;"
@@ -55,7 +55,7 @@ import {C} from '../common/common';
           <span class="current-dir-value">{{currentDirectory || '...'}}</span>
         </div>
         <div class="explorer-views">
-          <directory-view></directory-view>
+          <directory-editor></directory-editor>
           <image-list></image-list>
           <image-preview></image-preview>
           <sprite-type-list></sprite-type-list>
@@ -72,7 +72,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
 
   private readonly LS_ACTIVE_TAB = 'active.tab';
   private readonly VIEWS_WITH_TABS: ExplorerView[] = [
-    ExplorerView.DIRECTORY,
+    ExplorerView.DIRECTORY_EDIT,
     ExplorerView.IMAGE_LIST,
     ExplorerView.SPRITE_TYPE_LIST,
     ExplorerView.ANIMATED_SPRITE_TYPE_LIST,
@@ -125,7 +125,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     let view = ExplorerView[viewStr];
     if (!C.defined(view)) {
       // this is where we fallback to a default view, if an incorrect value is supplied
-      view = ExplorerView.DIRECTORY;
+      view = ExplorerView.DIRECTORY_EDIT;
     }
     this.explorerService.openAndReloadView(view);
   }

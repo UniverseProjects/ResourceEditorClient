@@ -7,7 +7,7 @@ import {AnimatedSpriteType} from '../swagger/model/AnimatedSpriteType';
 import {ImageInfo} from '../components/image.frame.component';
 
 export enum ExplorerView {
-  DIRECTORY,
+  DIRECTORY_EDIT,
   IMAGE_LIST,
   IMAGE_PREVIEW,
   SPRITE_TYPE_LIST,
@@ -95,7 +95,7 @@ export class ExplorerService {
   }
 
   clearMainViews() {
-    this.clearView(ExplorerView.DIRECTORY);
+    this.clearView(ExplorerView.DIRECTORY_EDIT);
     this.clearView(ExplorerView.IMAGE_LIST);
     this.clearView(ExplorerView.SPRITE_TYPE_LIST);
     this.clearView(ExplorerView.ANIMATED_SPRITE_TYPE_LIST);

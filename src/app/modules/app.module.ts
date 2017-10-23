@@ -24,7 +24,7 @@ import {ThumbnailsComponent} from '../components/thumbnails.component';
 import {SpriteTypeListComponent} from '../components/sprite.type.list.component';
 import {AnimatedSpriteTypeListComponent} from '../components/animated.sprite.type.list.component';
 import {PropertiesComponent} from '../components/properties.component';
-import {DirectoryViewComponent} from '../components/directory.view.component';
+import {DirectoryEditorComponent} from '../components/directory.editor.component';
 import {ConfirmationPopoverModule} from 'angular-confirmation-popover';
 import {DirectoryService} from '../services/directory.service';
 import {TreeApi} from '../swagger/api/TreeApi';
@@ -68,7 +68,7 @@ import {AnimatedSpriteTypePreviewComponent} from '../components/animated.sprite.
         SpriteTypeEditorComponent,
         AnimatedSpriteTypeListComponent,
         AnimatedSpriteTypePreviewComponent,
-        DirectoryViewComponent,
+        DirectoryEditorComponent,
         ExplorerComponent,
     ],
     providers: [

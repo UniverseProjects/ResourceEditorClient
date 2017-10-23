@@ -10,21 +10,21 @@ import {Subscription} from 'rxjs/Subscription';
 import {Directory} from '../swagger/model/Directory';
 
 @Component({
-  selector: 'directory-view',
+  selector: 'directory-editor',
   styles: [`
     .row {
       padding-bottom: 10px;
     }
   `],
   template: `
-    <div class="directory-view-container" *ngIf="active">
+    <div class="directory-editor-container" *ngIf="active">
       <div class="row">
         <div class="input-group col-lg-8">
           <input class="form-control" type="text" placeholder="New child directory name..." [(ngModel)]="newDirectoryName" (keyup.enter)="createDirectory()"/>
           <div class="input-group-btn">
             <button class="btn btn-outline-success" (click)="createDirectory()">Create</button>
           </div>
-        </div>  
+        </div>
       </div>
       <div class="row">
         <div class="input-group col-lg-8">
@@ -38,7 +38,7 @@ import {Directory} from '../swagger/model/Directory';
     </div>
   `,
 })
-export class DirectoryViewComponent implements OnInit, OnDestroy {
+export class DirectoryEditorComponent implements OnInit, OnDestroy {
   active = false;
   currentDirectory: Directory;
   newDirectoryName: string;
@@ -55,17 +55,17 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(this.explorerService.openView$.subscribe((view) => {
-      this.active = view === ExplorerView.DIRECTORY;
+      this.active = view === ExplorerView.DIRECTORY_EDIT;
     }));
 
     this.subscriptions.push(this.explorerService.reloadView$.subscribe((view) => {
-      if (view === ExplorerView.DIRECTORY) {
+      if (view === ExplorerView.DIRECTORY_EDIT) {
         this.reloadContent();
       }
     }));
 
     this.subscriptions.push(this.explorerService.clearView$.subscribe((view) => {
-      if (view === ExplorerView.DIRECTORY) {
+      if (view === ExplorerView.DIRECTORY_EDIT) {
         this.clear();
       }
     }));
