@@ -602,6 +602,62 @@ paths:
           description: Invalid filters supplied
         '404':
           description: Library not found
+  '/library/{libraryId}/findLinkedSpriteTypes/{treePath}':
+    get:
+      tags:
+        - image
+        - spriteType
+      summary: Find spriteTypes linking to the provided imagePath
+      operationId: findLinkedSpriteTypes
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          description: directory-path to the image
+          required: true
+          type: string
+        - name: tag
+          in: query
+          type: array
+          collectionFormat: multi
+          items:
+            type: string
+        - name: limit
+          in: query
+          description: limit amount of entities returned
+          type: integer
+          format: int32
+          default: '50'
+        - name: cursor
+          in: query
+          description: cursor to fetch a batch (for paging)
+          type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              count:
+                type: integer
+                format: int64
+              cursor:
+                type: string
+              values:
+                type: array
+                items:
+                  $ref: '#/definitions/SpriteType'
+        '400':
+          description: Invalid filters supplied
+        '404':
+          description: Library not found or Image not found
   '/library/{libraryId}/spriteType/{treePath}':
     get:
       tags:
@@ -955,6 +1011,71 @@ paths:
             type: string
         '404':
           description: Library not found
+  '/library/{libraryId}/createAnimatedSpriteTypeFromImage/{treePath}':
+    post:
+      tags:
+        - animatedSpriteType
+        - image
+      summary: Create AnimatedSpriteType for path from image
+      operationId: createAnimatedSpriteTypeFromImage
+      produces:
+        - application/json
+      parameters:
+        - name: libraryId
+          in: path
+          description: ID of the library
+          required: true
+          type: integer
+          format: int64
+        - name: treePath
+          in: path
+          required: true
+          description: Path to create the AnimatedSpriteType at
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            properties:
+              duration:
+                type: integer
+                format: int32
+                description: frame duration in ms
+                example: 200
+                default: 200
+              offsetX:
+                type: integer
+                format: int32
+                default: 0
+              offsetY:
+                type: integer
+                format: int32
+                default: 0
+              spriteWidth:
+                type: integer
+                format: int32
+              spriteHeight:
+                type: integer
+                format: int32
+              rows:
+                type: integer
+                format: int32
+              columns:
+                type: integer
+                format: int32
+              imagePath:
+                type: string
+              tags:
+                type: array
+                items:
+                  type: string
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/AnimatedSpriteType'
+        '404':
+          description: AnimatedSpriteType not found for path
 definitions:
   SpriteType:
     allOf:

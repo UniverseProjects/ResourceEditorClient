@@ -116,6 +116,26 @@ export class SpriteTypeApi {
 
     /**
      * 
+     * @summary Find spriteTypes linking to the provided imagePath
+     * @param libraryId ID of the library
+     * @param treePath directory-path to the image
+     * @param tag 
+     * @param limit limit amount of entities returned
+     * @param cursor cursor to fetch a batch (for paging)
+     */
+    public findLinkedSpriteTypes(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2003> {
+        return this.findLinkedSpriteTypesWithHttpInfo(libraryId, treePath, tag, limit, cursor, extraHttpRequestParams)
+            .map((response: Response) => {
+                if (response.status === 204) {
+                    return undefined;
+                } else {
+                    return response.json() || {};
+                }
+            });
+    }
+
+    /**
+     * 
      * @summary Find spriteType with filter
      * @param libraryId ID of the library
      * @param treePath directory-path
@@ -368,6 +388,67 @@ export class SpriteTypeApi {
 
         let requestOptions: RequestOptionsArgs = new RequestOptions({
             method: RequestMethod.Delete,
+            headers: headers,
+            search: queryParameters,
+            withCredentials:this.configuration.withCredentials
+        });
+        // https://github.com/swagger-api/swagger-codegen/issues/4037
+        if (extraHttpRequestParams) {
+            requestOptions = (<any>Object).assign(requestOptions, extraHttpRequestParams);
+        }
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * Find spriteTypes linking to the provided imagePath
+     * 
+     * @param libraryId ID of the library
+     * @param treePath directory-path to the image
+     * @param tag 
+     * @param limit limit amount of entities returned
+     * @param cursor cursor to fetch a batch (for paging)
+     */
+    public findLinkedSpriteTypesWithHttpInfo(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/findLinkedSpriteTypes/${treePath}'
+                    .replace('${' + 'libraryId' + '}', String(libraryId))
+                    .replace('${' + 'treePath' + '}', String(treePath));
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'libraryId' is not null or undefined
+        if (libraryId === null || libraryId === undefined) {
+            throw new Error('Required parameter libraryId was null or undefined when calling findLinkedSpriteTypes.');
+        }
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling findLinkedSpriteTypes.');
+        }
+        if (tag) {
+            tag.forEach((element) => {
+                queryParameters.append('tag', <any>element);
+            })
+        }
+
+        if (limit !== undefined) {
+            queryParameters.set('limit', <any>limit);
+        }
+
+        if (cursor !== undefined) {
+            queryParameters.set('cursor', <any>cursor);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        // to determine the Accept header
+        let produces: string[] = [
+            'application/json'
+        ];
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
             headers: headers,
             search: queryParameters,
             withCredentials:this.configuration.withCredentials

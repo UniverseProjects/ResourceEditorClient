@@ -43,6 +43,24 @@ export class ImageApi {
 
     /**
      * 
+     * @summary Create AnimatedSpriteType for path from image
+     * @param libraryId ID of the library
+     * @param treePath Path to create the AnimatedSpriteType at
+     * @param body 
+     */
+    public createAnimatedSpriteTypeFromImage(libraryId: number, treePath: string, body: models.Body, extraHttpRequestParams?: any): Observable<models.AnimatedSpriteType> {
+        return this.createAnimatedSpriteTypeFromImageWithHttpInfo(libraryId, treePath, body, extraHttpRequestParams)
+            .map((response: Response) => {
+                if (response.status === 204) {
+                    return undefined;
+                } else {
+                    return response.json() || {};
+                }
+            });
+    }
+
+    /**
+     * 
      * @summary Delete image for path
      * @param libraryId ID of the library
      * @param treePath Image path to delete
@@ -69,6 +87,26 @@ export class ImageApi {
      */
     public findImage(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2001> {
         return this.findImageWithHttpInfo(libraryId, treePath, tag, limit, cursor, extraHttpRequestParams)
+            .map((response: Response) => {
+                if (response.status === 204) {
+                    return undefined;
+                } else {
+                    return response.json() || {};
+                }
+            });
+    }
+
+    /**
+     * 
+     * @summary Find spriteTypes linking to the provided imagePath
+     * @param libraryId ID of the library
+     * @param treePath directory-path to the image
+     * @param tag 
+     * @param limit limit amount of entities returned
+     * @param cursor cursor to fetch a batch (for paging)
+     */
+    public findLinkedSpriteTypes(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<models.InlineResponse2003> {
+        return this.findLinkedSpriteTypesWithHttpInfo(libraryId, treePath, tag, limit, cursor, extraHttpRequestParams)
             .map((response: Response) => {
                 if (response.status === 204) {
                     return undefined;
@@ -131,6 +169,58 @@ export class ImageApi {
             });
     }
 
+
+    /**
+     * Create AnimatedSpriteType for path from image
+     * 
+     * @param libraryId ID of the library
+     * @param treePath Path to create the AnimatedSpriteType at
+     * @param body 
+     */
+    public createAnimatedSpriteTypeFromImageWithHttpInfo(libraryId: number, treePath: string, body: models.Body, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/createAnimatedSpriteTypeFromImage/${treePath}'
+                    .replace('${' + 'libraryId' + '}', String(libraryId))
+                    .replace('${' + 'treePath' + '}', String(treePath));
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'libraryId' is not null or undefined
+        if (libraryId === null || libraryId === undefined) {
+            throw new Error('Required parameter libraryId was null or undefined when calling createAnimatedSpriteTypeFromImage.');
+        }
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling createAnimatedSpriteTypeFromImage.');
+        }
+        // verify required parameter 'body' is not null or undefined
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling createAnimatedSpriteTypeFromImage.');
+        }
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        // to determine the Accept header
+        let produces: string[] = [
+            'application/json'
+        ];
+
+        headers.set('Content-Type', 'application/json');
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Post,
+            headers: headers,
+            body: body == null ? '' : JSON.stringify(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            withCredentials:this.configuration.withCredentials
+        });
+        // https://github.com/swagger-api/swagger-codegen/issues/4037
+        if (extraHttpRequestParams) {
+            requestOptions = (<any>Object).assign(requestOptions, extraHttpRequestParams);
+        }
+
+        return this.http.request(path, requestOptions);
+    }
 
     /**
      * Delete image for path
@@ -199,6 +289,67 @@ export class ImageApi {
         // verify required parameter 'treePath' is not null or undefined
         if (treePath === null || treePath === undefined) {
             throw new Error('Required parameter treePath was null or undefined when calling findImage.');
+        }
+        if (tag) {
+            tag.forEach((element) => {
+                queryParameters.append('tag', <any>element);
+            })
+        }
+
+        if (limit !== undefined) {
+            queryParameters.set('limit', <any>limit);
+        }
+
+        if (cursor !== undefined) {
+            queryParameters.set('cursor', <any>cursor);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        // to determine the Accept header
+        let produces: string[] = [
+            'application/json'
+        ];
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Get,
+            headers: headers,
+            search: queryParameters,
+            withCredentials:this.configuration.withCredentials
+        });
+        // https://github.com/swagger-api/swagger-codegen/issues/4037
+        if (extraHttpRequestParams) {
+            requestOptions = (<any>Object).assign(requestOptions, extraHttpRequestParams);
+        }
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * Find spriteTypes linking to the provided imagePath
+     * 
+     * @param libraryId ID of the library
+     * @param treePath directory-path to the image
+     * @param tag 
+     * @param limit limit amount of entities returned
+     * @param cursor cursor to fetch a batch (for paging)
+     */
+    public findLinkedSpriteTypesWithHttpInfo(libraryId: number, treePath: string, tag?: Array<string>, limit?: number, cursor?: string, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/findLinkedSpriteTypes/${treePath}'
+                    .replace('${' + 'libraryId' + '}', String(libraryId))
+                    .replace('${' + 'treePath' + '}', String(treePath));
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'libraryId' is not null or undefined
+        if (libraryId === null || libraryId === undefined) {
+            throw new Error('Required parameter libraryId was null or undefined when calling findLinkedSpriteTypes.');
+        }
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling findLinkedSpriteTypes.');
         }
         if (tag) {
             tag.forEach((element) => {

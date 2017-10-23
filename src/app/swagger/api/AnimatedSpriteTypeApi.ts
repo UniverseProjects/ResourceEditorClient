@@ -61,6 +61,24 @@ export class AnimatedSpriteTypeApi {
 
     /**
      * 
+     * @summary Create AnimatedSpriteType for path from image
+     * @param libraryId ID of the library
+     * @param treePath Path to create the AnimatedSpriteType at
+     * @param body 
+     */
+    public createAnimatedSpriteTypeFromImage(libraryId: number, treePath: string, body: models.Body, extraHttpRequestParams?: any): Observable<models.AnimatedSpriteType> {
+        return this.createAnimatedSpriteTypeFromImageWithHttpInfo(libraryId, treePath, body, extraHttpRequestParams)
+            .map((response: Response) => {
+                if (response.status === 204) {
+                    return undefined;
+                } else {
+                    return response.json() || {};
+                }
+            });
+    }
+
+    /**
+     * 
      * @summary Delete AnimatedSpriteType for path
      * @param libraryId ID of the library
      * @param treePath Path to delete
@@ -157,6 +175,58 @@ export class AnimatedSpriteTypeApi {
         // verify required parameter 'body' is not null or undefined
         if (body === null || body === undefined) {
             throw new Error('Required parameter body was null or undefined when calling createAnimatedSpriteType.');
+        }
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        // to determine the Accept header
+        let produces: string[] = [
+            'application/json'
+        ];
+
+        headers.set('Content-Type', 'application/json');
+
+        let requestOptions: RequestOptionsArgs = new RequestOptions({
+            method: RequestMethod.Post,
+            headers: headers,
+            body: body == null ? '' : JSON.stringify(body), // https://github.com/angular/angular/issues/10612
+            search: queryParameters,
+            withCredentials:this.configuration.withCredentials
+        });
+        // https://github.com/swagger-api/swagger-codegen/issues/4037
+        if (extraHttpRequestParams) {
+            requestOptions = (<any>Object).assign(requestOptions, extraHttpRequestParams);
+        }
+
+        return this.http.request(path, requestOptions);
+    }
+
+    /**
+     * Create AnimatedSpriteType for path from image
+     * 
+     * @param libraryId ID of the library
+     * @param treePath Path to create the AnimatedSpriteType at
+     * @param body 
+     */
+    public createAnimatedSpriteTypeFromImageWithHttpInfo(libraryId: number, treePath: string, body: models.Body, extraHttpRequestParams?: any): Observable<Response> {
+        const path = this.basePath + '/library/${libraryId}/createAnimatedSpriteTypeFromImage/${treePath}'
+                    .replace('${' + 'libraryId' + '}', String(libraryId))
+                    .replace('${' + 'treePath' + '}', String(treePath));
+
+        let queryParameters = new URLSearchParams();
+        let headers = new Headers(this.defaultHeaders.toJSON()); // https://github.com/angular/angular/issues/6845
+        // verify required parameter 'libraryId' is not null or undefined
+        if (libraryId === null || libraryId === undefined) {
+            throw new Error('Required parameter libraryId was null or undefined when calling createAnimatedSpriteTypeFromImage.');
+        }
+        // verify required parameter 'treePath' is not null or undefined
+        if (treePath === null || treePath === undefined) {
+            throw new Error('Required parameter treePath was null or undefined when calling createAnimatedSpriteTypeFromImage.');
+        }
+        // verify required parameter 'body' is not null or undefined
+        if (body === null || body === undefined) {
+            throw new Error('Required parameter body was null or undefined when calling createAnimatedSpriteTypeFromImage.');
         }
         // to determine the Content-Type header
         let consumes: string[] = [
