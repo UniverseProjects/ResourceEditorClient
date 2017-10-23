@@ -45,6 +45,12 @@ export class AnimatedSpriteTypeListComponent implements OnInit, OnDestroy {
         this.reloadContent();
       }
     }));
+
+    this.subscriptions.push(this.explorerService.clearView$.subscribe((view) => {
+      if (view === ExplorerView.ANIMATED_SPRITE_TYPE_LIST) {
+        this.clear();
+      }
+    }));
   }
 
   ngOnDestroy() {

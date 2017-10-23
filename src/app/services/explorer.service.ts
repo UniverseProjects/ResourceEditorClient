@@ -28,6 +28,9 @@ export class ExplorerService {
   private reloadView_ = new Subject<ExplorerView>();
   readonly reloadView$ = this.reloadView_.asObservable();
 
+  private clearView_ = new Subject<ExplorerView>();
+  readonly clearView$ = this.clearView_.asObservable();
+
   private selectedLibraryId = 5764201201008640; // hard-coded for now
   private selectedImage: Image;
   private selectedImageInfo: ImageInfo;
@@ -60,6 +63,13 @@ export class ExplorerService {
     this.reloadView_.next(view);
   }
 
+  clearView(view: ExplorerView) {
+    if (!C.defined(view)) {
+      throw new Error('View must be specified');
+    }
+    this.clearView_.next(view);
+  }
+
   openLastView() {
     const lastView = this.popLastView();
     if (lastView) {
@@ -82,6 +92,13 @@ export class ExplorerService {
     this.clearSelectedImage();
     this.clearSelectedSpriteType();
     this.clearSelectedAnimatedSpriteType();
+  }
+
+  clearMainViews() {
+    this.clearView(ExplorerView.DIRECTORY);
+    this.clearView(ExplorerView.IMAGE_LIST);
+    this.clearView(ExplorerView.SPRITE_TYPE_LIST);
+    this.clearView(ExplorerView.ANIMATED_SPRITE_TYPE_LIST);
   }
 
   setSelectedLibraryId(libraryId: number) {

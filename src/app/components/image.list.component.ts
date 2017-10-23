@@ -57,6 +57,12 @@ export class ImageListComponent implements OnInit, OnDestroy {
         this.reloadContent();
       }
     }));
+
+    this.subscriptions.push(this.explorerService.clearView$.subscribe((view) => {
+      if (view === ExplorerView.IMAGE_LIST) {
+        this.clear();
+      }
+    }));
   }
 
   ngOnDestroy() {

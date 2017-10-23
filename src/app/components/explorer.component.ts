@@ -92,6 +92,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     this.currentViewStr = localStorage.getItem(this.LS_ACTIVE_TAB);
 
     this.subscriptions.push(this.directoryService.directoryChanged$.subscribe((directory) => {
+      this.explorerService.clearMainViews();
       this.currentDirectory = directory.treePath;
       this.updateView(this.currentViewStr);
     }));
