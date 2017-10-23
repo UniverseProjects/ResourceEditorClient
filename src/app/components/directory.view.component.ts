@@ -55,12 +55,7 @@ export class DirectoryViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.push(this.explorerService.openView$.subscribe((view) => {
-      if (view === ExplorerView.DIRECTORY) {
-        this.active = true;
-      } else {
-        this.clear();
-        this.active = false;
-      }
+      this.active = view === ExplorerView.DIRECTORY;
     }));
 
     this.subscriptions.push(this.explorerService.reloadView$.subscribe((view) => {
