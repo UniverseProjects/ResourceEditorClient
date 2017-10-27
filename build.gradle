@@ -12,11 +12,11 @@ node {
 task buildClient(type: NpmTask, dependsOn: 'npmInstall') {
     group = 'build'
     description = 'Compile client side folder for development'
-    args = ['run', 'build']
+    args = ['run', 'ng', 'build', '--env=live']
 }
 
 task serve(type: NpmTask, dependsOn: 'npmInstall') {
     group = 'node'
     description = 'Run application'
-    args = ['run', 'ng', 'serve']
+    args = ['run', 'ng', 'serve', '--env=live']
 }
