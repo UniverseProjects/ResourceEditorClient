@@ -1,4 +1,7 @@
 import {PathUtil} from './path.util';
+import {environment} from '../../environments/environment';
+import {C} from './common';
+
 
 export class ApiHelper {
 
@@ -18,6 +21,12 @@ export class ApiHelper {
   }
 
   static requestOptions(): any {
-    return {headers: {'API-Key': 'foo'}}; // TODO: Read API-Key from environment config (it must not be committed to VCS)
+    const apiKey = environment.apiKey;
+    if (!C.defined(apiKey)) {
+      throw new Error('API-key setting not defined in environment');
+    }
+
+    return {headers: {'API-Key': apiKey}};
   }
+
 }

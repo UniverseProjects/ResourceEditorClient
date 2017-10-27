@@ -6,4 +6,5 @@
 export const environment = {
   production: false,
   name: 'dev',
+  apiKey: null, // This value cannot be under version control!
 };
