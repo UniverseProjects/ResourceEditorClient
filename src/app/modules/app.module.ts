@@ -36,6 +36,7 @@ import {SpriteTypeEditorComponent} from '../components/sprite.type.editor.compon
 import {ImagePreviewComponent} from '../components/image.preview.component';
 import {SpriteTypePreviewComponent} from '../components/sprite.type.preview.component';
 import {AnimatedSpriteTypePreviewComponent} from '../components/animated.sprite.type.preview.component';
+import {SandboxComponent} from '../components/sandbox.component';
 
 @NgModule({
     imports: [
@@ -55,6 +56,7 @@ import {AnimatedSpriteTypePreviewComponent} from '../components/animated.sprite.
     ],
     declarations: [
       AppComponent,
+      SandboxComponent,
       DirectoryTreeComponent,
       ThumbnailsComponent,
       AlertsComponent,

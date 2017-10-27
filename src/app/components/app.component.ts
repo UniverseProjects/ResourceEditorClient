@@ -41,8 +41,8 @@ import {environment} from '../../environments/environment';
         </div>
       </div>
       <!--<nav>-->
-      <!--<a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>-->
-      <!--<a routerLink="/explorer" routerLinkActive="active">Explorer</a>-->
+        <!--<a routerLink="/explorer" routerLinkActive="active">Explorer</a>-->
+        <!--<a routerLink="/sandbox" routerLinkActive="active">Sandbox</a>-->
       <!--</nav>-->
       <loader></loader>
       <alerts></alerts>
