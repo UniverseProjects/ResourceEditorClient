@@ -14,3 +14,9 @@ task buildClient(type: NpmTask, dependsOn: 'npmInstall') {
     description = 'Compile client side folder for development'
     args = ['run', 'build']
 }
+
+task serve(type: NpmTask, dependsOn: 'npmInstall') {
+    group = 'node'
+    description = 'Run application'
+    args = ['run', 'ng', 'serve']
+}
