@@ -17,4 +17,7 @@ export class ApiHelper {
     return treePath;
   }
 
+  static requestOptions(): any {
+    return {headers: {'API-Key': 'foo'}}; // TODO: Read API-Key from environment config (it must not be committed to VCS)
+  }
 }

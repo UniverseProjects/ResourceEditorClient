@@ -99,7 +99,7 @@ export class SpriteTypePreviewComponent implements OnInit, OnDestroy {
     let treePath = this.spriteType.treePath;
 
     const operation = this.loaderService.startOperation('Deleting sprite type');
-    this.spriteTypeApi.deleteSpriteType(libraryId, ApiHelper.path(treePath))
+    this.spriteTypeApi.deleteSpriteType(libraryId, ApiHelper.path(treePath), ApiHelper.requestOptions())
       .toPromise()
       .then(() => {
         operation.stop();

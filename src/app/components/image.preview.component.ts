@@ -104,7 +104,7 @@ export class ImagePreviewComponent implements OnInit, OnDestroy {
     let treePath = this.image.treePath;
 
     let operation = this.loaderService.startOperation('Deleting image');
-    this.imageApi.deleteImage(libraryId, ApiHelper.path(treePath))
+    this.imageApi.deleteImage(libraryId, ApiHelper.path(treePath), ApiHelper.requestOptions())
       .toPromise()
       .then(() => {
           operation.stop();

@@ -6,6 +6,7 @@ import {TreeApi} from '../swagger/api/TreeApi';
 import {ResourceLibraryWithChildren} from '../swagger/model/ResourceLibraryWithChildren';
 import {AlertService} from './alert.service';
 import {ExplorerService} from './explorer.service';
+import {ApiHelper} from '../common/api.helper';
 
 @Injectable()
 export class DirectoryService {
@@ -69,7 +70,7 @@ export class DirectoryService {
 
   reloadDirectoryTree() {
     const operation = this.loaderService.startOperation('Loading directory tree');
-    this.treeApi.getTree(this.explorerService.getSelectedLibraryId())
+    this.treeApi.getTree(this.explorerService.getSelectedLibraryId(), ApiHelper.requestOptions())
       .toPromise()
       .then((resourceLibrary: ResourceLibraryWithChildren) => {
         operation.stop();

@@ -252,7 +252,7 @@ export class SpriteTypeEditorComponent implements OnInit, OnDestroy {
     };
 
     const operation = this.loaderService.startOperation('Creating sprite type');
-    this.spriteTypeApi.createSpriteType(libraryId, ApiHelper.path(treePath), newSpriteType)
+    this.spriteTypeApi.createSpriteType(libraryId, ApiHelper.path(treePath), newSpriteType, ApiHelper.requestOptions())
       .toPromise()
       .then(() => {
         operation.stop();

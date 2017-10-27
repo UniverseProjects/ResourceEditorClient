@@ -90,7 +90,7 @@ export class DirectoryEditorComponent implements OnInit, OnDestroy {
     const currentDirPath = this.currentDirectory.treePath;
 
     const operation = this.loaderService.startOperation('Deleting directory');
-    this.treeApi.deleteDirectory(libraryId, ApiHelper.path(currentDirPath))
+    this.treeApi.deleteDirectory(libraryId, ApiHelper.path(currentDirPath), ApiHelper.requestOptions())
       .toPromise()
       .then(() => {
         operation.stop();
@@ -123,7 +123,7 @@ export class DirectoryEditorComponent implements OnInit, OnDestroy {
     const newDirPath = PathUtil.combine(this.currentDirectory.treePath, directoryName);
 
     const operation = this.loaderService.startOperation('Creating directory');
-    this.treeApi.createDirectory(libraryId, ApiHelper.path(newDirPath))
+    this.treeApi.createDirectory(libraryId, ApiHelper.path(newDirPath), ApiHelper.requestOptions())
       .toPromise()
       .then(() => {
         operation.stop();

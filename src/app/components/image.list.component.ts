@@ -82,7 +82,7 @@ export class ImageListComponent implements OnInit, OnDestroy {
     let currentDir = this.directoryService.getCurrentDirectoryPath();
 
     const operation = this.loaderService.startOperation('Loading images');
-    this.imageApi.findImage(libraryId, ApiHelper.path(currentDir))
+    this.imageApi.findImage(libraryId, ApiHelper.path(currentDir), ApiHelper.requestOptions())
       .toPromise()
       .then(response => {
         operation.stop();
@@ -149,11 +149,11 @@ export class ImageListComponent implements OnInit, OnDestroy {
 
     let formData = new FormData();
     formData.append('file', this.fileToUpload, fileName);
-    let headers = new Headers();
-    let options = new RequestOptions({ headers: headers });
+    // let headers = new Headers();
+    // let options = new RequestOptions({ headers: headers });
 
     const operation = this.loaderService.startOperation('Uploading file...');
-    this.http.post(uploadUrl, formData, options)
+    this.http.post(uploadUrl, formData, ApiHelper.requestOptions())
       .map(res => res.json())
       .toPromise()
       .then(() => {

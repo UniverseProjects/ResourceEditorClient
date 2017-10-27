@@ -71,7 +71,7 @@ export class SpriteTypeListComponent implements OnInit, OnDestroy {
     let currentDir = this.directoryService.getCurrentDirectoryPath();
 
     const operation = this.loaderService.startOperation('Loading sprite types');
-    this.spriteTypeApi.findSpriteType(libraryId, ApiHelper.path(currentDir))
+    this.spriteTypeApi.findSpriteType(libraryId, ApiHelper.path(currentDir), ApiHelper.requestOptions())
       .toPromise()
       .then(response => {
         operation.stop();

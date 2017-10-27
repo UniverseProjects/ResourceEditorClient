@@ -69,7 +69,7 @@ export class AnimatedSpriteTypeListComponent implements OnInit, OnDestroy {
     let currentDir = this.directoryService.getCurrentDirectoryPath();
 
     const operation = this.loaderService.startOperation('Loading animated sprite types');
-    this.animatedSpriteTypeApi.findAnimatedSpriteType(libraryId, ApiHelper.path(currentDir))
+    this.animatedSpriteTypeApi.findAnimatedSpriteType(libraryId, ApiHelper.path(currentDir), ApiHelper.requestOptions())
       .toPromise()
       .then(response => {
         operation.stop();
