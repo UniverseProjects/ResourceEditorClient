@@ -6,7 +6,7 @@ import {ImageApi} from '../swagger/api/ImageApi';
 import {Image} from '../swagger/model/Image';
 import {ApiHelper} from '../common/api.helper';
 import {DirectoryService} from '../services/directory.service';
-import {Headers, Http, RequestOptions} from '@angular/http';
+import {Http} from '@angular/http';
 import {Subscription} from 'rxjs/Subscription';
 import {PathUtil} from '../common/path.util';
 import {ThumbnailProperties} from './thumbnails.component';
@@ -82,7 +82,7 @@ export class ImageListComponent implements OnInit, OnDestroy {
     let currentDir = this.directoryService.getCurrentDirectoryPath();
 
     const operation = this.loaderService.startOperation('Loading images');
-    this.imageApi.findImage(libraryId, ApiHelper.path(currentDir), ApiHelper.requestOptions())
+    this.imageApi.findImage(libraryId, ApiHelper.path(currentDir), null, null, null, ApiHelper.requestOptions())
       .toPromise()
       .then(response => {
         operation.stop();
