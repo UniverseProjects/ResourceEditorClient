@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +34,7 @@ import {Component} from '@angular/core';
   template: `
     <div class="container-fluid">
       <div class="app-header">
+        <!--<div>Environment: {{environmentName}}</div>-->
         <div class="app-logo">
           <span class="app-logo-part1">universe projects</span>
           <span class="app-logo-part2">resource editor</span>
@@ -49,4 +51,5 @@ import {Component} from '@angular/core';
   `,
 })
 export class AppComponent {
+  environmentName = environment.name;
 }
