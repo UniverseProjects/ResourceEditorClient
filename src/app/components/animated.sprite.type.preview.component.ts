@@ -111,11 +111,7 @@ export class AnimatedSpriteTypePreviewComponent implements OnInit, OnDestroy {
       let st = fr.spriteType;
       maxX = Math.max(maxX, fr.adjustX + st.areaWidth);
       maxY = Math.max(maxY, fr.adjustY + st.areaHeight);
-
-      // TODO: include frame duration!
-      let duration = fr.duration;
-
-      animationFrames.push(new AnimationFrame(st.areaX, st.areaY, st.areaWidth, st.areaHeight, fr.adjustX, fr.adjustY));
+      animationFrames.push(new AnimationFrame(st.areaX, st.areaY, st.areaWidth, st.areaHeight, fr.adjustX, fr.adjustY, fr.duration));
     }
 
     if (supportedAnimation) {

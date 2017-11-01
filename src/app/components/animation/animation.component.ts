@@ -103,6 +103,7 @@ export class AnimationComponent implements OnInit, OnDestroy {
   startAnimation() {
     if (!this.running) {
       this.running = true;
+      this.sprite.markAnimationStart();
       this.ngZone.runOutsideAngular(() => this.paint());
     }
   }
@@ -114,11 +115,13 @@ export class AnimationComponent implements OnInit, OnDestroy {
   }
 
   private paint() {
-    this.ctx.fillStyle = "white";
-    this.ctx.fillRect(0, 0, this.width, this.height);
-    this.sprite.draw(this.ctx);
-
     if (this.running) {
+      if (this.sprite.canDrawNextFrame()) {
+          this.ctx.fillStyle = "white";
+          this.ctx.fillRect(0, 0, this.width, this.height);
+          this.sprite.draw(this.ctx);
+      }
+
       requestAnimationFrame(() => this.paint());
     }
   }
