@@ -5,7 +5,8 @@ import {ExplorerComponent} from '../components/explorer.component';
 import {SandboxComponent} from '../components/sandbox.component';
 
 const routes: Routes = [
-    {path: '', redirectTo: '/explorer', pathMatch: 'full'},
+    // {path: '', redirectTo: '/explorer', pathMatch: 'full'},
+    {path: '', component: ExplorerComponent},
     {path: 'explorer', component: ExplorerComponent},
     {path: 'sandbox', component: SandboxComponent}
 ];
