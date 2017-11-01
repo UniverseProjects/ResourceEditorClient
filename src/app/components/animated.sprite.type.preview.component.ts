@@ -119,7 +119,6 @@ export class AnimatedSpriteTypePreviewComponent implements OnInit, OnDestroy {
     }
 
     if (supportedAnimation) {
-      console.log('maxX = ' + maxX + ', maxY = ' + maxY);
       this.animationWidth = maxX;
       this.animationHeight = maxY;
       this.animationSpriteSheet = new AnimationSpriteSheet(lastFrame.spriteType.image.gcsUrl);
