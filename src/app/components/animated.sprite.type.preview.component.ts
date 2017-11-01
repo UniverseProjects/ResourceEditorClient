@@ -127,7 +127,7 @@ export class AnimatedSpriteTypePreviewComponent implements OnInit, OnDestroy {
       this.animationSpriteSheet.addFrames("sequence", animationFrames);
     }
     else {
-      this.alertService.warn('This type of animation is not supported yet');
+      this.alertService.warn('This animation is not supported, as it references multiple different images');
       this.previewImageUrl = ast.frames[0].spriteType.image.gcsUrl;
     }
 
