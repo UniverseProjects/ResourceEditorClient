@@ -79,6 +79,7 @@ export class AnimatedSpriteTypePreviewComponent implements OnInit, OnDestroy {
   }
 
   clear() {
+    this.explorerService.clearSelectedAnimatedSpriteType();
     this.animatedSpriteType = null;
     this.animationSpriteSheet = null;
     this.animationWidth = null;
@@ -128,7 +129,6 @@ export class AnimatedSpriteTypePreviewComponent implements OnInit, OnDestroy {
   }
 
   returnToList() {
-    this.explorerService.clearSelectedAnimatedSpriteType();
     this.clear();
     this.explorerService.openView(ExplorerView.ANIMATED_SPRITE_TYPE_LIST);
   }
