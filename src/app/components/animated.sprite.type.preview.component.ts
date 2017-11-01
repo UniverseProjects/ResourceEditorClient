@@ -103,7 +103,6 @@ export class AnimatedSpriteTypePreviewComponent implements OnInit, OnDestroy {
     let animationFrames: AnimationFrame[] = [];
     for (let fr of ast.frames) {
       if (lastFrame && lastFrame.spriteType.image.gcsUrl !== fr.spriteType.image.gcsUrl) {
-        // TODO: implement support for multiple images
         supportedAnimation = false;
         break;
       }
