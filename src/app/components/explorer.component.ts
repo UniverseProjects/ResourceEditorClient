@@ -92,7 +92,8 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     this.currentViewStr = localStorage.getItem(this.LS_ACTIVE_TAB);
 
     this.subscriptions.push(this.directoryService.directoryChanged$.subscribe((directory) => {
-      this.explorerService.clearMainViews();
+      this.explorerService.clearAllViews();
+
       this.currentDirectory = directory.treePath;
       this.updateView(this.currentViewStr);
     }));
@@ -117,7 +118,7 @@ export class ExplorerComponent implements OnInit, OnDestroy {
     if (!C.defined(ExplorerView[viewStr])) {
       throw new Error('Tab specifies an invalid view: ' + viewStr);
     }
-    this.explorerService.clearSelectedItems();
+    this.explorerService.clearSelectionViews();
     this.updateView(viewStr);
   }
 

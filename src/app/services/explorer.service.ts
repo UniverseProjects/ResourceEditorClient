@@ -88,17 +88,20 @@ export class ExplorerService {
     return this.openViewSeq.length > 1 ? this.openViewSeq.shift() : null;
   }
 
-  clearSelectedItems() {
-    this.clearSelectedImage();
-    this.clearSelectedSpriteType();
-    this.clearSelectedAnimatedSpriteType();
-  }
-
-  clearMainViews() {
+  clearAllViews() {
     this.clearView(ExplorerView.DIRECTORY_EDIT);
     this.clearView(ExplorerView.IMAGE_LIST);
     this.clearView(ExplorerView.SPRITE_TYPE_LIST);
     this.clearView(ExplorerView.ANIMATED_SPRITE_TYPE_LIST);
+    this.clearView(ExplorerView.IMAGE_PREVIEW);
+    this.clearView(ExplorerView.SPRITE_TYPE_PREVIEW);
+    this.clearView(ExplorerView.ANIMATED_SPRITE_TYPE_PREVIEW);
+  }
+
+  clearSelectionViews() {
+    this.clearView(ExplorerView.IMAGE_PREVIEW);
+    this.clearView(ExplorerView.SPRITE_TYPE_PREVIEW);
+    this.clearView(ExplorerView.ANIMATED_SPRITE_TYPE_PREVIEW);
   }
 
   setSelectedLibraryId(libraryId: number) {
