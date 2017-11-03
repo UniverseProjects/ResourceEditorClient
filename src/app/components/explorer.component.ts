@@ -95,6 +95,8 @@ export class ExplorerComponent implements OnInit, OnDestroy {
       this.explorerService.clearAllViews();
 
       this.currentDirectory = directory.treePath;
+
+      this.currentViewStr = localStorage.getItem(this.LS_ACTIVE_TAB);
       this.updateView(this.currentViewStr);
     }));
 
